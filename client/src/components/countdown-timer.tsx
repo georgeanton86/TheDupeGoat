@@ -78,7 +78,7 @@ export default function CountdownTimer({ nextReleaseDate, isPreOrder = false }: 
           </div>
           {isPreOrder && (
             <div className="text-xs text-champagne font-medium bg-luxury-black/10 px-3 py-1 rounded-full">
-              September 1st, 2025 • Early Bird Pricing
+              September 1st, 2025 • Blessed Pre-Order Pricing
             </div>
           )}
         </div>

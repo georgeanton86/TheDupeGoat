@@ -56,14 +56,14 @@ export class MemStorage implements IStorage {
     // Coming soon pre-order product
     const preOrderProduct: Product = {
       id: randomUUID(),
-      name: "September's Seduction",
-      description: "Our most anticipated release yet. A mysterious and alluring fragrance that captures the essence of late summer nights and autumn's promise.",
+      name: "September's Blessing",
+      description: "A divine fragrance inspired by faith and grace. Crafted to uplift the spirit and inspire devotion with every breath.",
       price: "99.00",
       originalPrice: "129.00",
       volume: "50ml Eau de Parfum",
-      notes: "Dark Cherry, Smoky Vanilla, Midnight Rose",
+      notes: "Sacred Frankincense, Blessed Myrrh, Holy Rose",
       type: "Limited Pre-Order",
-      imageUrl: "@assets/generated_images/September's_Seduction_luxury_perfume_52de12ac.png",
+      imageUrl: "@assets/Screenshot_20250822_065610_Chrome_1755863790682.jpg",
       totalInventory: 100,
       remainingInventory: 100,
       isActive: true,

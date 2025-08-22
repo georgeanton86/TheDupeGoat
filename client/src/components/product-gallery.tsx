@@ -3,7 +3,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Link } from "wouter";
 import summerOfSinghsImage from "@assets/generated_images/Luxury_Summer_of_Singhs_perfume_dfd15174.png";
-import septemberSeductionImage from "@assets/generated_images/September's_Seduction_luxury_perfume_52de12ac.png";
+import septemberBlessingImage from "@assets/Screenshot_20250822_065610_Chrome_1755863790682.jpg";
 
 export default function ProductGallery() {
   const { data: products, isLoading } = useQuery({
@@ -44,7 +44,7 @@ export default function ProductGallery() {
                 <img 
                   src={
                     product.name === "Summer of Singhs" ? summerOfSinghsImage : 
-                    product.name === "September's Seduction" ? septemberSeductionImage :
+                    product.name === "September's Blessing" ? septemberBlessingImage :
                     product.imageUrl
                   }
                   alt={`${product.name} - RVLTN Parfums`}
@@ -99,7 +99,7 @@ export default function ProductGallery() {
                       </Button>
                     </Link>
                     <p className="text-xs text-gray-600">
-                      Release Date: September 1st, 2025
+                      Blessed Release: September 1st, 2025
                     </p>
                   </div>
                 ) : (

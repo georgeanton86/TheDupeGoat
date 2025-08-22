@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import CountdownTimer from "./countdown-timer";
 import summerOfSinghsImage from "@assets/generated_images/Luxury_Summer_of_Singhs_perfume_dfd15174.png";
-import septemberSeductionImage from "@assets/generated_images/September's_Seduction_luxury_perfume_52de12ac.png";
+import septemberBlessingImage from "@assets/Screenshot_20250822_065610_Chrome_1755863790682.jpg";
 
 export default function ProductShowcase() {
   const { data: product, isLoading } = useQuery({
@@ -131,7 +131,7 @@ export default function ProductShowcase() {
                     <h4 className="font-semibold text-luxury-black mb-2">Pre-Order Benefits:</h4>
                     <ul className="text-sm text-gray-700 space-y-1">
                       <li>✓ Guaranteed bottle from limited edition</li>
-                      <li>✓ Special pre-order pricing (save $70)</li>
+                      <li>✓ Blessed pre-order pricing (save $30)</li>
                       <li>✓ First access to exclusive fragrance</li>
                       <li>✓ Free priority shipping on release day</li>
                     </ul>
@@ -175,7 +175,7 @@ export default function ProductShowcase() {
             <img 
               src={
                 product.name === "Summer of Singhs" ? summerOfSinghsImage : 
-                product.name === "September's Seduction" ? septemberSeductionImage :
+                product.name === "September's Blessing" ? septemberBlessingImage :
                 product.imageUrl
               } 
               alt={`${product.name} - RVLTN Parfums Limited Edition`} 

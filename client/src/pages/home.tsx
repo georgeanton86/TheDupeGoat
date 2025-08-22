@@ -26,9 +26,9 @@ export default function Home() {
       <section className="py-20 bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
-            <h3 className="text-3xl font-serif font-bold text-luxury-black mb-4">The RVLTN Promise</h3>
+            <h3 className="text-3xl font-serif font-bold text-luxury-black mb-4">Our Sacred Promise</h3>
             <p className="text-lg text-gray-600 max-w-2xl mx-auto">
-              Every fragrance tells a story. Ours speaks of rebellion, luxury, and the art of standing apart.
+              Every fragrance tells a story of faith. Ours speaks of divine inspiration, sacred luxury, and the art of worship through scent.
             </p>
           </div>
           
@@ -38,9 +38,9 @@ export default function Home() {
                 <div className="w-16 h-16 bg-champagne/10 rounded-full flex items-center justify-center mx-auto mb-6">
                   <i className="fas fa-certificate text-2xl text-champagne"></i>
                 </div>
-                <h4 className="text-xl font-serif font-semibold mb-4">Artisan Crafted</h4>
+                <h4 className="text-xl font-serif font-semibold mb-4">Divinely Crafted</h4>
                 <p className="text-gray-600">
-                  Hand-blended by master perfumers using only the finest raw materials sourced globally.
+                  Hand-blended with prayer and devotion using sacred ingredients blessed through ancient traditions.
                 </p>
               </CardContent>
             </Card>
@@ -50,9 +50,9 @@ export default function Home() {
                 <div className="w-16 h-16 bg-champagne/10 rounded-full flex items-center justify-center mx-auto mb-6">
                   <i className="fas fa-crown text-2xl text-champagne"></i>
                 </div>
-                <h4 className="text-xl font-serif font-semibold mb-4">Ultra Exclusive</h4>
+                <h4 className="text-xl font-serif font-semibold mb-4">Blessed & Limited</h4>
                 <p className="text-gray-600">
-                  Limited to 100 bottles monthly. Once they're gone, they're gone forever.
+                  Limited to 100 blessed bottles monthly. Each one is a unique blessing that cannot be replicated.
                 </p>
               </CardContent>
             </Card>
@@ -62,9 +62,9 @@ export default function Home() {
                 <div className="w-16 h-16 bg-champagne/10 rounded-full flex items-center justify-center mx-auto mb-6">
                   <i className="fas fa-shipping-fast text-2xl text-champagne"></i>
                 </div>
-                <h4 className="text-xl font-serif font-semibold mb-4">Swift Delivery</h4>
+                <h4 className="text-xl font-serif font-semibold mb-4">Sacred Delivery</h4>
                 <p className="text-gray-600">
-                  Complimentary worldwide express shipping with discrete, luxury packaging.
+                  Complimentary worldwide express shipping with reverent, beautiful packaging blessed for your journey.
                 </p>
               </CardContent>
             </Card>
@@ -72,39 +72,43 @@ export default function Home() {
         </div>
       </section>
 
-      {/* About Section */}
+      {/* Creator Biography Section */}
       <section id="about" className="py-20 bg-warm-gray">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid lg:grid-cols-2 gap-16 items-center">
             <div>
               <img 
-                src="https://images.unsplash.com/photo-1595425970377-c9703cf48b6d?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&h=600" 
-                alt="RVLTN Parfums Artisan Laboratory" 
-                className="rounded-2xl shadow-xl w-full h-auto" 
+                src="@assets/Screenshot_20250822_065742_Photos_1755863888978.jpg" 
+                alt="Master Perfumer and Founder" 
+                className="rounded-2xl shadow-xl w-full h-auto object-cover" 
+                style={{objectPosition: "center 20%"}}
               />
             </div>
             
             <div>
-              <h3 className="text-4xl font-serif font-bold text-luxury-black mb-6">Born from Rebellion</h3>
+              <h3 className="text-4xl font-serif font-bold text-luxury-black mb-6">Called to Create</h3>
               <p className="text-lg text-gray-600 mb-6 leading-relaxed">
-                RVLTN Parfums was born from a simple belief: luxury shouldn't be mass-produced. Each month, we craft a single, extraordinary fragrance in extremely limited quantities.
+                My journey as a perfumer began as a divine calling. Inspired by the biblical tradition of sacred oils and fragrances, I dedicated my life to creating scents that honor God and uplift the spirit.
+              </p>
+              <p className="text-lg text-gray-600 mb-6 leading-relaxed">
+                Each fragrance is crafted through prayer and meditation, using ingredients mentioned in scripture—frankincense, myrrh, and sacred roses. My mission is to create fragrances that serve as a form of worship and inspire others in their faith journey.
               </p>
               <p className="text-lg text-gray-600 mb-8 leading-relaxed">
-                Our philosophy is revolution through scent—challenging the traditional perfume industry with bold, uncompromising compositions that refuse to follow trends.
+                "Like a sweet fragrance rising to heaven, may these scents be a blessing to all who wear them." - Psalm 141:2
               </p>
               
               <div className="space-y-4">
                 <div className="flex items-center">
-                  <i className="fas fa-check-circle text-champagne mr-3"></i>
-                  <span className="text-gray-700">Master perfumer collaborations</span>
+                  <i className="fas fa-cross text-champagne mr-3"></i>
+                  <span className="text-gray-700">Biblical inspiration in every blend</span>
                 </div>
                 <div className="flex items-center">
-                  <i className="fas fa-check-circle text-champagne mr-3"></i>
-                  <span className="text-gray-700">Sustainably sourced ingredients</span>
+                  <i className="fas fa-heart text-champagne mr-3"></i>
+                  <span className="text-gray-700">Crafted with prayer and devotion</span>
                 </div>
                 <div className="flex items-center">
-                  <i className="fas fa-check-circle text-champagne mr-3"></i>
-                  <span className="text-gray-700">No mass production, ever</span>
+                  <i className="fas fa-dove text-champagne mr-3"></i>
+                  <span className="text-gray-700">Blessed ingredients from sacred sources</span>
                 </div>
               </div>
             </div>
