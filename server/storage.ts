@@ -75,6 +75,27 @@ export class MemStorage implements IStorage {
     };
     this.products.set(aprilProduct.id, aprilProduct);
 
+    // RZN - Sold Out (Limited April Release)
+    const rznProduct: Product = {
+      id: randomUUID(),
+      name: "RZN",
+      description: "A mysterious and powerful fragrance. Pure essence distilled to its divine core.",
+      price: "165.00",
+      originalPrice: "165.00",
+      volume: "50ml Eau de Parfum",
+      notes: "Sacred Amber, Divine Musk, Blessed Sandalwood",
+      type: "Limited Edition - SOLD OUT",
+      imageUrl: "@assets/generated_images/RZN_luxury_perfume_bottle_890ac3f2.png",
+      totalInventory: 250,
+      remainingInventory: 0,
+      isActive: false,
+      releaseDate: new Date("2025-04-15"),
+      nextReleaseDate: new Date("2025-04-15"),
+      selloutTime: "3 minutes 42 seconds",
+      createdAt: new Date("2025-04-15"),
+    };
+    this.products.set(rznProduct.id, rznProduct);
+
     // Angel's Embrace - Sold Out (inspired by Angel by Thierry Mugler)
     const mayProduct: Product = {
       id: randomUUID(),

@@ -9,6 +9,7 @@ import angelEmbraceImage from "@assets/generated_images/May's_Mystique_luxury_pe
 import sacredWatersImage from "@assets/generated_images/June's_Journey_luxury_perfume_bottle_9dff73d4.png";
 import divineOpiumImage from "@assets/generated_images/July's_Jewel_luxury_perfume_bottle_872dd6a6.png";
 import heavenlySauvageImage from "@assets/generated_images/August's_Allure_luxury_perfume_bottle_f9cf7a85.png";
+import rznImage from "@assets/generated_images/RZN_luxury_perfume_bottle_890ac3f2.png";
 
 export default function ProductGallery() {
   const { data: products, isLoading } = useQuery({
@@ -55,6 +56,7 @@ export default function ProductGallery() {
                     product.name === "Sacred Waters" ? sacredWatersImage :
                     product.name === "Divine Opium" ? divineOpiumImage :
                     product.name === "Heavenly Sauvage" ? heavenlySauvageImage :
+                    product.name === "RZN" ? rznImage :
                     product.imageUrl
                   }
                   alt={`${product.name} - RVLTN Parfums`}
