@@ -3,7 +3,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Link } from "wouter";
 import summerOfSinghsImage from "@assets/generated_images/Luxury_Summer_of_Singhs_perfume_dfd15174.png";
-import septemberBlessingImage from "@assets/generated_images/September's_Seduction_luxury_perfume_52de12ac.png";
+import septemberNoirImage from "@assets/generated_images/September's_Noir_luxury_perfume_bottle_331e22ca.png";
 
 export default function ProductGallery() {
   const { data: products, isLoading } = useQuery({
@@ -44,7 +44,7 @@ export default function ProductGallery() {
                 <img 
                   src={
                     product.name === "Summer of Singhs" ? summerOfSinghsImage : 
-                    product.name === "September's Blessing" ? septemberBlessingImage :
+                    product.name === "September's Noir" ? septemberNoirImage :
                     product.imageUrl
                   }
                   alt={`${product.name} - RVLTN Parfums`}

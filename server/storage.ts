@@ -56,14 +56,14 @@ export class MemStorage implements IStorage {
     // Coming soon pre-order product
     const preOrderProduct: Product = {
       id: randomUUID(),
-      name: "September's Blessing",
-      description: "A divine fragrance inspired by faith and grace. Crafted to uplift the spirit and inspire devotion with every breath.",
+      name: "September's Noir",
+      description: "A divine fragrance inspired by faith and grace. This sophisticated noir blend captures the essence of autumn's mystique with sacred ingredients.",
       price: "99.00",
       originalPrice: "129.00",
       volume: "50ml Eau de Parfum",
       notes: "Sacred Frankincense, Blessed Myrrh, Holy Rose",
       type: "Limited Pre-Order",
-      imageUrl: "@assets/generated_images/September's_Seduction_luxury_perfume_52de12ac.png",
+      imageUrl: "@assets/generated_images/September's_Noir_luxury_perfume_bottle_331e22ca.png",
       totalInventory: 100,
       remainingInventory: 100,
       isActive: true,
