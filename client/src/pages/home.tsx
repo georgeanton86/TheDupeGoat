@@ -1,6 +1,7 @@
 import Header from "@/components/header";
 import Footer from "@/components/footer";
 import ProductShowcase from "@/components/product-showcase";
+import ProductGallery from "@/components/product-gallery";
 import { Card, CardContent } from "@/components/ui/card";
 
 export default function Home() {
@@ -14,6 +15,11 @@ export default function Home() {
         <div className="relative">
           <ProductShowcase />
         </div>
+      </section>
+
+      {/* Product Gallery Section */}
+      <section className="bg-warm-gray">
+        <ProductGallery />
       </section>
 
       {/* Features Section */}

@@ -25,6 +25,28 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
+  // Get all products (including sold out)
+  app.get("/api/products", async (req, res) => {
+    try {
+      const allProducts = await storage.getAllProducts();
+      // Sort by: pre-order first, then active, then sold out
+      const sortedProducts = allProducts.sort((a, b) => {
+        const aIsPreOrder = new Date(a.releaseDate) > new Date();
+        const bIsPreOrder = new Date(b.releaseDate) > new Date();
+        
+        if (aIsPreOrder && !bIsPreOrder) return -1;
+        if (!aIsPreOrder && bIsPreOrder) return 1;
+        if (a.isActive && !b.isActive) return -1;
+        if (!a.isActive && b.isActive) return 1;
+        return 0;
+      });
+      
+      res.json(sortedProducts);
+    } catch (error: any) {
+      res.status(500).json({ message: "Error fetching products: " + error.message });
+    }
+  });
+
   // PayPal routes
   app.get("/paypal/setup", async (req, res) => {
     await loadPaypalDefault(req, res);

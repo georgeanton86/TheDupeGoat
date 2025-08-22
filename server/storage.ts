@@ -58,12 +58,12 @@ export class MemStorage implements IStorage {
       id: randomUUID(),
       name: "September's Seduction",
       description: "Our most anticipated release yet. A mysterious and alluring fragrance that captures the essence of late summer nights and autumn's promise.",
-      price: "295.00",
-      originalPrice: "365.00",
+      price: "99.00",
+      originalPrice: "129.00",
       volume: "50ml Eau de Parfum",
       notes: "Dark Cherry, Smoky Vanilla, Midnight Rose",
       type: "Limited Pre-Order",
-      imageUrl: "https://images.unsplash.com/photo-1588405748880-12d1d2a59d32?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&h=1000&q=80",
+      imageUrl: "@assets/generated_images/September's_Seduction_luxury_perfume_52de12ac.png",
       totalInventory: 100,
       remainingInventory: 100,
       isActive: true,
@@ -92,6 +92,13 @@ export class MemStorage implements IStorage {
   }
 
   async getActiveProduct(): Promise<Product | undefined> {
+    // Return pre-order product if available, otherwise any active product
+    const preOrderProduct = Array.from(this.products.values()).find(
+      (product) => product.isActive && new Date(product.releaseDate) > new Date()
+    );
+    
+    if (preOrderProduct) return preOrderProduct;
+    
     return Array.from(this.products.values()).find(
       (product) => product.isActive && product.remainingInventory > 0
     );
