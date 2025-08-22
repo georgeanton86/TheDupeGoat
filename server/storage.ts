@@ -8,6 +8,7 @@ export interface IStorage {
   
   getActiveProduct(): Promise<Product | undefined>;
   getProduct(id: string): Promise<Product | undefined>;
+  getAllProducts(): Promise<Product[]>;
   createProduct(product: InsertProduct): Promise<Product>;
   updateProductInventory(id: string, remainingInventory: number): Promise<Product | undefined>;
   
@@ -41,10 +42,10 @@ export class MemStorage implements IStorage {
       volume: "50ml Eau de Parfum",
       notes: "Golden Florals, Warm Amber, Luxurious Musk",
       type: "Unisex Collection",
-      imageUrl: "https://images.unsplash.com/photo-1594035910387-fea47794261f?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&h=1000&q=80",
+      imageUrl: "@assets/generated_images/Luxury_Summer_of_Singhs_perfume_dfd15174.png",
       totalInventory: 600,
       remainingInventory: 0,
-      isActive: false,
+      isActive: true,
       releaseDate: new Date("2024-08-01"),
       nextReleaseDate: new Date("2025-01-01"),
       createdAt: new Date(),
@@ -88,6 +89,10 @@ export class MemStorage implements IStorage {
     };
     this.products.set(id, product);
     return product;
+  }
+
+  async getAllProducts(): Promise<Product[]> {
+    return Array.from(this.products.values());
   }
 
   async updateProductInventory(id: string, remainingInventory: number): Promise<Product | undefined> {

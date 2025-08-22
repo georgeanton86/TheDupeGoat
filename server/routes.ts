@@ -7,12 +7,17 @@ import { createPaypalOrder, capturePaypalOrder, loadPaypalDefault } from "./payp
 
 export async function registerRoutes(app: Express): Promise<Server> {
   
-  // Get active product
+  // Get featured product (active or first available)
   app.get("/api/product", async (req, res) => {
     try {
       const product = await storage.getActiveProduct();
       if (!product) {
-        return res.status(404).json({ message: "No active product found" });
+        // If no active product, get the first product (could be sold out for showcase)
+        const allProducts = await storage.getAllProducts();
+        if (allProducts.length > 0) {
+          return res.json(allProducts[0]);
+        }
+        return res.status(404).json({ message: "No product found" });
       }
       res.json(product);
     } catch (error: any) {
