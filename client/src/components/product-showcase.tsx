@@ -16,6 +16,9 @@ export default function ProductShowcase() {
     refetchInterval: 30000, // Refetch every 30 seconds
   });
 
+  // Check if this is a pre-order product (release date is in the future)
+  const isPreOrder = product && new Date(product.releaseDate) > new Date();
+
   if (isLoading) {
     return (
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
@@ -56,7 +59,12 @@ export default function ProductShowcase() {
         <div className="order-2 lg:order-1">
           <div className="text-center lg:text-left">
             {/* Scarcity Badge */}
-            {remaining > 0 ? (
+            {isPreOrder ? (
+              <Badge variant="secondary" className="mb-6 bg-champagne text-luxury-black animate-pulse" data-testid="badge-pre-order">
+                <span className="w-2 h-2 bg-luxury-black rounded-full mr-2 animate-pulse"></span>
+                PRE-ORDER NOW - <span className="font-semibold ml-1">{total}</span> bottles available
+              </Badge>
+            ) : remaining > 0 ? (
               <Badge variant="destructive" className="mb-6 animate-pulse" data-testid="badge-inventory">
                 <span className="w-2 h-2 bg-red-500 rounded-full mr-2 animate-pulse"></span>
                 LIMITED EDITION - <span className="font-semibold ml-1">{remaining}</span> of {total} remaining
@@ -108,7 +116,27 @@ export default function ProductShowcase() {
             
             {/* CTA Buttons */}
             <div className="space-y-4">
-              {remaining > 0 ? (
+              {isPreOrder ? (
+                <div className="space-y-4">
+                  <Link href="/checkout">
+                    <Button 
+                      className="w-full lg:w-auto bg-champagne text-luxury-black px-12 py-4 text-lg font-semibold tracking-wide hover:bg-yellow-500 transition-all duration-300 transform hover:scale-[1.02] shadow-xl"
+                      data-testid="button-pre-order"
+                    >
+                      🌟 PRE-ORDER NOW
+                    </Button>
+                  </Link>
+                  <div className="bg-gradient-to-r from-champagne/10 to-luxury-black/10 p-4 rounded-lg">
+                    <h4 className="font-semibold text-luxury-black mb-2">Pre-Order Benefits:</h4>
+                    <ul className="text-sm text-gray-700 space-y-1">
+                      <li>✓ Guaranteed bottle from limited edition</li>
+                      <li>✓ Special pre-order pricing (save $70)</li>
+                      <li>✓ First access to exclusive fragrance</li>
+                      <li>✓ Free priority shipping on release day</li>
+                    </ul>
+                  </div>
+                </div>
+              ) : remaining > 0 ? (
                 <Link href="/checkout">
                   <Button 
                     className="w-full lg:w-auto bg-luxury-black text-white px-12 py-4 text-lg font-semibold tracking-wide hover:bg-charcoal transition-all duration-300 transform hover:scale-[1.02] shadow-xl"
@@ -152,8 +180,14 @@ export default function ProductShowcase() {
             <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent rounded-2xl"></div>
             
             {/* Floating Elements */}
-            <Badge className="absolute -top-4 -right-4 bg-red-600 text-white shadow-lg">
-              SOLD OUT
+            <Badge className={`absolute -top-4 -right-4 shadow-lg ${
+              isPreOrder 
+                ? "bg-champagne text-luxury-black" 
+                : remaining > 0 
+                  ? "bg-champagne text-luxury-black" 
+                  : "bg-red-600 text-white"
+            }`}>
+              {isPreOrder ? "PRE-ORDER" : remaining > 0 ? "NEW" : "SOLD OUT"}
             </Badge>
             <div className="absolute -bottom-4 left-1/2 transform -translate-x-1/2 bg-white px-4 py-2 rounded-full shadow-lg text-xs font-medium">
               Free Worldwide Shipping
@@ -164,7 +198,7 @@ export default function ProductShowcase() {
       
       {/* Countdown Timer */}
       <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2">
-        <CountdownTimer nextReleaseDate={product.nextReleaseDate} />
+        <CountdownTimer nextReleaseDate={product.releaseDate} isPreOrder={isPreOrder} />
       </div>
     </div>
   );

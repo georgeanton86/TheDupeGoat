@@ -33,7 +33,8 @@ export class MemStorage implements IStorage {
   }
 
   private async initializeDefaultProduct() {
-    const product: Product = {
+    // Sold out success story
+    const soldOutProduct: Product = {
       id: randomUUID(),
       name: "Summer of Singhs",
       description: "A captivating fragrance collection celebrating elegance and sophistication. Available in both pour femme and pour homme editions.",
@@ -45,12 +46,32 @@ export class MemStorage implements IStorage {
       imageUrl: "@assets/generated_images/Luxury_Summer_of_Singhs_perfume_dfd15174.png",
       totalInventory: 600,
       remainingInventory: 0,
-      isActive: true,
+      isActive: false,
       releaseDate: new Date("2024-08-01"),
-      nextReleaseDate: new Date("2025-01-01"),
+      nextReleaseDate: new Date("2025-09-01"),
       createdAt: new Date(),
     };
-    this.products.set(product.id, product);
+    this.products.set(soldOutProduct.id, soldOutProduct);
+
+    // Coming soon pre-order product
+    const preOrderProduct: Product = {
+      id: randomUUID(),
+      name: "September's Seduction",
+      description: "Our most anticipated release yet. A mysterious and alluring fragrance that captures the essence of late summer nights and autumn's promise.",
+      price: "295.00",
+      originalPrice: "365.00",
+      volume: "50ml Eau de Parfum",
+      notes: "Dark Cherry, Smoky Vanilla, Midnight Rose",
+      type: "Limited Pre-Order",
+      imageUrl: "https://images.unsplash.com/photo-1588405748880-12d1d2a59d32?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&h=1000&q=80",
+      totalInventory: 100,
+      remainingInventory: 100,
+      isActive: true,
+      releaseDate: new Date("2025-09-01"),
+      nextReleaseDate: new Date("2025-09-01"),
+      createdAt: new Date(),
+    };
+    this.products.set(preOrderProduct.id, preOrderProduct);
   }
 
   async getUser(id: string): Promise<User | undefined> {
