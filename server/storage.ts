@@ -44,11 +44,12 @@ export class MemStorage implements IStorage {
       notes: "Golden Florals, Warm Amber, Luxurious Musk",
       type: "Unisex Collection",
       imageUrl: "@assets/generated_images/Luxury_Summer_of_Singhs_perfume_dfd15174.png",
-      totalInventory: 600,
+      totalInventory: 6000,
       remainingInventory: 0,
       isActive: false,
       releaseDate: new Date("2024-08-01"),
       nextReleaseDate: new Date("2025-09-01"),
+      selloutTime: "4 minutes 36 seconds",
       createdAt: new Date(),
     };
     this.products.set(soldOutProduct.id, soldOutProduct);
@@ -63,12 +64,13 @@ export class MemStorage implements IStorage {
       volume: "50ml Eau de Parfum",
       notes: "Sacred Lily, Blessed Jasmine, Holy Water Accord",
       type: "Limited Edition - SOLD OUT",
-      imageUrl: "@assets/generated_images/Luxury_Summer_of_Singhs_perfume_dfd15174.png",
-      totalInventory: 75,
+      imageUrl: "@assets/generated_images/April's_Awakening_luxury_perfume_bottle_2eb39dcc.png",
+      totalInventory: 850,
       remainingInventory: 0,
       isActive: false,
       releaseDate: new Date("2025-04-01"),
       nextReleaseDate: new Date("2025-04-01"),
+      selloutTime: "2 minutes 18 seconds",
       createdAt: new Date("2025-04-01"),
     };
     this.products.set(aprilProduct.id, aprilProduct);
@@ -83,12 +85,13 @@ export class MemStorage implements IStorage {
       volume: "50ml Eau de Parfum",
       notes: "Divine Rose, Sacred Cedar, Blessed Sandalwood",
       type: "Limited Edition - SOLD OUT",
-      imageUrl: "@assets/generated_images/Luxury_Summer_of_Singhs_perfume_dfd15174.png",
-      totalInventory: 120,
+      imageUrl: "@assets/generated_images/May's_Mystique_luxury_perfume_bottle_de71f6d0.png",
+      totalInventory: 1200,
       remainingInventory: 0,
       isActive: false,
       releaseDate: new Date("2025-05-01"),
       nextReleaseDate: new Date("2025-05-01"),
+      selloutTime: "7 minutes 45 seconds",
       createdAt: new Date("2025-05-01"),
     };
     this.products.set(mayProduct.id, mayProduct);
@@ -103,12 +106,13 @@ export class MemStorage implements IStorage {
       volume: "50ml Eau de Parfum", 
       notes: "Heavenly Lavender, Sacred Bergamot, Divine Amber",
       type: "Limited Edition - SOLD OUT",
-      imageUrl: "@assets/generated_images/Luxury_Summer_of_Singhs_perfume_dfd15174.png",
-      totalInventory: 200,
+      imageUrl: "@assets/generated_images/June's_Journey_luxury_perfume_bottle_9dff73d4.png",
+      totalInventory: 2000,
       remainingInventory: 0,
       isActive: false,
       releaseDate: new Date("2025-06-01"),
       nextReleaseDate: new Date("2025-06-01"),
+      selloutTime: "12 minutes 3 seconds",
       createdAt: new Date("2025-06-01"),
     };
     this.products.set(juneProduct.id, juneProduct);
@@ -123,12 +127,13 @@ export class MemStorage implements IStorage {
       volume: "50ml Eau de Parfum",
       notes: "Golden Saffron, Sacred Oud, Blessed Vanilla",
       type: "Limited Edition - SOLD OUT", 
-      imageUrl: "@assets/generated_images/Luxury_Summer_of_Singhs_perfume_dfd15174.png",
-      totalInventory: 50,
+      imageUrl: "@assets/generated_images/July's_Jewel_luxury_perfume_bottle_872dd6a6.png",
+      totalInventory: 500,
       remainingInventory: 0,
       isActive: false,
       releaseDate: new Date("2025-07-01"),
       nextReleaseDate: new Date("2025-07-01"),
+      selloutTime: "1 minute 27 seconds",
       createdAt: new Date("2025-07-01"),
     };
     this.products.set(julyProduct.id, julyProduct);
@@ -143,12 +148,13 @@ export class MemStorage implements IStorage {
       volume: "50ml Eau de Parfum",
       notes: "Blessed Orange Blossom, Sacred Neroli, Holy Musk",
       type: "Limited Edition - SOLD OUT",
-      imageUrl: "@assets/generated_images/Luxury_Summer_of_Singhs_perfume_dfd15174.png", 
-      totalInventory: 350,
+      imageUrl: "@assets/generated_images/August's_Allure_luxury_perfume_bottle_f9cf7a85.png", 
+      totalInventory: 3500,
       remainingInventory: 0,
       isActive: false,
       releaseDate: new Date("2025-08-01"),
       nextReleaseDate: new Date("2025-08-01"),
+      selloutTime: "18 minutes 52 seconds",
       createdAt: new Date("2025-08-01"),
     };
     this.products.set(augustProduct.id, augustProduct);

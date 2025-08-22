@@ -24,6 +24,7 @@ export const products = pgTable("products", {
   isActive: boolean("is_active").notNull().default(true),
   releaseDate: timestamp("release_date").notNull(),
   nextReleaseDate: timestamp("next_release_date"),
+  selloutTime: text("sellout_time"),
   createdAt: timestamp("created_at").default(sql`CURRENT_TIMESTAMP`),
 });
 
