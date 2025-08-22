@@ -18,6 +18,26 @@ export default function Home() {
         </div>
       </section>
 
+      {/* Biblical Foundation - Revelation 2:16 */}
+      <section className="py-16 bg-gradient-to-r from-luxury-black to-charcoal text-white">
+        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+          <div className="mb-6">
+            <span className="text-champagne text-sm font-medium tracking-wider uppercase">
+              Revelation 2:16 - Our Foundation
+            </span>
+          </div>
+          <blockquote className="text-2xl md:text-3xl font-serif leading-relaxed mb-6">
+            "Repent therefore! Otherwise, I will soon come to you and will fight against them with the sword of my mouth."
+          </blockquote>
+          <cite className="text-champagne text-lg font-medium">
+            — Revelation 2:16
+          </cite>
+          <p className="mt-6 text-gray-300 max-w-2xl mx-auto">
+            Like the sword of His mouth, our fragrances carry power and purpose. Each scent is crafted to awaken the senses and stir the soul toward divine transformation.
+          </p>
+        </div>
+      </section>
+
       {/* Product Gallery Section */}
       <section className="bg-warm-gray">
         <ProductGallery />
