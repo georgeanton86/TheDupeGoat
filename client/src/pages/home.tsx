@@ -78,7 +78,7 @@ export default function Home() {
           <div className="grid lg:grid-cols-2 gap-16 items-center">
             <div>
               <img 
-                src="@assets/Screenshot_20250822_065742_Photos_1755863888978.jpg" 
+                src="@assets/Screenshot_20250822_065742_Photos_1755864649303.jpg" 
                 alt="Master Perfumer and Founder" 
                 className="rounded-2xl shadow-xl w-full h-auto object-cover" 
                 style={{objectPosition: "center 20%"}}
