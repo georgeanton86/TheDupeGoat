@@ -53,6 +53,106 @@ export class MemStorage implements IStorage {
     };
     this.products.set(soldOutProduct.id, soldOutProduct);
 
+    // April's Awakening - Sold Out
+    const aprilProduct: Product = {
+      id: randomUUID(),
+      name: "April's Awakening",
+      description: "A fresh spring fragrance celebrating new beginnings and divine renewal.",
+      price: "145.00",
+      originalPrice: "145.00",
+      volume: "50ml Eau de Parfum",
+      notes: "Sacred Lily, Blessed Jasmine, Holy Water Accord",
+      type: "Limited Edition - SOLD OUT",
+      imageUrl: "@assets/generated_images/Luxury_Summer_of_Singhs_perfume_dfd15174.png",
+      totalInventory: 75,
+      remainingInventory: 0,
+      isActive: false,
+      releaseDate: new Date("2025-04-01"),
+      nextReleaseDate: new Date("2025-04-01"),
+      createdAt: new Date("2025-04-01"),
+    };
+    this.products.set(aprilProduct.id, aprilProduct);
+
+    // May's Mystique - Sold Out
+    const mayProduct: Product = {
+      id: randomUUID(),
+      name: "May's Mystique",
+      description: "An enchanting blend inspired by the sacred mysteries of faith.",
+      price: "125.00",
+      originalPrice: "125.00", 
+      volume: "50ml Eau de Parfum",
+      notes: "Divine Rose, Sacred Cedar, Blessed Sandalwood",
+      type: "Limited Edition - SOLD OUT",
+      imageUrl: "@assets/generated_images/Luxury_Summer_of_Singhs_perfume_dfd15174.png",
+      totalInventory: 120,
+      remainingInventory: 0,
+      isActive: false,
+      releaseDate: new Date("2025-05-01"),
+      nextReleaseDate: new Date("2025-05-01"),
+      createdAt: new Date("2025-05-01"),
+    };
+    this.products.set(mayProduct.id, mayProduct);
+
+    // June's Journey - Sold Out
+    const juneProduct: Product = {
+      id: randomUUID(),
+      name: "June's Journey",
+      description: "A spiritual voyage captured in a bottle, celebrating faith's eternal path.",
+      price: "135.00",
+      originalPrice: "135.00",
+      volume: "50ml Eau de Parfum", 
+      notes: "Heavenly Lavender, Sacred Bergamot, Divine Amber",
+      type: "Limited Edition - SOLD OUT",
+      imageUrl: "@assets/generated_images/Luxury_Summer_of_Singhs_perfume_dfd15174.png",
+      totalInventory: 200,
+      remainingInventory: 0,
+      isActive: false,
+      releaseDate: new Date("2025-06-01"),
+      nextReleaseDate: new Date("2025-06-01"),
+      createdAt: new Date("2025-06-01"),
+    };
+    this.products.set(juneProduct.id, juneProduct);
+
+    // July's Jewel - Sold Out  
+    const julyProduct: Product = {
+      id: randomUUID(),
+      name: "July's Jewel",
+      description: "A precious fragrance crafted like a jewel in God's crown.",
+      price: "155.00",
+      originalPrice: "155.00",
+      volume: "50ml Eau de Parfum",
+      notes: "Golden Saffron, Sacred Oud, Blessed Vanilla",
+      type: "Limited Edition - SOLD OUT", 
+      imageUrl: "@assets/generated_images/Luxury_Summer_of_Singhs_perfume_dfd15174.png",
+      totalInventory: 50,
+      remainingInventory: 0,
+      isActive: false,
+      releaseDate: new Date("2025-07-01"),
+      nextReleaseDate: new Date("2025-07-01"),
+      createdAt: new Date("2025-07-01"),
+    };
+    this.products.set(julyProduct.id, julyProduct);
+
+    // August's Allure - Sold Out
+    const augustProduct: Product = {
+      id: randomUUID(),
+      name: "August's Allure", 
+      description: "Late summer's divine allure captured in sacred essence.",
+      price: "140.00",
+      originalPrice: "140.00",
+      volume: "50ml Eau de Parfum",
+      notes: "Blessed Orange Blossom, Sacred Neroli, Holy Musk",
+      type: "Limited Edition - SOLD OUT",
+      imageUrl: "@assets/generated_images/Luxury_Summer_of_Singhs_perfume_dfd15174.png", 
+      totalInventory: 350,
+      remainingInventory: 0,
+      isActive: false,
+      releaseDate: new Date("2025-08-01"),
+      nextReleaseDate: new Date("2025-08-01"),
+      createdAt: new Date("2025-08-01"),
+    };
+    this.products.set(augustProduct.id, augustProduct);
+
     // Coming soon pre-order product
     const preOrderProduct: Product = {
       id: randomUUID(),
