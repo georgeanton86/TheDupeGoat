@@ -55,10 +55,17 @@ export default function ProductShowcase() {
         <div className="order-2 lg:order-1">
           <div className="text-center lg:text-left">
             {/* Scarcity Badge */}
-            <Badge variant="destructive" className="mb-6 animate-pulse" data-testid="badge-inventory">
-              <span className="w-2 h-2 bg-red-500 rounded-full mr-2 animate-pulse"></span>
-              LIMITED EDITION - <span className="font-semibold ml-1">{remaining}</span> of {total} remaining
-            </Badge>
+            {remaining > 0 ? (
+              <Badge variant="destructive" className="mb-6 animate-pulse" data-testid="badge-inventory">
+                <span className="w-2 h-2 bg-red-500 rounded-full mr-2 animate-pulse"></span>
+                LIMITED EDITION - <span className="font-semibold ml-1">{remaining}</span> of {total} remaining
+              </Badge>
+            ) : (
+              <Badge variant="secondary" className="mb-6 bg-red-600 text-white" data-testid="badge-sold-out">
+                <span className="w-2 h-2 bg-white rounded-full mr-2"></span>
+                SOLD OUT - <span className="font-semibold ml-1">{total}</span> bottles sold
+              </Badge>
+            )}
             
             <h2 className="text-5xl lg:text-6xl font-serif font-bold text-luxury-black mb-4 leading-tight">
               {product.name.split(' ').slice(0, -1).join(' ')}
@@ -100,18 +107,33 @@ export default function ProductShowcase() {
             
             {/* CTA Buttons */}
             <div className="space-y-4">
-              <Link href="/checkout">
-                <Button 
-                  className="w-full lg:w-auto bg-luxury-black text-white px-12 py-4 text-lg font-semibold tracking-wide hover:bg-charcoal transition-all duration-300 transform hover:scale-[1.02] shadow-xl"
-                  disabled={remaining <= 0}
-                  data-testid="button-purchase"
-                >
-                  {remaining > 0 ? "SECURE YOURS NOW" : "SOLD OUT"}
-                </Button>
-              </Link>
+              {remaining > 0 ? (
+                <Link href="/checkout">
+                  <Button 
+                    className="w-full lg:w-auto bg-luxury-black text-white px-12 py-4 text-lg font-semibold tracking-wide hover:bg-charcoal transition-all duration-300 transform hover:scale-[1.02] shadow-xl"
+                    data-testid="button-purchase"
+                  >
+                    SECURE YOURS NOW
+                  </Button>
+                </Link>
+              ) : (
+                <div className="text-center">
+                  <Button 
+                    className="w-full lg:w-auto bg-red-600 text-white px-12 py-4 text-lg font-semibold tracking-wide cursor-not-allowed opacity-75"
+                    disabled
+                    data-testid="button-sold-out"
+                  >
+                    ✨ COMPLETELY SOLD OUT ✨
+                  </Button>
+                  <p className="text-sm text-gray-600 mt-3">
+                    <i className="fas fa-star mr-1"></i>
+                    This limited edition sold all 600 bottles! Join our waitlist for the next release.
+                  </p>
+                </div>
+              )}
               <p className="text-xs text-gray-500 text-center lg:text-left max-w-md">
                 <i className="fas fa-shield-alt mr-1"></i>
-                Secure checkout with Stripe. No returns accepted due to hygiene regulations.
+                Secure checkout with PayPal. No returns accepted due to hygiene regulations.
               </p>
             </div>
           </div>
@@ -129,8 +151,8 @@ export default function ProductShowcase() {
             <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent rounded-2xl"></div>
             
             {/* Floating Elements */}
-            <Badge className="absolute -top-4 -right-4 bg-champagne text-luxury-black shadow-lg">
-              NEW
+            <Badge className="absolute -top-4 -right-4 bg-red-600 text-white shadow-lg">
+              SOLD OUT
             </Badge>
             <div className="absolute -bottom-4 left-1/2 transform -translate-x-1/2 bg-white px-4 py-2 rounded-full shadow-lg text-xs font-medium">
               Free Worldwide Shipping
