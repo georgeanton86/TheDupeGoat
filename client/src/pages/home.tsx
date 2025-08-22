@@ -45,22 +45,22 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Biblical Foundation - Revelation 2:16 */}
+      {/* Biblical Foundation - Revelation 21:6 */
       <section className="py-16 bg-gradient-to-r from-luxury-black to-charcoal text-white">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <div className="mb-6">
             <span className="text-champagne text-sm font-medium tracking-wider uppercase">
-              Revelation 2:16 - Our Foundation
+              Revelation 21:6 - Our Foundation
             </span>
           </div>
           <blockquote className="text-2xl md:text-3xl font-serif leading-relaxed mb-6">
-            "Repent therefore! Otherwise, I will soon come to you and will fight against them with the sword of my mouth."
+            And he said unto me, It is done. I am Alpha and Omega, the beginning and the end. I will give unto him that is athirst of the fountain of the water of life freely.
           </blockquote>
           <cite className="text-champagne text-lg font-medium">
-            — Revelation 2:16
+            - Revelation 21:6
           </cite>
           <p className="mt-6 text-gray-300 max-w-2xl mx-auto">
-            Like the sword of His mouth, our fragrances carry power and purpose. Each scent is crafted to awaken the senses and stir the soul toward divine transformation.
+            As the Alpha and Omega, He offers the water of life freely. Our fragrances embody this divine generosity - each scent crafted to refresh the spirit and awaken the soul to eternal beauty.
           </p>
         </div>
       </section>
@@ -139,10 +139,10 @@ export default function Home() {
                 My journey as a perfumer began as a divine calling. Inspired by the biblical tradition of sacred oils and fragrances, I dedicated my life to creating scents that honor God and uplift the spirit.
               </p>
               <p className="text-lg text-gray-600 mb-6 leading-relaxed">
-                Each fragrance is crafted through prayer and meditation, using ingredients mentioned in scripture—frankincense, myrrh, and sacred roses. My mission is to create fragrances that serve as a form of worship and inspire others in their faith journey.
+                Each fragrance is crafted through prayer and meditation, using ingredients mentioned in scripture - frankincense, myrrh, and sacred roses. My mission is to create fragrances that serve as a form of worship and inspire others in their faith journey.
               </p>
               <p className="text-lg text-gray-600 mb-8 leading-relaxed">
-                "Like a sweet fragrance rising to heaven, may these scents be a blessing to all who wear them." - Psalm 141:2
+                Like a sweet fragrance rising to heaven, may these scents be a blessing to all who wear them. - Psalm 141:2
               </p>
               
               <div className="space-y-4">
