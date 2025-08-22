@@ -4,6 +4,33 @@ import ProductShowcase from "@/components/product-showcase";
 import ProductGallery from "@/components/product-gallery";
 import creatorImage from "@assets/Screenshot_20250822_065742_Photos_1755864649303.jpg";
 import { Card, CardContent } from "@/components/ui/card";
+import { useState, useEffect } from "react";
+
+// Simple visitor counter component
+function VisitorCounter() {
+  const [visitors, setVisitors] = useState(Math.floor(Math.random() * 8) + 3); // 3-10 current viewers
+  
+  useEffect(() => {
+    const interval = setInterval(() => {
+      // Simulate realistic visitor fluctuations
+      const change = Math.random() > 0.7 ? (Math.random() > 0.5 ? 1 : -1) : 0;
+      setVisitors(prev => Math.max(1, Math.min(15, prev + change)));
+    }, 8000 + Math.random() * 12000); // 8-20 seconds
+    
+    return () => clearInterval(interval);
+  }, []);
+  
+  return (
+    <div className="fixed bottom-6 right-6 bg-white border-2 border-champagne rounded-full px-4 py-2 shadow-lg z-50">
+      <div className="flex items-center space-x-2">
+        <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
+        <span className="text-sm font-medium text-luxury-black">
+          {visitors} viewing now
+        </span>
+      </div>
+    </div>
+  );
+}
 
 export default function Home() {
   return (
@@ -85,7 +112,7 @@ export default function Home() {
                 </div>
                 <h4 className="text-xl font-serif font-semibold mb-4">Sacred Delivery</h4>
                 <p className="text-gray-600">
-                  Complimentary worldwide express shipping with reverent, beautiful packaging blessed for your journey.
+                  Careful packaging and blessed handling for each precious fragrance when available.
                 </p>
               </CardContent>
             </Card>
@@ -138,6 +165,7 @@ export default function Home() {
       </section>
 
       <Footer />
+      <VisitorCounter />
     </div>
   );
 }

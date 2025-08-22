@@ -124,7 +124,7 @@ export default function ProductShowcase() {
                       className="w-full lg:w-auto bg-champagne text-luxury-black px-12 py-4 text-lg font-semibold tracking-wide hover:bg-yellow-500 transition-all duration-300 transform hover:scale-[1.02] shadow-xl"
                       data-testid="button-pre-order"
                     >
-                      🌟 PRE-ORDER NOW
+                      ⚠️ Pre-Order (No Product Ready)
                     </Button>
                   </Link>
                   <div className="bg-gradient-to-r from-champagne/10 to-luxury-black/10 p-4 rounded-lg">
@@ -133,7 +133,7 @@ export default function ProductShowcase() {
                       <li>✓ Guaranteed bottle from limited edition</li>
                       <li>✓ Blessed pre-order pricing (save $30)</li>
                       <li>✓ First access to exclusive fragrance</li>
-                      <li>✓ Free priority shipping on release day</li>
+                      <li>✓ Exclusive pre-order pricing</li>
                     </ul>
                   </div>
                 </div>
@@ -163,7 +163,7 @@ export default function ProductShowcase() {
               )}
               <p className="text-xs text-gray-500 text-center lg:text-left max-w-md">
                 <i className="fas fa-shield-alt mr-1"></i>
-                Secure checkout with PayPal. No returns accepted due to hygiene regulations.
+                WARNING: This is a pre-order only. No actual product available for shipping yet.
               </p>
             </div>
           </div>
@@ -194,8 +194,8 @@ export default function ProductShowcase() {
             }`}>
               {isPreOrder ? "PRE-ORDER" : remaining > 0 ? "NEW" : "SOLD OUT"}
             </Badge>
-            <div className="absolute -bottom-4 left-1/2 transform -translate-x-1/2 bg-white px-4 py-2 rounded-full shadow-lg text-xs font-medium">
-              Free Worldwide Shipping
+            <div className="absolute -bottom-4 left-1/2 transform -translate-x-1/2 bg-red-100 border border-red-300 px-4 py-2 rounded-full shadow-lg text-xs font-medium text-red-700">
+              Pre-Order Only - No Physical Product Yet
             </div>
           </div>
         </div>
