@@ -201,10 +201,10 @@ export default function Home() {
             <div className="order-1 lg:order-2">
               <h3 className="text-4xl font-serif font-bold text-luxury-black mb-6">From the Southside to Sacred Scents</h3>
               <p className="text-lg text-gray-600 mb-6 leading-relaxed">
-                Born and raised on Chicago's southside, I never imagined my calling would lead me from the streets of Chi-Town to creating luxury fragrances. Growing up in a neighborhood where faith was everything, my grandmother's church became my first laboratory - watching her mix oils for anointing services sparked something divine.
+                Born and raised on Chicago's southside, my journey took me from the working-class neighborhoods of Bridgeport to Blue Island, and eventually into the world of luxury fragrances. Growing up where authenticity and hard work were everything, I discovered that true luxury comes from passion and purpose.
               </p>
               <p className="text-lg text-gray-600 mb-6 leading-relaxed">
-                What started as mixing essential oils in my southside apartment transformed into a divine calling. I blend Chicago hustle with biblical tradition - each fragrance telling stories of scripture while carrying that authentic Chi-Town soul. From Bronzeville to luxury boutiques worldwide, these scents represent where faith meets ambition.
+                What started as experimenting with essential oils in my southside apartment transformed into a divine calling. I blend Chicago work ethic with biblical tradition - each fragrance telling stories of scripture while carrying that authentic southside soul. From Bridgeport to luxury boutiques worldwide, these scents represent where faith meets ambition.
               </p>
               <p className="text-lg text-gray-600 mb-8 leading-relaxed">
                 Like a sweet fragrance rising to heaven, may these scents be a blessing to all who wear them. - Psalm 141:2
@@ -213,7 +213,7 @@ export default function Home() {
               <div className="space-y-4">
                 <div className="flex items-center">
                   <i className="fas fa-home text-champagne mr-3"></i>
-                  <span className="text-gray-700">Proudly crafted from Chicago's southside</span>
+                  <span className="text-gray-700">From Bridgeport to Blue Island to luxury</span>
                 </div>
                 <div className="flex items-center">
                   <i className="fas fa-cross text-champagne mr-3"></i>
@@ -221,7 +221,7 @@ export default function Home() {
                 </div>
                 <div className="flex items-center">
                   <i className="fas fa-heart text-champagne mr-3"></i>
-                  <span className="text-gray-700">Chi-Town hustle with divine purpose</span>
+                  <span className="text-gray-700">Chicago work ethic with divine purpose</span>
                 </div>
               </div>
             </div>
