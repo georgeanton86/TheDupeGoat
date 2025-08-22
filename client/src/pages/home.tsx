@@ -7,28 +7,80 @@ import creatorImage from "@assets/Screenshot_20250822_065742_Photos_175586464930
 import { Card, CardContent } from "@/components/ui/card";
 import { useState, useEffect } from "react";
 
-// Simple visitor counter component
+// Fun visitor counter with animations
 function VisitorCounter() {
-  const [visitors, setVisitors] = useState(Math.floor(Math.random() * 8) + 3); // 3-10 current viewers
+  const [visitors, setVisitors] = useState(Math.floor(Math.random() * 8) + 3);
+  const [isHovered, setIsHovered] = useState(false);
+  const [showWow, setShowWow] = useState(false);
   
   useEffect(() => {
-    // Simulate realistic visitor fluctuations
     const interval = setInterval(() => {
       const change = Math.random() > 0.7 ? (Math.random() > 0.5 ? 1 : -1) : 0;
-      setVisitors(prev => Math.max(1, Math.min(15, prev + change)));
-    }, 8000 + Math.random() * 12000); // 8-20 seconds
+      const newCount = Math.max(1, Math.min(15, visitors + change));
+      setVisitors(newCount);
+      
+      // Show "wow" effect on big jumps
+      if (Math.abs(change) > 0 && newCount > visitors) {
+        setShowWow(true);
+        setTimeout(() => setShowWow(false), 2000);
+      }
+    }, 8000 + Math.random() * 12000);
     
     return () => clearInterval(interval);
-  }, []);
+  }, [visitors]);
   
   return (
-    <div className="fixed bottom-6 right-6 bg-white border-2 border-champagne rounded-full px-4 py-2 shadow-lg z-50">
+    <div 
+      className="fixed bottom-6 right-6 bg-white border-2 border-champagne rounded-full px-4 py-2 shadow-lg z-50 cursor-pointer transition-all duration-300 hover:scale-110 hover:shadow-xl"
+      onMouseEnter={() => setIsHovered(true)}
+      onMouseLeave={() => setIsHovered(false)}
+    >
       <div className="flex items-center space-x-2">
-        <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
+        <div className={`w-2 h-2 bg-green-500 rounded-full ${isHovered ? 'animate-bounce' : 'animate-pulse'}`}></div>
         <span className="text-sm font-medium text-luxury-black">
-          {visitors} viewing now
+          {visitors} {isHovered ? 'blessed souls' : 'viewing now'}
         </span>
+        {showWow && (
+          <span className="text-xs text-champagne animate-bounce">🔥</span>
+        )}
       </div>
+    </div>
+  );
+}
+
+// Fun fragrance facts component
+function FragranceFacts() {
+  const [currentFact, setCurrentFact] = useState(0);
+  const [isVisible, setIsVisible] = useState(true);
+  
+  const facts = [
+    "🌹 Ancient Egyptians used fragrances in religious ceremonies over 4,000 years ago!",
+    "👃 The human nose can distinguish over 1 trillion different scents!",
+    "⛪ Frankincense was once more valuable than gold in biblical times",
+    "🧠 Scent is the only sense directly connected to memory and emotion",
+    "🌿 It takes 2,000 rose petals to make just 1 gram of rose oil",
+    "🎭 Cleopatra scented the sails of her ship to seduce Mark Antony",
+    "🏠 Chicago's first perfumery opened in 1871, right after the Great Fire!"
+  ];
+  
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setIsVisible(false);
+      setTimeout(() => {
+        setCurrentFact((prev) => (prev + 1) % facts.length);
+        setIsVisible(true);
+      }, 500);
+    }, 6000);
+    
+    return () => clearInterval(interval);
+  }, [facts.length]);
+  
+  return (
+    <div className="bg-gradient-to-r from-champagne/10 to-luxury-black/10 p-6 rounded-lg text-center">
+      <h4 className="text-lg font-serif font-semibold text-luxury-black mb-3">✨ Fun Fragrance Facts ✨</h4>
+      <p className={`text-gray-700 transition-opacity duration-500 ${isVisible ? 'opacity-100' : 'opacity-0'}`}>
+        {facts[currentFact]}
+      </p>
     </div>
   );
 }
@@ -71,6 +123,13 @@ export default function Home() {
         <ProductGallery />
       </section>
 
+      {/* Fun Facts Section */}
+      <section className="py-16 bg-warm-gray">
+        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+          <FragranceFacts />
+        </div>
+      </section>
+
       {/* Features Section */}
       <section className="py-20 bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -101,7 +160,7 @@ export default function Home() {
                 </div>
                 <h4 className="text-xl font-serif font-semibold mb-4">Blessed & Limited</h4>
                 <p className="text-gray-600">
-                  Limited to 100 blessed bottles monthly. Each one is a unique blessing that cannot be replicated.
+                  Limited to 100 blessed bottles monthly. Each one is a unique blessing that cannot be replicated. ✨
                 </p>
               </CardContent>
             </Card>
