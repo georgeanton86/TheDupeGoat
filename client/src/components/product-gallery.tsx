@@ -3,7 +3,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Link } from "wouter";
 import summerOfSinghsImage from "@assets/generated_images/Luxury_Summer_of_Singhs_perfume_dfd15174.png";
-import septemberNoirImage from "@assets/generated_images/September's_Noir_luxury_perfume_bottle_331e22ca.png";
+import septemberNoirImage from "@assets/generated_images/Black_September's_Noir_luxury_perfume_8e9e72db.png";
 
 export default function ProductGallery() {
   const { data: products, isLoading } = useQuery({

@@ -63,7 +63,7 @@ export class MemStorage implements IStorage {
       volume: "50ml Eau de Parfum",
       notes: "Sacred Frankincense, Blessed Myrrh, Holy Rose",
       type: "Limited Pre-Order",
-      imageUrl: "@assets/generated_images/September's_Noir_luxury_perfume_bottle_331e22ca.png",
+      imageUrl: "@assets/generated_images/Black_September's_Noir_luxury_perfume_8e9e72db.png",
       totalInventory: 100,
       remainingInventory: 100,
       isActive: true,
