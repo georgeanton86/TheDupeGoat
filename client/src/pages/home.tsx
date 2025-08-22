@@ -2,6 +2,7 @@ import Header from "@/components/header";
 import Footer from "@/components/footer";
 import ProductShowcase from "@/components/product-showcase";
 import ProductGallery from "@/components/product-gallery";
+import creatorImage from "@assets/Screenshot_20250822_065742_Photos_1755864649303.jpg";
 import { Card, CardContent } from "@/components/ui/card";
 
 export default function Home() {
@@ -78,7 +79,7 @@ export default function Home() {
           <div className="grid lg:grid-cols-2 gap-16 items-center">
             <div>
               <img 
-                src="@assets/Screenshot_20250822_065742_Photos_1755864649303.jpg" 
+                src={creatorImage} 
                 alt="Master Perfumer and Founder" 
                 className="rounded-2xl shadow-xl w-full h-auto object-cover" 
                 style={{objectPosition: "center 20%"}}

@@ -54,11 +54,11 @@ export class MemStorage implements IStorage {
     };
     this.products.set(soldOutProduct.id, soldOutProduct);
 
-    // April's Awakening - Sold Out
+    // Holy No. 5 - Sold Out (inspired by Chanel No. 5)
     const aprilProduct: Product = {
       id: randomUUID(),
-      name: "April's Awakening",
-      description: "A fresh spring fragrance celebrating new beginnings and divine renewal.",
+      name: "Holy No. 5",
+      description: "Our most iconic fragrance celebrating the five sacred wounds. A timeless blend of divine femininity.",
       price: "145.00",
       originalPrice: "145.00",
       volume: "50ml Eau de Parfum",
@@ -75,11 +75,11 @@ export class MemStorage implements IStorage {
     };
     this.products.set(aprilProduct.id, aprilProduct);
 
-    // May's Mystique - Sold Out
+    // Angel's Embrace - Sold Out (inspired by Angel by Thierry Mugler)
     const mayProduct: Product = {
       id: randomUUID(),
-      name: "May's Mystique",
-      description: "An enchanting blend inspired by the sacred mysteries of faith.",
+      name: "Angel's Embrace",
+      description: "A heavenly fragrance that wraps you in divine protection and celestial love.",
       price: "125.00",
       originalPrice: "125.00", 
       volume: "50ml Eau de Parfum",
@@ -96,11 +96,11 @@ export class MemStorage implements IStorage {
     };
     this.products.set(mayProduct.id, mayProduct);
 
-    // June's Journey - Sold Out
+    // Sacred Waters - Sold Out (inspired by Acqua di Gio)
     const juneProduct: Product = {
       id: randomUUID(),
-      name: "June's Journey",
-      description: "A spiritual voyage captured in a bottle, celebrating faith's eternal path.",
+      name: "Sacred Waters",
+      description: "Pure as holy water, fresh as divine breath. A unisex fragrance blessed by sacred springs.",
       price: "135.00",
       originalPrice: "135.00",
       volume: "50ml Eau de Parfum", 
@@ -117,11 +117,11 @@ export class MemStorage implements IStorage {
     };
     this.products.set(juneProduct.id, juneProduct);
 
-    // July's Jewel - Sold Out  
+    // Divine Opium - Sold Out (inspired by Black Opium)
     const julyProduct: Product = {
       id: randomUUID(),
-      name: "July's Jewel",
-      description: "A precious fragrance crafted like a jewel in God's crown.",
+      name: "Divine Opium",
+      description: "Intoxicatingly spiritual. A bold fragrance for those drunk on divine love.",
       price: "155.00",
       originalPrice: "155.00",
       volume: "50ml Eau de Parfum",
@@ -138,11 +138,11 @@ export class MemStorage implements IStorage {
     };
     this.products.set(julyProduct.id, julyProduct);
 
-    // August's Allure - Sold Out
+    // Heavenly Sauvage - Sold Out (inspired by Sauvage)
     const augustProduct: Product = {
       id: randomUUID(),
-      name: "August's Allure", 
-      description: "Late summer's divine allure captured in sacred essence.",
+      name: "Heavenly Sauvage", 
+      description: "Wild and untamed faith. A masculine fragrance for spiritual warriors.",
       price: "140.00",
       originalPrice: "140.00",
       volume: "50ml Eau de Parfum",
