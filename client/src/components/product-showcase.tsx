@@ -1,0 +1,148 @@
+import { useQuery } from "@tanstack/react-query";
+import { Link } from "wouter";
+import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
+import CountdownTimer from "./countdown-timer";
+
+export default function ProductShowcase() {
+  const { data: product, isLoading } = useQuery({
+    queryKey: ["/api/product"],
+  });
+
+  const { data: inventory } = useQuery({
+    queryKey: ["/api/inventory", product?.id],
+    enabled: !!product?.id,
+    refetchInterval: 30000, // Refetch every 30 seconds
+  });
+
+  if (isLoading) {
+    return (
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
+        <div className="grid lg:grid-cols-2 gap-16 items-center">
+          <div className="animate-pulse">
+            <div className="h-8 bg-gray-200 rounded mb-6"></div>
+            <div className="h-16 bg-gray-200 rounded mb-4"></div>
+            <div className="h-24 bg-gray-200 rounded mb-8"></div>
+            <div className="h-12 bg-gray-200 rounded"></div>
+          </div>
+          <div className="animate-pulse">
+            <div className="w-80 h-96 bg-gray-200 rounded-2xl mx-auto"></div>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  if (!product) {
+    return (
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
+        <div className="text-center">
+          <h2 className="text-4xl font-serif font-bold text-luxury-black">No Product Available</h2>
+          <p className="text-gray-600 mt-4">Check back soon for our next limited release.</p>
+        </div>
+      </div>
+    );
+  }
+
+  const remaining = inventory?.remaining ?? product.remainingInventory;
+  const total = inventory?.total ?? product.totalInventory;
+
+  return (
+    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
+      <div className="grid lg:grid-cols-2 gap-16 items-center">
+        
+        {/* Product Showcase */}
+        <div className="order-2 lg:order-1">
+          <div className="text-center lg:text-left">
+            {/* Scarcity Badge */}
+            <Badge variant="destructive" className="mb-6 animate-pulse" data-testid="badge-inventory">
+              <span className="w-2 h-2 bg-red-500 rounded-full mr-2 animate-pulse"></span>
+              LIMITED EDITION - <span className="font-semibold ml-1">{remaining}</span> of {total} remaining
+            </Badge>
+            
+            <h2 className="text-5xl lg:text-6xl font-serif font-bold text-luxury-black mb-4 leading-tight">
+              {product.name.split(' ').slice(0, -1).join(' ')}
+              <span className="text-champagne italic block">{product.name.split(' ').slice(-1)}</span>
+            </h2>
+            
+            <p className="text-xl text-gray-600 mb-8 leading-relaxed max-w-lg">
+              {product.description}
+            </p>
+            
+            {/* Product Details */}
+            <div className="space-y-4 mb-10">
+              <div className="flex items-center justify-center lg:justify-start">
+                <span className="text-sm font-medium text-gray-500 w-24">Volume:</span>
+                <span className="text-sm font-semibold">{product.volume}</span>
+              </div>
+              <div className="flex items-center justify-center lg:justify-start">
+                <span className="text-sm font-medium text-gray-500 w-24">Notes:</span>
+                <span className="text-sm">{product.notes}</span>
+              </div>
+              <div className="flex items-center justify-center lg:justify-start">
+                <span className="text-sm font-medium text-gray-500 w-24">Type:</span>
+                <span className="text-sm">{product.type}</span>
+              </div>
+            </div>
+            
+            {/* Pricing */}
+            <div className="text-center lg:text-left mb-10">
+              <span className="text-4xl font-serif font-bold text-luxury-black" data-testid="text-price">
+                ${product.price}
+              </span>
+              {product.originalPrice && (
+                <span className="text-lg text-gray-500 line-through ml-3">
+                  ${product.originalPrice}
+                </span>
+              )}
+              <div className="text-sm text-champagne font-medium mt-1">Limited Release Pricing</div>
+            </div>
+            
+            {/* CTA Buttons */}
+            <div className="space-y-4">
+              <Link href="/checkout">
+                <Button 
+                  className="w-full lg:w-auto bg-luxury-black text-white px-12 py-4 text-lg font-semibold tracking-wide hover:bg-charcoal transition-all duration-300 transform hover:scale-[1.02] shadow-xl"
+                  disabled={remaining <= 0}
+                  data-testid="button-purchase"
+                >
+                  {remaining > 0 ? "SECURE YOURS NOW" : "SOLD OUT"}
+                </Button>
+              </Link>
+              <p className="text-xs text-gray-500 text-center lg:text-left max-w-md">
+                <i className="fas fa-shield-alt mr-1"></i>
+                Secure checkout with Stripe. No returns accepted due to hygiene regulations.
+              </p>
+            </div>
+          </div>
+        </div>
+        
+        {/* Product Image */}
+        <div className="order-1 lg:order-2 flex justify-center">
+          <div className="relative group">
+            <img 
+              src={product.imageUrl} 
+              alt={`${product.name} - RVLTN Parfums Limited Edition`} 
+              className="w-80 h-96 object-cover rounded-2xl shadow-2xl group-hover:shadow-3xl transition-shadow duration-500"
+              data-testid="img-product"
+            />
+            <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent rounded-2xl"></div>
+            
+            {/* Floating Elements */}
+            <Badge className="absolute -top-4 -right-4 bg-champagne text-luxury-black shadow-lg">
+              NEW
+            </Badge>
+            <div className="absolute -bottom-4 left-1/2 transform -translate-x-1/2 bg-white px-4 py-2 rounded-full shadow-lg text-xs font-medium">
+              Free Worldwide Shipping
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      {/* Countdown Timer */}
+      <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2">
+        <CountdownTimer nextReleaseDate={product.nextReleaseDate} />
+      </div>
+    </div>
+  );
+}
