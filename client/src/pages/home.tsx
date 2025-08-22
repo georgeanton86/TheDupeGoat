@@ -1,3 +1,4 @@
+import { useQuery } from "@tanstack/react-query";
 import Header from "@/components/header";
 import Footer from "@/components/footer";
 import ProductShowcase from "@/components/product-showcase";
@@ -11,8 +12,8 @@ function VisitorCounter() {
   const [visitors, setVisitors] = useState(Math.floor(Math.random() * 8) + 3); // 3-10 current viewers
   
   useEffect(() => {
+    // Simulate realistic visitor fluctuations
     const interval = setInterval(() => {
-      // Simulate realistic visitor fluctuations
       const change = Math.random() > 0.7 ? (Math.random() > 0.5 ? 1 : -1) : 0;
       setVisitors(prev => Math.max(1, Math.min(15, prev + change)));
     }, 8000 + Math.random() * 12000); // 8-20 seconds
@@ -45,7 +46,7 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Biblical Foundation - Revelation 21:6 */
+      {/* Biblical Foundation - Revelation 21:6 */}
       <section className="py-16 bg-gradient-to-r from-luxury-black to-charcoal text-white">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <div className="mb-6">
@@ -57,10 +58,10 @@ export default function Home() {
             And he said unto me, It is done. I am Alpha and Omega, the beginning and the end. I will give unto him that is athirst of the fountain of the water of life freely.
           </blockquote>
           <cite className="text-champagne text-lg font-medium">
-            - Revelation 21:6
+            — Revelation 21:6
           </cite>
           <p className="mt-6 text-gray-300 max-w-2xl mx-auto">
-            As the Alpha and Omega, He offers the water of life freely. Our fragrances embody this divine generosity - each scent crafted to refresh the spirit and awaken the soul to eternal beauty.
+            As the Alpha and Omega, He offers the water of life freely. Our fragrances embody this divine generosity — each scent crafted to refresh the spirit and awaken the soul to eternal beauty.
           </p>
         </div>
       </section>
@@ -120,20 +121,25 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Creator Biography Section */}
-      <section id="about" className="py-20 bg-warm-gray">
+      {/* Creator Story Section */}
+      <section className="py-20 bg-gradient-to-r from-warm-gray to-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid lg:grid-cols-2 gap-16 items-center">
-            <div>
-              <img 
-                src={creatorImage} 
-                alt="Master Perfumer and Founder" 
-                className="rounded-2xl shadow-xl w-full h-auto object-cover" 
-                style={{objectPosition: "center 20%"}}
-              />
+            
+            {/* Creator Image */}
+            <div className="order-2 lg:order-1 flex justify-center">
+              <div className="relative">
+                <img 
+                  src={creatorImage} 
+                  alt="Master Perfumer - RVLTN Parfums Creator" 
+                  className="w-80 h-96 object-cover rounded-2xl shadow-2xl"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent rounded-2xl"></div>
+              </div>
             </div>
             
-            <div>
+            {/* Creator Story */}
+            <div className="order-1 lg:order-2">
               <h3 className="text-4xl font-serif font-bold text-luxury-black mb-6">Called to Create</h3>
               <p className="text-lg text-gray-600 mb-6 leading-relaxed">
                 My journey as a perfumer began as a divine calling. Inspired by the biblical tradition of sacred oils and fragrances, I dedicated my life to creating scents that honor God and uplift the spirit.
