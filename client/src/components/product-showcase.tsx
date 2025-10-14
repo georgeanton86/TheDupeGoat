@@ -149,6 +149,13 @@ export default function ProductShowcase() {
                 className="h-full w-auto object-contain"
                 data-testid="img-product"
               />
+              {/* Product name label on bottle */}
+              <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-center pointer-events-none">
+                <div className="bg-luxury-black/90 backdrop-blur-sm px-4 py-3 rounded-lg border border-champagne/40">
+                  <p className="text-champagne font-bold text-sm tracking-wider">{product.name}</p>
+                  <p className="text-champagne/70 text-[10px] font-medium mt-1">RVLTN PARFUMS</p>
+                </div>
+              </div>
               {/* Gradient overlay */}
               <div className="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent pointer-events-none"></div>
               

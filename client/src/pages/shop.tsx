@@ -275,6 +275,13 @@ function ProductCard({ product, onAddToCart }: { product: Product; onAddToCart: 
             className="h-full w-auto object-contain"
             data-testid={`img-product-${product.id}`}
           />
+          {/* Product name label on bottle */}
+          <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-center pointer-events-none">
+            <div className="bg-luxury-black/80 backdrop-blur-sm px-3 py-2 rounded-lg border border-champagne/30">
+              <p className="text-champagne font-bold text-xs tracking-wider">{product.name}</p>
+              <p className="text-champagne/60 text-[8px] font-medium mt-0.5">RVLTN PARFUMS</p>
+            </div>
+          </div>
           {/* Shield logo overlay - positioned on the bottle */}
           <div className="absolute bottom-6 left-1/2 transform -translate-x-1/2">
             <img 
