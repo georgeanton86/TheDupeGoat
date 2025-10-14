@@ -10,6 +10,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Input } from "@/components/ui/input";
 import type { Product } from "@shared/schema";
 import { ShoppingCart, Tag, Truck } from "lucide-react";
+import perfumeImage from "@assets/generated_images/Luxury_Summer_of_Singhs_perfume_dfd15174.png";
 
 interface CartItem {
   product: Product;
@@ -260,19 +261,30 @@ function ProductCard({ product, onAddToCart }: { product: Product; onAddToCart: 
 
   return (
     <Card className="overflow-hidden hover:shadow-xl transition-shadow">
-      <CardContent className="p-6">
-        <div className="flex justify-between items-start mb-3">
-          <div>
-            <h3 className="text-xl font-bold text-luxury-black">{product.name}</h3>
-            <p className="text-xs text-champagne font-medium">{product.verseReference}</p>
-          </div>
-          <Badge variant={isLowStock ? "destructive" : "secondary"} className="text-xs">
+      <CardContent className="p-0">
+        <div className="relative h-48 overflow-hidden bg-gradient-to-br from-champagne/20 to-luxury-black/5">
+          <img 
+            src={perfumeImage} 
+            alt={product.name}
+            className="w-full h-full object-cover"
+            data-testid={`img-product-${product.id}`}
+          />
+          <Badge 
+            variant={isLowStock ? "destructive" : "secondary"} 
+            className="absolute top-3 right-3 text-xs"
+          >
             {product.remainingInventory} left
           </Badge>
         </div>
+        
+        <div className="p-6">
+          <div className="mb-3">
+            <h3 className="text-xl font-bold text-luxury-black">{product.name}</h3>
+            <p className="text-xs text-champagne font-medium">{product.verseReference}</p>
+          </div>
 
-        <p className="text-sm text-gray-600 mb-2 italic">"{product.bibleVerse}"</p>
-        <p className="text-sm text-gray-600 mb-4">{product.description}</p>
+          <p className="text-sm text-gray-600 mb-2 italic">"{product.bibleVerse}"</p>
+          <p className="text-sm text-gray-600 mb-4">{product.description}</p>
 
         {/* Sales Counter */}
         <div className="mb-4 p-3 bg-champagne/10 rounded-lg">
@@ -307,13 +319,14 @@ function ProductCard({ product, onAddToCart }: { product: Product; onAddToCart: 
           </Select>
         </div>
 
-        <Button
-          onClick={handleAddToCart}
-          className="w-full bg-champagne text-luxury-black hover:bg-yellow-500"
-          data-testid={`button-add-to-cart-${product.id}`}
-        >
-          Add to Cart
-        </Button>
+          <Button
+            onClick={handleAddToCart}
+            className="w-full bg-champagne text-luxury-black hover:bg-yellow-500"
+            data-testid={`button-add-to-cart-${product.id}`}
+          >
+            Add to Cart
+          </Button>
+        </div>
       </CardContent>
     </Card>
   );

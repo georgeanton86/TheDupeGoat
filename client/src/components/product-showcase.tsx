@@ -3,8 +3,7 @@ import { Link } from "wouter";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import CountdownTimer from "./countdown-timer";
-import summerOfSinghsImage from "@assets/generated_images/Luxury_Summer_of_Singhs_perfume_dfd15174.png";
-import septemberNoirImage from "@assets/generated_images/Black_September's_Noir_luxury_perfume_8e9e72db.png";
+import perfumeImage from "@assets/generated_images/Luxury_Summer_of_Singhs_perfume_dfd15174.png";
 
 export default function ProductShowcase() {
   const { data: product, isLoading } = useQuery({
@@ -142,11 +141,7 @@ export default function ProductShowcase() {
         <div className="order-1 lg:order-2 flex justify-center">
           <div className="relative group">
             <img 
-              src={
-                product.name === "Summer of Singhs" ? summerOfSinghsImage : 
-                product.name === "September's Noir" ? septemberNoirImage :
-                product.imageUrl
-              } 
+              src={perfumeImage} 
               alt={`${product.name} - RVLTN Parfums Limited Edition`} 
               className="w-80 h-96 object-cover rounded-2xl shadow-2xl group-hover:shadow-3xl transition-shadow duration-500"
               data-testid="img-product"
