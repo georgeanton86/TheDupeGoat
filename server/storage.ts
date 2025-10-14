@@ -33,172 +33,365 @@ export class MemStorage implements IStorage {
   }
 
   private async initializeDefaultProduct() {
-    // Sold out success story
-    const soldOutProduct: Product = {
+    // THE SEAL
+    const theSeal: Product = {
       id: randomUUID(),
-      name: "Summer of Singhs",
-      description: "A captivating fragrance collection celebrating elegance and sophistication. Available in both pour femme and pour homme editions.",
-      price: "285.00",
-      originalPrice: "350.00",
-      volume: "50ml Eau de Parfum",
-      notes: "Golden Florals, Warm Amber, Luxurious Musk",
-      type: "Unisex Collection",
+      name: "THE SEAL",
+      description: "A transformative fragrance that marks you as chosen. Divine protection in a bottle.",
+      price: "35.00",
+      originalPrice: null,
+      volume: "30ml Eau de Parfum",
+      notes: "Notes to be revealed",
+      type: "Biblical Collection",
       imageUrl: "@assets/generated_images/Luxury_Summer_of_Singhs_perfume_dfd15174.png",
-      totalInventory: 6000,
-      remainingInventory: 0,
-      isActive: false,
-      releaseDate: new Date("2024-08-01"),
-      nextReleaseDate: new Date("2025-09-01"),
-      selloutTime: "4 minutes 36 seconds",
-      createdAt: new Date(),
-    };
-    this.products.set(soldOutProduct.id, soldOutProduct);
-
-    // Holy No. 5 - Sold Out (inspired by Chanel No. 5)
-    const aprilProduct: Product = {
-      id: randomUUID(),
-      name: "Holy No. 5",
-      description: "Our most iconic fragrance celebrating the five sacred wounds. A timeless blend of divine femininity.",
-      price: "145.00",
-      originalPrice: "145.00",
-      volume: "50ml Eau de Parfum",
-      notes: "Sacred Lily, Blessed Jasmine, Holy Water Accord",
-      type: "Limited Edition - SOLD OUT",
-      imageUrl: "@assets/generated_images/April's_Awakening_luxury_perfume_bottle_2eb39dcc.png",
-      totalInventory: 850,
-      remainingInventory: 0,
-      isActive: false,
-      releaseDate: new Date("2025-04-01"),
-      nextReleaseDate: new Date("2025-04-01"),
-      selloutTime: "2 minutes 18 seconds",
-      createdAt: new Date("2025-04-01"),
-    };
-    this.products.set(aprilProduct.id, aprilProduct);
-
-    // RZN - Sold Out (Limited April Release)
-    const rznProduct: Product = {
-      id: randomUUID(),
-      name: "RZN",
-      description: "A mysterious and powerful fragrance. Pure essence distilled to its divine core.",
-      price: "165.00",
-      originalPrice: "165.00",
-      volume: "50ml Eau de Parfum",
-      notes: "Sacred Amber, Divine Musk, Blessed Sandalwood",
-      type: "Limited Edition - SOLD OUT",
-      imageUrl: "@assets/generated_images/RZN_luxury_perfume_bottle_890ac3f2.png",
-      totalInventory: 250,
-      remainingInventory: 0,
-      isActive: false,
-      releaseDate: new Date("2025-04-15"),
-      nextReleaseDate: new Date("2025-04-15"),
-      selloutTime: "3 minutes 42 seconds",
-      createdAt: new Date("2025-04-15"),
-    };
-    this.products.set(rznProduct.id, rznProduct);
-
-    // Angel's Embrace - Sold Out (inspired by Angel by Thierry Mugler)
-    const mayProduct: Product = {
-      id: randomUUID(),
-      name: "Angel's Embrace",
-      description: "A heavenly fragrance that wraps you in divine protection and celestial love.",
-      price: "125.00",
-      originalPrice: "125.00", 
-      volume: "50ml Eau de Parfum",
-      notes: "Divine Rose, Sacred Cedar, Blessed Sandalwood",
-      type: "Limited Edition - SOLD OUT",
-      imageUrl: "@assets/generated_images/May's_Mystique_luxury_perfume_bottle_de71f6d0.png",
-      totalInventory: 1200,
-      remainingInventory: 0,
-      isActive: false,
-      releaseDate: new Date("2025-05-01"),
-      nextReleaseDate: new Date("2025-05-01"),
-      selloutTime: "7 minutes 45 seconds",
-      createdAt: new Date("2025-05-01"),
-    };
-    this.products.set(mayProduct.id, mayProduct);
-
-    // Sacred Waters - Sold Out (inspired by Acqua di Gio)
-    const juneProduct: Product = {
-      id: randomUUID(),
-      name: "Sacred Waters",
-      description: "Pure as holy water, fresh as divine breath. A unisex fragrance blessed by sacred springs.",
-      price: "135.00",
-      originalPrice: "135.00",
-      volume: "50ml Eau de Parfum", 
-      notes: "Heavenly Lavender, Sacred Bergamot, Divine Amber",
-      type: "Limited Edition - SOLD OUT",
-      imageUrl: "@assets/generated_images/June's_Journey_luxury_perfume_bottle_9dff73d4.png",
-      totalInventory: 2000,
-      remainingInventory: 0,
-      isActive: false,
-      releaseDate: new Date("2025-06-01"),
-      nextReleaseDate: new Date("2025-06-01"),
-      selloutTime: "12 minutes 3 seconds",
-      createdAt: new Date("2025-06-01"),
-    };
-    this.products.set(juneProduct.id, juneProduct);
-
-    // Divine Opium - Sold Out (inspired by Black Opium)
-    const julyProduct: Product = {
-      id: randomUUID(),
-      name: "Divine Opium",
-      description: "Intoxicatingly spiritual. A bold fragrance for those drunk on divine love.",
-      price: "155.00",
-      originalPrice: "155.00",
-      volume: "50ml Eau de Parfum",
-      notes: "Golden Saffron, Sacred Oud, Blessed Vanilla",
-      type: "Limited Edition - SOLD OUT", 
-      imageUrl: "@assets/generated_images/July's_Jewel_luxury_perfume_bottle_872dd6a6.png",
-      totalInventory: 500,
-      remainingInventory: 0,
-      isActive: false,
-      releaseDate: new Date("2025-07-01"),
-      nextReleaseDate: new Date("2025-07-01"),
-      selloutTime: "1 minute 27 seconds",
-      createdAt: new Date("2025-07-01"),
-    };
-    this.products.set(julyProduct.id, julyProduct);
-
-    // Heavenly Sauvage - Sold Out (inspired by Sauvage)
-    const augustProduct: Product = {
-      id: randomUUID(),
-      name: "Heavenly Sauvage", 
-      description: "Wild and untamed faith. A masculine fragrance for spiritual warriors.",
-      price: "140.00",
-      originalPrice: "140.00",
-      volume: "50ml Eau de Parfum",
-      notes: "Blessed Orange Blossom, Sacred Neroli, Holy Musk",
-      type: "Limited Edition - SOLD OUT",
-      imageUrl: "@assets/generated_images/August's_Allure_luxury_perfume_bottle_f9cf7a85.png", 
-      totalInventory: 3500,
-      remainingInventory: 0,
-      isActive: false,
-      releaseDate: new Date("2025-08-01"),
-      nextReleaseDate: new Date("2025-08-01"),
-      selloutTime: "18 minutes 52 seconds",
-      createdAt: new Date("2025-08-01"),
-    };
-    this.products.set(augustProduct.id, augustProduct);
-
-    // Coming soon pre-order product
-    const preOrderProduct: Product = {
-      id: randomUUID(),
-      name: "September's Noir",
-      description: "A divine fragrance inspired by faith and grace. This sophisticated noir blend captures the essence of autumn's mystique with sacred ingredients.",
-      price: "99.00",
-      originalPrice: "129.00",
-      volume: "50ml Eau de Parfum",
-      notes: "Sacred Frankincense, Blessed Myrrh, Holy Rose",
-      type: "Limited Pre-Order",
-      imageUrl: "@assets/generated_images/Black_September's_Noir_luxury_perfume_8e9e72db.png",
+      bibleVerse: "Do not harm until we seal the servants of God",
+      verseReference: "Revelation 7:3",
       totalInventory: 100,
-      remainingInventory: 100,
+      remainingInventory: 23,
+      soldCount: 77,
       isActive: true,
-      releaseDate: new Date("2025-09-01"),
-      nextReleaseDate: new Date("2025-09-01"),
+      releaseDate: new Date("2025-01-01"),
+      nextReleaseDate: null,
+      selloutTime: null,
       createdAt: new Date(),
     };
-    this.products.set(preOrderProduct.id, preOrderProduct);
+    this.products.set(theSeal.id, theSeal);
+
+    // THE CROWN
+    const theCrown: Product = {
+      id: randomUUID(),
+      name: "THE CROWN",
+      description: "For those faithful unto death. Wear the crown of life with this regal fragrance.",
+      price: "35.00",
+      originalPrice: null,
+      volume: "30ml Eau de Parfum",
+      notes: "Notes to be revealed",
+      type: "Biblical Collection",
+      imageUrl: "@assets/generated_images/Luxury_Summer_of_Singhs_perfume_dfd15174.png",
+      bibleVerse: "Be faithful unto death, I will give you the crown of life",
+      verseReference: "Revelation 2:10",
+      totalInventory: 100,
+      remainingInventory: 45,
+      soldCount: 55,
+      isActive: true,
+      releaseDate: new Date("2025-01-01"),
+      nextReleaseDate: null,
+      selloutTime: null,
+      createdAt: new Date(),
+    };
+    this.products.set(theCrown.id, theCrown);
+
+    // OMEGA
+    const omega: Product = {
+      id: randomUUID(),
+      name: "OMEGA",
+      description: "The beginning and the end. Alpha and Omega captured in divine essence.",
+      price: "35.00",
+      originalPrice: null,
+      volume: "30ml Eau de Parfum",
+      notes: "Notes to be revealed",
+      type: "Biblical Collection",
+      imageUrl: "@assets/generated_images/Luxury_Summer_of_Singhs_perfume_dfd15174.png",
+      bibleVerse: "I am the Alpha and the Omega, the beginning and the end",
+      verseReference: "Revelation 1:8",
+      totalInventory: 100,
+      remainingInventory: 12,
+      soldCount: 88,
+      isActive: true,
+      releaseDate: new Date("2025-01-01"),
+      nextReleaseDate: null,
+      selloutTime: null,
+      createdAt: new Date(),
+    };
+    this.products.set(omega.id, omega);
+
+    // THE LAMB
+    const theLamb: Product = {
+      id: randomUUID(),
+      name: "THE LAMB",
+      description: "Worthy is the Lamb. A fragrance of sacrifice, redemption, and ultimate victory.",
+      price: "35.00",
+      originalPrice: null,
+      volume: "30ml Eau de Parfum",
+      notes: "Notes to be revealed",
+      type: "Biblical Collection",
+      imageUrl: "@assets/generated_images/Luxury_Summer_of_Singhs_perfume_dfd15174.png",
+      bibleVerse: "Worthy is the Lamb who was slain",
+      verseReference: "Revelation 5:12",
+      totalInventory: 100,
+      remainingInventory: 67,
+      soldCount: 33,
+      isActive: true,
+      releaseDate: new Date("2025-01-01"),
+      nextReleaseDate: null,
+      selloutTime: null,
+      createdAt: new Date(),
+    };
+    this.products.set(theLamb.id, theLamb);
+
+    // REDEEMED
+    const redeemed: Product = {
+      id: randomUUID(),
+      name: "REDEEMED",
+      description: "Ransomed by blood. A fragrance of freedom and divine purchase.",
+      price: "35.00",
+      originalPrice: null,
+      volume: "30ml Eau de Parfum",
+      notes: "Notes to be revealed",
+      type: "Biblical Collection",
+      imageUrl: "@assets/generated_images/Luxury_Summer_of_Singhs_perfume_dfd15174.png",
+      bibleVerse: "By your blood you ransomed people for God",
+      verseReference: "Revelation 5:9",
+      totalInventory: 100,
+      remainingInventory: 89,
+      soldCount: 11,
+      isActive: true,
+      releaseDate: new Date("2025-01-01"),
+      nextReleaseDate: null,
+      selloutTime: null,
+      createdAt: new Date(),
+    };
+    this.products.set(redeemed.id, redeemed);
+
+    // THE SCROLL
+    const theScroll: Product = {
+      id: randomUUID(),
+      name: "THE SCROLL",
+      description: "Sealed with seven seals. The mystery of God revealed in fragrance.",
+      price: "35.00",
+      originalPrice: null,
+      volume: "30ml Eau de Parfum",
+      notes: "Notes to be revealed",
+      type: "Biblical Collection",
+      imageUrl: "@assets/generated_images/Luxury_Summer_of_Singhs_perfume_dfd15174.png",
+      bibleVerse: "A scroll sealed with seven seals",
+      verseReference: "Revelation 5:1",
+      totalInventory: 100,
+      remainingInventory: 31,
+      soldCount: 69,
+      isActive: true,
+      releaseDate: new Date("2025-01-01"),
+      nextReleaseDate: null,
+      selloutTime: null,
+      createdAt: new Date(),
+    };
+    this.products.set(theScroll.id, theScroll);
+
+    // CONQUERED
+    const conquered: Product = {
+      id: randomUUID(),
+      name: "CONQUERED",
+      description: "Victory fragrance for overcomers. Sit with Christ on His throne.",
+      price: "35.00",
+      originalPrice: null,
+      volume: "30ml Eau de Parfum",
+      notes: "Notes to be revealed",
+      type: "Biblical Collection",
+      imageUrl: "@assets/generated_images/Luxury_Summer_of_Singhs_perfume_dfd15174.png",
+      bibleVerse: "To the one who conquers I will grant to sit on my throne",
+      verseReference: "Revelation 3:21",
+      totalInventory: 100,
+      remainingInventory: 54,
+      soldCount: 46,
+      isActive: true,
+      releaseDate: new Date("2025-01-01"),
+      nextReleaseDate: null,
+      selloutTime: null,
+      createdAt: new Date(),
+    };
+    this.products.set(conquered.id, conquered);
+
+    // THE TREE
+    const theTree: Product = {
+      id: randomUUID(),
+      name: "THE TREE",
+      description: "Tree of life bearing twelve kinds of fruit. Healing for the nations.",
+      price: "35.00",
+      originalPrice: null,
+      volume: "30ml Eau de Parfum",
+      notes: "Notes to be revealed",
+      type: "Biblical Collection",
+      imageUrl: "@assets/generated_images/Luxury_Summer_of_Singhs_perfume_dfd15174.png",
+      bibleVerse: "The tree of life bearing twelve kinds of fruit",
+      verseReference: "Revelation 22:2",
+      totalInventory: 100,
+      remainingInventory: 76,
+      soldCount: 24,
+      isActive: true,
+      releaseDate: new Date("2025-01-01"),
+      nextReleaseDate: null,
+      selloutTime: null,
+      createdAt: new Date(),
+    };
+    this.products.set(theTree.id, theTree);
+
+    // ANOINTED
+    const anointed: Product = {
+      id: randomUUID(),
+      name: "ANOINTED",
+      description: "Your head anointed with oil. Overflow with divine blessing.",
+      price: "35.00",
+      originalPrice: null,
+      volume: "30ml Eau de Parfum",
+      notes: "Notes to be revealed",
+      type: "Biblical Collection",
+      imageUrl: "@assets/generated_images/Luxury_Summer_of_Singhs_perfume_dfd15174.png",
+      bibleVerse: "You anoint my head with oil, my cup overflows",
+      verseReference: "Psalm 23:5",
+      totalInventory: 100,
+      remainingInventory: 8,
+      soldCount: 92,
+      isActive: true,
+      releaseDate: new Date("2025-01-01"),
+      nextReleaseDate: null,
+      selloutTime: null,
+      createdAt: new Date(),
+    };
+    this.products.set(anointed.id, anointed);
+
+    // GLORY
+    const glory: Product = {
+      id: randomUUID(),
+      name: "GLORY",
+      description: "The glory of God illuminated. The Lamb is its lamp.",
+      price: "35.00",
+      originalPrice: null,
+      volume: "30ml Eau de Parfum",
+      notes: "Notes to be revealed",
+      type: "Biblical Collection",
+      imageUrl: "@assets/generated_images/Luxury_Summer_of_Singhs_perfume_dfd15174.png",
+      bibleVerse: "The glory of God gives it light, and its lamp is the Lamb",
+      verseReference: "Revelation 21:23",
+      totalInventory: 100,
+      remainingInventory: 19,
+      soldCount: 81,
+      isActive: true,
+      releaseDate: new Date("2025-01-01"),
+      nextReleaseDate: null,
+      selloutTime: null,
+      createdAt: new Date(),
+    };
+    this.products.set(glory.id, glory);
+
+    // THE WORD
+    const theWord: Product = {
+      id: randomUUID(),
+      name: "THE WORD",
+      description: "In the beginning was the Word. Divine essence made manifest.",
+      price: "35.00",
+      originalPrice: null,
+      volume: "30ml Eau de Parfum",
+      notes: "Notes to be revealed",
+      type: "Biblical Collection",
+      imageUrl: "@assets/generated_images/Luxury_Summer_of_Singhs_perfume_dfd15174.png",
+      bibleVerse: "In the beginning was the Word, and the Word was God",
+      verseReference: "John 1:1",
+      totalInventory: 100,
+      remainingInventory: 42,
+      soldCount: 58,
+      isActive: true,
+      releaseDate: new Date("2025-01-01"),
+      nextReleaseDate: null,
+      selloutTime: null,
+      createdAt: new Date(),
+    };
+    this.products.set(theWord.id, theWord);
+
+    // LIVING WATER
+    const livingWater: Product = {
+      id: randomUUID(),
+      name: "LIVING WATER",
+      description: "From the spring of the water of life. Freely given, divinely blessed.",
+      price: "35.00",
+      originalPrice: null,
+      volume: "30ml Eau de Parfum",
+      notes: "Notes to be revealed",
+      type: "Biblical Collection",
+      imageUrl: "@assets/generated_images/Luxury_Summer_of_Singhs_perfume_dfd15174.png",
+      bibleVerse: "I will give from the spring of the water of life freely",
+      verseReference: "Revelation 21:6",
+      totalInventory: 100,
+      remainingInventory: 5,
+      soldCount: 95,
+      isActive: true,
+      releaseDate: new Date("2025-01-01"),
+      nextReleaseDate: null,
+      selloutTime: null,
+      createdAt: new Date(),
+    };
+    this.products.set(livingWater.id, livingWater);
+
+    // THE ROAR
+    const theRoar: Product = {
+      id: randomUUID(),
+      name: "THE ROAR",
+      description: "Like the roar of a lion. Bold, powerful, unstoppable.",
+      price: "35.00",
+      originalPrice: null,
+      volume: "30ml Eau de Parfum",
+      notes: "Notes to be revealed",
+      type: "Biblical Collection",
+      imageUrl: "@assets/generated_images/Luxury_Summer_of_Singhs_perfume_dfd15174.png",
+      bibleVerse: "He gave a loud shout like the roar of a lion",
+      verseReference: "Revelation 10:3",
+      totalInventory: 100,
+      remainingInventory: 63,
+      soldCount: 37,
+      isActive: true,
+      releaseDate: new Date("2025-01-01"),
+      nextReleaseDate: null,
+      selloutTime: null,
+      createdAt: new Date(),
+    };
+    this.products.set(theRoar.id, theRoar);
+
+    // CONSECRATED
+    const consecrated: Product = {
+      id: randomUUID(),
+      name: "CONSECRATED",
+      description: "Set apart as most holy. Divine consecration in fragrance form.",
+      price: "35.00",
+      originalPrice: null,
+      volume: "30ml Eau de Parfum",
+      notes: "Notes to be revealed",
+      type: "Biblical Collection",
+      imageUrl: "@assets/generated_images/Luxury_Summer_of_Singhs_perfume_dfd15174.png",
+      bibleVerse: "Consecrate them, that they may be most holy",
+      verseReference: "Exodus 30:30",
+      totalInventory: 100,
+      remainingInventory: 38,
+      soldCount: 62,
+      isActive: true,
+      releaseDate: new Date("2025-01-01"),
+      nextReleaseDate: null,
+      selloutTime: null,
+      createdAt: new Date(),
+    };
+    this.products.set(consecrated.id, consecrated);
+
+    // THE FIRE
+    const theFire: Product = {
+      id: randomUUID(),
+      name: "THE FIRE",
+      description: "Eyes like flames of fire. Burning intensity and divine passion.",
+      price: "35.00",
+      originalPrice: null,
+      volume: "30ml Eau de Parfum",
+      notes: "Notes to be revealed",
+      type: "Biblical Collection",
+      imageUrl: "@assets/generated_images/Luxury_Summer_of_Singhs_perfume_dfd15174.png",
+      bibleVerse: "His eyes were like a flame of fire",
+      verseReference: "Revelation 1:14",
+      totalInventory: 100,
+      remainingInventory: 28,
+      soldCount: 72,
+      isActive: true,
+      releaseDate: new Date("2025-01-01"),
+      nextReleaseDate: null,
+      selloutTime: null,
+      createdAt: new Date(),
+    };
+    this.products.set(theFire.id, theFire);
   }
 
   async getUser(id: string): Promise<User | undefined> {
