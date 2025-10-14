@@ -27,13 +27,13 @@ export default function Header() {
           </Link>
           
           <nav className="hidden md:flex items-center space-x-8">
-            <button 
-              onClick={() => scrollToSection('featured')} 
+            <Link 
+              href="/shop" 
               className="text-sm font-medium text-charcoal hover:text-champagne transition-colors"
-              data-testid="button-nav-featured"
+              data-testid="link-shop"
             >
-              Featured
-            </button>
+              Shop
+            </Link>
             <button 
               onClick={() => scrollToSection('about')} 
               className="text-sm font-medium text-charcoal hover:text-champagne transition-colors"
@@ -59,12 +59,12 @@ export default function Header() {
             </SheetTrigger>
             <SheetContent>
               <nav className="flex flex-col space-y-4 mt-8">
-                <button 
-                  onClick={() => scrollToSection('featured')} 
-                  className="text-sm font-medium text-charcoal hover:text-champagne transition-colors text-left"
+                <Link 
+                  href="/shop" 
+                  className="text-sm font-medium text-charcoal hover:text-champagne transition-colors"
                 >
-                  Featured
-                </button>
+                  Shop
+                </Link>
                 <button 
                   onClick={() => scrollToSection('about')} 
                   className="text-sm font-medium text-charcoal hover:text-champagne transition-colors text-left"

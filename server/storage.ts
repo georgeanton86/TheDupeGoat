@@ -431,7 +431,9 @@ export class MemStorage implements IStorage {
   async createProduct(insertProduct: InsertProduct): Promise<Product> {
     const id = randomUUID();
     const product: Product = { 
-      ...insertProduct, 
+      ...insertProduct,
+      originalPrice: insertProduct.originalPrice ?? null,
+      soldCount: insertProduct.soldCount ?? 0,
       id,
       createdAt: new Date(),
     };
@@ -456,7 +458,8 @@ export class MemStorage implements IStorage {
   async createOrder(insertOrder: InsertOrder): Promise<Order> {
     const id = randomUUID();
     const order: Order = { 
-      ...insertOrder, 
+      ...insertOrder,
+      policyAcknowledged: insertOrder.policyAcknowledged ?? false,
       id,
       status: "pending",
       createdAt: new Date(),
