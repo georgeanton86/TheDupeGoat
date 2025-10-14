@@ -9,7 +9,7 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { useLocation } from "wouter";
 import Header from "@/components/header";
 import Footer from "@/components/footer";
-import PayPalButton from "@/components/PayPalButton";
+import CartPayPalButton from "@/components/CartPayPalButton";
 import type { Product } from "@shared/schema";
 
 interface CartItem {
@@ -196,10 +196,14 @@ const CheckoutForm = ({ checkoutData }: { checkoutData: CheckoutData }) => {
             <div className="space-y-2">
               <Label>Payment Method</Label>
               <div className="border rounded-lg p-8 text-center">
-                <PayPalButton
-                  amount={checkoutData.total.toFixed(2)}
-                  currency="USD"
-                  intent="CAPTURE"
+                <CartPayPalButton
+                  items={checkoutData.items.map(item => ({
+                    productId: item.product.id,
+                    quantity: item.quantity
+                  }))}
+                  promoCode={checkoutData.promoCode}
+                  onApprove={handlePayPalPayment}
+                  disabled={!policyAcknowledged || !customerEmail || !customerName || isProcessing}
                 />
                 <p className="text-sm text-gray-500 mt-4">
                   Pay securely with PayPal, credit card, or debit card

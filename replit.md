@@ -1,6 +1,6 @@
 # Overview
 
-This is a luxury perfume e-commerce application called "RVLTN PARFUMS" that focuses on selling exclusive, limited-edition fragrances. The application features a premium brand experience with sophisticated design, limited monthly product releases, and a strict no-returns policy. It's built as a full-stack application with payment processing capabilities through Stripe.
+This is a luxury perfume e-commerce application called "RVLTN PARFUMS" that focuses on selling exclusive, limited-edition Christian-themed fragrances. The application features 15 biblical character fragrances with Revelation-style names, premium brand experience, realistic sales counters, shopping cart with promo codes, and a strict no-returns policy. It's built as a full-stack application with production-grade secure PayPal payment processing.
 
 # User Preferences
 
@@ -24,9 +24,20 @@ Preferred communication style: Simple, everyday language.
 - **Session Management**: Express sessions with PostgreSQL session store (connect-pg-simple)
 
 ## Payment Processing
-- **Provider**: Stripe integration for secure payment handling
-- **Implementation**: Stripe Elements for payment forms with server-side payment intent creation
-- **Security**: Environment-based API key management with separate public/private keys
+- **Provider**: PayPal integration (@paypal/paypal-server-sdk) for secure cart-based checkout
+- **Implementation**: Custom CartPayPalButton component with PayPal SDK v6
+- **Security**: Production-grade security with comprehensive server-side validation:
+  - Server-side price recalculation from database (no client price trust)
+  - Zod validation for quantities (positive integers, max 100)
+  - PayPal SDK verification of order status and captures
+  - Currency validation (USD only)
+  - Amount reconciliation (±1¢ tolerance)
+  - Idempotency protection against replay attacks
+  - Promo code validation (WELCOME10 for 10% off)
+  - Free shipping calculation (orders ≥$100)
+- **Components**: 
+  - CartPayPalButton: Secure cart checkout with item-level validation
+  - PayPalButton (legacy): Amount-based button (DO NOT MODIFY - incompatible with cart flow)
 
 ## Database Design
 - **ORM**: Drizzle ORM configured for PostgreSQL with type-safe schema definitions
@@ -43,8 +54,9 @@ Preferred communication style: Simple, everyday language.
 # External Dependencies
 
 ## Payment Services
-- **Stripe**: Complete payment processing platform with React integration (@stripe/stripe-js, @stripe/react-stripe-js)
-- **Environment**: Separate public and secret keys for client and server-side operations
+- **PayPal**: Complete payment processing platform with PayPal Server SDK (@paypal/paypal-server-sdk)
+- **Environment**: PAYPAL_CLIENT_ID and PAYPAL_CLIENT_SECRET for OAuth authentication
+- **Stripe**: Available but not currently used (configured for future integration)
 
 ## Database Services
 - **Neon Database**: Serverless PostgreSQL database with connection pooling (@neondatabase/serverless)
