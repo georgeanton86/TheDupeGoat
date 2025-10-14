@@ -10,8 +10,9 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Input } from "@/components/ui/input";
 import type { Product } from "@shared/schema";
 import { ShoppingCart, Tag, Truck } from "lucide-react";
-import perfumeImage from "@assets/generated_images/Luxury_Summer_of_Singhs_perfume_dfd15174.png";
 import shieldLogo from "@assets/file_00000000bbe861f59a1f386791e71acf_1760480859007.png";
+
+const perfumeImage = new URL("../../attached_assets/generated_images/Luxury_Summer_of_Singhs_perfume_dfd15174.png", import.meta.url).href;
 
 interface CartItem {
   product: Product;

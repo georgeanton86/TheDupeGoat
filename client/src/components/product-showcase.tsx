@@ -3,8 +3,9 @@ import { Link } from "wouter";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import CountdownTimer from "./countdown-timer";
-import perfumeImage from "@assets/generated_images/Luxury_Summer_of_Singhs_perfume_dfd15174.png";
 import shieldLogo from "@assets/file_00000000bbe861f59a1f386791e71acf_1760480859007.png";
+
+const perfumeImage = new URL("../../attached_assets/generated_images/Luxury_Summer_of_Singhs_perfume_dfd15174.png", import.meta.url).href;
 
 export default function ProductShowcase() {
   const { data: product, isLoading } = useQuery({
