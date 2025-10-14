@@ -10,8 +10,26 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Input } from "@/components/ui/input";
 import type { Product } from "@shared/schema";
 import { ShoppingCart, Tag, Truck } from "lucide-react";
-import perfumeImage from "@assets/generated_images/Luxury_Summer_of_Singhs_perfume_dfd15174.png";
 import shieldLogo from "@assets/file_00000000bbe861f59a1f386791e71acf_1760480859007.png";
+
+// Import all product images
+const productImages: Record<string, string> = {
+  "@assets/stock_images/luxury_black_perfume_4d42a7fb.jpg": new URL("@assets/stock_images/luxury_black_perfume_4d42a7fb.jpg", import.meta.url).href,
+  "@assets/stock_images/premium_gold_perfume_6bc4af3b.jpg": new URL("@assets/stock_images/premium_gold_perfume_6bc4af3b.jpg", import.meta.url).href,
+  "@assets/stock_images/luxury_black_perfume_35c94222.jpg": new URL("@assets/stock_images/luxury_black_perfume_35c94222.jpg", import.meta.url).href,
+  "@assets/stock_images/premium_gold_perfume_36da37ac.jpg": new URL("@assets/stock_images/premium_gold_perfume_36da37ac.jpg", import.meta.url).href,
+  "@assets/stock_images/luxury_black_perfume_5fddfc63.jpg": new URL("@assets/stock_images/luxury_black_perfume_5fddfc63.jpg", import.meta.url).href,
+  "@assets/stock_images/premium_gold_perfume_92d8a827.jpg": new URL("@assets/stock_images/premium_gold_perfume_92d8a827.jpg", import.meta.url).href,
+  "@assets/stock_images/luxury_black_perfume_30623383.jpg": new URL("@assets/stock_images/luxury_black_perfume_30623383.jpg", import.meta.url).href,
+  "@assets/stock_images/premium_gold_perfume_52003116.jpg": new URL("@assets/stock_images/premium_gold_perfume_52003116.jpg", import.meta.url).href,
+  "@assets/stock_images/luxury_black_perfume_c6e30730.jpg": new URL("@assets/stock_images/luxury_black_perfume_c6e30730.jpg", import.meta.url).href,
+  "@assets/stock_images/premium_gold_perfume_82abe094.jpg": new URL("@assets/stock_images/premium_gold_perfume_82abe094.jpg", import.meta.url).href,
+  "@assets/stock_images/luxury_black_perfume_8f246ccc.jpg": new URL("@assets/stock_images/luxury_black_perfume_8f246ccc.jpg", import.meta.url).href,
+  "@assets/stock_images/luxury_black_perfume_56a0123d.jpg": new URL("@assets/stock_images/luxury_black_perfume_56a0123d.jpg", import.meta.url).href,
+  "@assets/stock_images/luxury_black_perfume_2233a4d6.jpg": new URL("@assets/stock_images/luxury_black_perfume_2233a4d6.jpg", import.meta.url).href,
+  "@assets/stock_images/luxury_black_perfume_c0c488f7.jpg": new URL("@assets/stock_images/luxury_black_perfume_c0c488f7.jpg", import.meta.url).href,
+  "@assets/stock_images/luxury_black_perfume_a809b772.jpg": new URL("@assets/stock_images/luxury_black_perfume_a809b772.jpg", import.meta.url).href,
+};
 
 interface CartItem {
   product: Product;
@@ -265,12 +283,14 @@ function ProductCard({ product, onAddToCart }: { product: Product; onAddToCart: 
   const stockPercent = (product.remainingInventory / product.totalInventory) * 100;
   const isLowStock = stockPercent < 20;
 
+  const productImageSrc = productImages[product.imageUrl] || product.imageUrl;
+  
   return (
     <Card className="overflow-hidden hover:shadow-xl transition-all duration-300 hover:-translate-y-1">
       <CardContent className="p-0">
         <div className="relative h-64 bg-gradient-to-br from-champagne/10 to-luxury-black/10 flex items-center justify-center">
           <img 
-            src={perfumeImage} 
+            src={productImageSrc} 
             alt={product.name}
             className="h-full w-auto object-contain"
             data-testid={`img-product-${product.id}`}
