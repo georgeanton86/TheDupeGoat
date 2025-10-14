@@ -11,6 +11,7 @@ import { Input } from "@/components/ui/input";
 import type { Product } from "@shared/schema";
 import { ShoppingCart, Tag, Truck } from "lucide-react";
 import perfumeImage from "@assets/generated_images/Luxury_Summer_of_Singhs_perfume_dfd15174.png";
+import shieldLogo from "@assets/file_00000000bbe861f59a1f386791e71acf_1760480859007.png";
 
 interface CartItem {
   product: Product;
@@ -98,24 +99,29 @@ export default function Shop() {
     <div className="min-h-screen bg-white">
       <Header />
       
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
-        {/* Header */}
-        <div className="text-center mb-12">
-          <h1 className="text-5xl font-serif font-bold text-luxury-black mb-4">Biblical Collection</h1>
-          <p className="text-lg text-gray-600 max-w-2xl mx-auto">
-            15 transformative fragrances inspired by Scripture. Each 30ml bottle carries divine purpose.
-          </p>
-          <div className="mt-4 flex items-center justify-center gap-4 text-sm text-gray-500">
-            <div className="flex items-center gap-1">
-              <Truck className="w-4 h-4" />
-              <span>Free shipping over $100</span>
-            </div>
-            <div className="flex items-center gap-1">
-              <Tag className="w-4 h-4" />
-              <span>Use code WELCOME10 for 10% off</span>
+      {/* Hero Banner */}
+      <div className="bg-gradient-to-br from-luxury-black via-charcoal to-luxury-black pt-24 pb-16">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-8">
+            <h1 className="text-5xl md:text-6xl font-serif font-bold text-champagne mb-4">Biblical Collection</h1>
+            <p className="text-lg text-champagne/80 max-w-2xl mx-auto mb-6">
+              15 transformative fragrances inspired by Scripture. Each 30ml bottle carries divine purpose.
+            </p>
+            <div className="flex items-center justify-center gap-6 text-sm">
+              <div className="flex items-center gap-2 text-champagne/90">
+                <Truck className="w-5 h-5" />
+                <span>Free shipping over $100</span>
+              </div>
+              <div className="flex items-center gap-2 text-champagne/90">
+                <Tag className="w-5 h-5" />
+                <span>WELCOME10 for 10% off</span>
+              </div>
             </div>
           </div>
         </div>
+      </div>
+      
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
 
         <div className="grid lg:grid-cols-3 gap-8">
           {/* Products Grid */}
@@ -260,18 +266,27 @@ function ProductCard({ product, onAddToCart }: { product: Product; onAddToCart: 
   const isLowStock = stockPercent < 20;
 
   return (
-    <Card className="overflow-hidden hover:shadow-xl transition-shadow">
+    <Card className="overflow-hidden hover:shadow-xl transition-all duration-300 hover:-translate-y-1">
       <CardContent className="p-0">
-        <div className="relative h-48 overflow-hidden bg-gradient-to-br from-champagne/20 to-luxury-black/5">
+        <div className="relative h-56 overflow-hidden bg-gradient-to-br from-champagne/10 to-luxury-black/10">
           <img 
             src={perfumeImage} 
             alt={product.name}
             className="w-full h-full object-cover"
             data-testid={`img-product-${product.id}`}
           />
+          {/* Shield logo overlay */}
+          <div className="absolute bottom-3 left-1/2 transform -translate-x-1/2">
+            <img 
+              src={shieldLogo} 
+              alt="RVLTN Shield" 
+              className="w-16 h-16 object-contain opacity-70"
+            />
+          </div>
+          <div className="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent"></div>
           <Badge 
             variant={isLowStock ? "destructive" : "secondary"} 
-            className="absolute top-3 right-3 text-xs"
+            className="absolute top-3 right-3 text-xs bg-champagne text-luxury-black border-0"
           >
             {product.remainingInventory} left
           </Badge>

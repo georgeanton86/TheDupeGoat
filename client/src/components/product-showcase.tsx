@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import CountdownTimer from "./countdown-timer";
 import perfumeImage from "@assets/generated_images/Luxury_Summer_of_Singhs_perfume_dfd15174.png";
+import shieldLogo from "@assets/file_00000000bbe861f59a1f386791e71acf_1760480859007.png";
 
 export default function ProductShowcase() {
   const { data: product, isLoading } = useQuery({
@@ -65,8 +66,8 @@ export default function ProductShowcase() {
                 PRE-ORDER NOW - <span className="font-semibold ml-1">{total}</span> bottles available
               </Badge>
             ) : remaining > 0 ? (
-              <Badge variant="destructive" className="mb-6 animate-pulse" data-testid="badge-inventory">
-                <span className="w-2 h-2 bg-red-500 rounded-full mr-2 animate-pulse"></span>
+              <Badge variant="destructive" className="mb-6 bg-champagne text-luxury-black animate-pulse" data-testid="badge-inventory">
+                <span className="w-2 h-2 bg-luxury-black rounded-full mr-2 animate-pulse"></span>
                 LIMITED EDITION - <span className="font-semibold ml-1">{remaining}</span> of {total} remaining
               </Badge>
             ) : (
@@ -76,57 +77,57 @@ export default function ProductShowcase() {
               </Badge>
             )}
             
-            <h2 className="text-5xl lg:text-6xl font-serif font-bold text-luxury-black mb-4 leading-tight">
+            <h2 className="text-5xl lg:text-6xl font-serif font-bold text-champagne mb-4 leading-tight">
               {product.name.split(' ').slice(0, -1).join(' ')}
-              <span className="text-champagne italic block">{product.name.split(' ').slice(-1)}</span>
+              <span className="text-white italic block">{product.name.split(' ').slice(-1)}</span>
             </h2>
             
-            <p className="text-xl text-gray-600 mb-8 leading-relaxed max-w-lg">
+            <p className="text-xl text-champagne/80 mb-8 leading-relaxed max-w-lg">
               {product.description}
             </p>
             
             {/* Product Details */}
             <div className="space-y-4 mb-10">
               <div className="flex items-center justify-center lg:justify-start">
-                <span className="text-sm font-medium text-gray-500 w-24">Volume:</span>
-                <span className="text-sm font-semibold">{product.volume}</span>
+                <span className="text-sm font-medium text-champagne/60 w-24">Volume:</span>
+                <span className="text-sm font-semibold text-white">{product.volume}</span>
               </div>
               <div className="flex items-center justify-center lg:justify-start">
-                <span className="text-sm font-medium text-gray-500 w-24">Notes:</span>
-                <span className="text-sm">{product.notes}</span>
+                <span className="text-sm font-medium text-champagne/60 w-24">Notes:</span>
+                <span className="text-sm text-champagne/80">{product.notes}</span>
               </div>
               <div className="flex items-center justify-center lg:justify-start">
-                <span className="text-sm font-medium text-gray-500 w-24">Type:</span>
-                <span className="text-sm">{product.type}</span>
+                <span className="text-sm font-medium text-champagne/60 w-24">Type:</span>
+                <span className="text-sm text-champagne/80">{product.type}</span>
               </div>
             </div>
             
             {/* Pricing */}
             <div className="text-center lg:text-left mb-10">
-              <span className="text-4xl font-serif font-bold text-luxury-black" data-testid="text-price">
+              <span className="text-4xl font-serif font-bold text-champagne" data-testid="text-price">
                 ${product.price}
               </span>
               {product.originalPrice && (
-                <span className="text-lg text-gray-500 line-through ml-3">
+                <span className="text-lg text-champagne/50 line-through ml-3">
                   ${product.originalPrice}
                 </span>
               )}
-              <div className="text-sm text-champagne font-medium mt-1">Limited Release Pricing</div>
+              <div className="text-sm text-white/80 font-medium mt-1">Limited Release Pricing</div>
             </div>
             
             {/* CTA Buttons */}
             <div className="space-y-4">
               <Link href="/shop">
                 <Button 
-                  className="w-full lg:w-auto bg-luxury-black text-white px-12 py-4 text-lg font-semibold tracking-wide hover:bg-charcoal transition-all duration-300 transform hover:scale-[1.02] shadow-xl"
+                  className="w-full lg:w-auto bg-champagne text-luxury-black px-12 py-4 text-lg font-semibold tracking-wide hover:bg-champagne/90 transition-all duration-300 transform hover:scale-[1.02] shadow-xl"
                   data-testid="button-shop-now"
                 >
                   SHOP NOW
                 </Button>
               </Link>
-              <div className="bg-gradient-to-r from-champagne/10 to-luxury-black/10 p-4 rounded-lg">
-                <h4 className="font-semibold text-luxury-black mb-2">✨ What's Included:</h4>
-                <ul className="text-sm text-gray-700 space-y-1">
+              <div className="bg-white/5 backdrop-blur-sm border border-champagne/20 p-4 rounded-lg">
+                <h4 className="font-semibold text-champagne mb-2">✨ What's Included:</h4>
+                <ul className="text-sm text-champagne/80 space-y-1">
                   <li>✓ 15 powerful biblical fragrances</li>
                   <li>✓ FREE shipping over $100</li>
                   <li>✓ Use code WELCOME10 for 10% off</li>
@@ -140,15 +141,27 @@ export default function ProductShowcase() {
         {/* Product Image */}
         <div className="order-1 lg:order-2 flex justify-center">
           <div className="relative group">
-            <img 
-              src={perfumeImage} 
-              alt={`${product.name} - RVLTN Parfums Limited Edition`} 
-              className="w-80 h-96 object-cover rounded-2xl shadow-2xl group-hover:shadow-3xl transition-shadow duration-500"
-              data-testid="img-product"
-            />
-            <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent rounded-2xl"></div>
+            {/* Main bottle image */}
+            <div className="relative w-80 h-96 rounded-2xl overflow-hidden shadow-2xl group-hover:shadow-3xl transition-all duration-500">
+              <img 
+                src={perfumeImage} 
+                alt={`${product.name} - RVLTN Parfums Limited Edition`} 
+                className="w-full h-full object-cover"
+                data-testid="img-product"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent"></div>
+              
+              {/* Shield logo overlay on bottle */}
+              <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2">
+                <img 
+                  src={shieldLogo} 
+                  alt="RVLTN Shield" 
+                  className="w-24 h-24 object-contain opacity-90 group-hover:opacity-100 transition-opacity"
+                />
+              </div>
+            </div>
             
-            {/* Floating Elements */}
+            {/* Floating Badge */}
             <Badge className={`absolute -top-4 -right-4 shadow-lg ${
               isPreOrder 
                 ? "bg-champagne text-luxury-black" 
@@ -158,9 +171,6 @@ export default function ProductShowcase() {
             }`}>
               {isPreOrder ? "PRE-ORDER" : remaining > 0 ? "NEW" : "SOLD OUT"}
             </Badge>
-            <div className="absolute -bottom-4 left-1/2 transform -translate-x-1/2 bg-red-100 border border-red-300 px-4 py-2 rounded-full shadow-lg text-xs font-medium text-red-700">
-              Pre-Order Only - No Physical Product Yet
-            </div>
           </div>
         </div>
       </div>

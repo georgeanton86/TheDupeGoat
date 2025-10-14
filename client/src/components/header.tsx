@@ -1,6 +1,8 @@
 import { Link, useLocation } from "wouter";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
+import { ShoppingCart } from "lucide-react";
+import brandLogo from "@assets/file_00000000c5c4622f8f60554b7297e0f4_1760480858957.png";
 
 export default function Header() {
   const [location] = useLocation();
@@ -18,35 +20,48 @@ export default function Header() {
   };
 
   return (
-    <header className="fixed top-0 left-0 right-0 z-50 bg-white/95 backdrop-blur-sm border-b border-gray-100">
+    <header className="fixed top-0 left-0 right-0 z-50 bg-luxury-black/95 backdrop-blur-sm border-b border-champagne/20">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex items-center justify-between h-16">
-          <Link href="/" className="flex items-center" data-testid="link-home">
-            <h1 className="text-2xl font-serif font-bold text-luxury-black tracking-wide">RVLTN</h1>
-            <span className="ml-2 text-sm font-light text-gray-500 tracking-widest">PARFUMS</span>
+        <div className="flex items-center justify-between h-20">
+          <Link href="/" className="flex items-center gap-3" data-testid="link-home">
+            <img src={brandLogo} alt="RVLTN PARFUMS" className="h-14 w-14 object-contain" />
+            <div className="flex flex-col">
+              <h1 className="text-2xl font-serif font-bold text-champagne tracking-wide">RVLTN</h1>
+              <span className="text-xs font-light text-champagne/70 tracking-widest">PARFUMS</span>
+            </div>
           </Link>
           
           <nav className="hidden md:flex items-center space-x-8">
             <Link 
               href="/shop" 
-              className="text-sm font-medium text-charcoal hover:text-champagne transition-colors"
+              className="text-sm font-semibold text-champagne/90 hover:text-champagne transition-colors uppercase tracking-wide"
               data-testid="link-shop"
             >
-              Shop
+              Collection
             </Link>
             <button 
               onClick={() => scrollToSection('about')} 
-              className="text-sm font-medium text-charcoal hover:text-champagne transition-colors"
+              className="text-sm font-semibold text-champagne/90 hover:text-champagne transition-colors uppercase tracking-wide"
               data-testid="button-nav-about"
             >
-              About
+              Our Story
             </button>
             <Link 
               href="/policy" 
-              className="text-sm font-medium text-charcoal hover:text-champagne transition-colors"
+              className="text-sm font-semibold text-champagne/90 hover:text-champagne transition-colors uppercase tracking-wide"
               data-testid="link-policy"
             >
               Policy
+            </Link>
+            <Link 
+              href="/shop" 
+              className="ml-4"
+              data-testid="link-cart"
+            >
+              <Button size="sm" className="bg-champagne text-luxury-black hover:bg-champagne/90 font-semibold">
+                <ShoppingCart className="w-4 h-4 mr-2" />
+                Shop Now
+              </Button>
             </Link>
           </nav>
           
@@ -54,26 +69,33 @@ export default function Header() {
           <Sheet>
             <SheetTrigger asChild>
               <Button variant="ghost" size="icon" className="md:hidden" data-testid="button-mobile-menu">
-                <i className="fas fa-bars text-luxury-black"></i>
+                <i className="fas fa-bars text-champagne"></i>
               </Button>
             </SheetTrigger>
-            <SheetContent>
-              <nav className="flex flex-col space-y-4 mt-8">
+            <SheetContent className="bg-luxury-black border-champagne/20">
+              <div className="flex items-center gap-3 mb-8">
+                <img src={brandLogo} alt="RVLTN PARFUMS" className="h-12 w-12 object-contain" />
+                <div className="flex flex-col">
+                  <h2 className="text-xl font-serif font-bold text-champagne">RVLTN</h2>
+                  <span className="text-xs font-light text-champagne/70 tracking-widest">PARFUMS</span>
+                </div>
+              </div>
+              <nav className="flex flex-col space-y-4">
                 <Link 
                   href="/shop" 
-                  className="text-sm font-medium text-charcoal hover:text-champagne transition-colors"
+                  className="text-sm font-semibold text-champagne/90 hover:text-champagne transition-colors uppercase tracking-wide"
                 >
-                  Shop
+                  Collection
                 </Link>
                 <button 
                   onClick={() => scrollToSection('about')} 
-                  className="text-sm font-medium text-charcoal hover:text-champagne transition-colors text-left"
+                  className="text-sm font-semibold text-champagne/90 hover:text-champagne transition-colors text-left uppercase tracking-wide"
                 >
-                  About
+                  Our Story
                 </button>
                 <Link 
                   href="/policy" 
-                  className="text-sm font-medium text-charcoal hover:text-champagne transition-colors"
+                  className="text-sm font-semibold text-champagne/90 hover:text-champagne transition-colors uppercase tracking-wide"
                 >
                   Policy
                 </Link>

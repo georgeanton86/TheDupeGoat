@@ -4,7 +4,11 @@ import Footer from "@/components/footer";
 import ProductShowcase from "@/components/product-showcase";
 import ProductGallery from "@/components/product-gallery";
 import creatorImage from "@assets/Screenshot_20250822_065742_Photos_1755864649303.jpg";
+import shieldLogo from "@assets/file_00000000bbe861f59a1f386791e71acf_1760480859007.png";
 import { Card, CardContent } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { Shield, Award, Truck } from "lucide-react";
+import { Link } from "wouter";
 import { useState, useEffect } from "react";
 
 // Fun visitor counter with animations
@@ -91,10 +95,31 @@ export default function Home() {
       <Header />
       
       {/* Hero Section */}
-      <section id="featured" className="pt-16 min-h-screen bg-gradient-to-br from-warm-gray to-white relative overflow-hidden">
-        <div className="absolute inset-0 bg-black/5"></div>
+      <section id="featured" className="pt-20 min-h-screen bg-gradient-to-br from-luxury-black via-charcoal to-luxury-black relative overflow-hidden">
+        <div className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAiIGhlaWdodD0iNjAiIHZpZXdCb3g9IjAgMCA2MCA2MCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48ZyBmaWxsPSJub25lIiBmaWxsLXJ1bGU9ImV2ZW5vZGQiPjxnIGZpbGw9IiNmZmZmZmYiIGZpbGwtb3BhY2l0eT0iMC4wMiI+PHBhdGggZD0iTTM2IDM0djItaDJ2LTJoLTJ6bTAgNHYyaDJ2LTJoLTJ6bS0yIDJ2Mmgydi0yaC0yem0wLTR2Mmgydi0yaC0yem0yLTJ2LTJoLTJ2Mmgyem0wLTRoLTJ2Mmgydi0yem0yIDJ2LTJoLTJ2MmgyeiIvPjwvZz48L2c+PC9zdmc+')] opacity-30"></div>
         <div className="relative">
           <ProductShowcase />
+        </div>
+        
+        {/* Trust Badges */}
+        <div className="relative max-w-6xl mx-auto px-4 pb-20">
+          <div className="grid md:grid-cols-3 gap-6">
+            <div className="bg-white/5 backdrop-blur-sm border border-champagne/20 rounded-lg p-6 text-center">
+              <Shield className="w-10 h-10 text-champagne mx-auto mb-3" />
+              <h3 className="text-champagne font-semibold mb-2">Authentic Biblical Scents</h3>
+              <p className="text-champagne/70 text-sm">15 fragrances inspired by Scripture</p>
+            </div>
+            <div className="bg-white/5 backdrop-blur-sm border border-champagne/20 rounded-lg p-6 text-center">
+              <Truck className="w-10 h-10 text-champagne mx-auto mb-3" />
+              <h3 className="text-champagne font-semibold mb-2">Free Shipping Over $100</h3>
+              <p className="text-champagne/70 text-sm">Fast delivery nationwide</p>
+            </div>
+            <div className="bg-white/5 backdrop-blur-sm border border-champagne/20 rounded-lg p-6 text-center">
+              <Award className="w-10 h-10 text-champagne mx-auto mb-3" />
+              <h3 className="text-champagne font-semibold mb-2">Premium Quality</h3>
+              <p className="text-champagne/70 text-sm">30ml Eau de Parfum</p>
+            </div>
+          </div>
         </div>
       </section>
 
