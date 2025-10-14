@@ -268,25 +268,27 @@ function ProductCard({ product, onAddToCart }: { product: Product; onAddToCart: 
   return (
     <Card className="overflow-hidden hover:shadow-xl transition-all duration-300 hover:-translate-y-1">
       <CardContent className="p-0">
-        <div className="relative h-56 overflow-hidden bg-gradient-to-br from-champagne/10 to-luxury-black/10">
+        <div className="relative h-64 bg-gradient-to-br from-champagne/10 to-luxury-black/10 flex items-center justify-center">
           <img 
             src={perfumeImage} 
             alt={product.name}
-            className="w-full h-full object-cover"
+            className="h-full w-auto object-contain"
             data-testid={`img-product-${product.id}`}
           />
-          {/* Shield logo overlay */}
-          <div className="absolute bottom-3 left-1/2 transform -translate-x-1/2">
+          {/* Shield logo overlay - positioned on the bottle */}
+          <div className="absolute bottom-6 left-1/2 transform -translate-x-1/2">
             <img 
               src={shieldLogo} 
               alt="RVLTN Shield" 
-              className="w-16 h-16 object-contain opacity-70"
+              className="w-14 h-14 object-contain opacity-80"
             />
           </div>
-          <div className="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent"></div>
+          {/* Gradient overlay */}
+          <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent pointer-events-none"></div>
+          {/* Stock badge */}
           <Badge 
             variant={isLowStock ? "destructive" : "secondary"} 
-            className="absolute top-3 right-3 text-xs bg-champagne text-luxury-black border-0"
+            className={`absolute top-3 right-3 text-xs border-0 ${isLowStock ? 'bg-red-600 text-white' : 'bg-champagne text-luxury-black'}`}
           >
             {product.remainingInventory} left
           </Badge>

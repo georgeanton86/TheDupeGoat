@@ -142,21 +142,22 @@ export default function ProductShowcase() {
         <div className="order-1 lg:order-2 flex justify-center">
           <div className="relative group">
             {/* Main bottle image */}
-            <div className="relative w-80 h-96 rounded-2xl overflow-hidden shadow-2xl group-hover:shadow-3xl transition-all duration-500">
+            <div className="relative w-80 h-96 rounded-2xl overflow-hidden shadow-2xl group-hover:shadow-3xl transition-all duration-500 bg-gradient-to-br from-champagne/10 to-luxury-black/10 flex items-center justify-center">
               <img 
                 src={perfumeImage} 
                 alt={`${product.name} - RVLTN Parfums Limited Edition`} 
-                className="w-full h-full object-cover"
+                className="h-full w-auto object-contain"
                 data-testid="img-product"
               />
-              <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent"></div>
+              {/* Gradient overlay */}
+              <div className="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent pointer-events-none"></div>
               
               {/* Shield logo overlay on bottle */}
-              <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2">
+              <div className="absolute bottom-12 left-1/2 transform -translate-x-1/2">
                 <img 
                   src={shieldLogo} 
                   alt="RVLTN Shield" 
-                  className="w-24 h-24 object-contain opacity-90 group-hover:opacity-100 transition-opacity"
+                  className="w-20 h-20 object-contain opacity-90 group-hover:opacity-100 transition-opacity"
                 />
               </div>
             </div>
