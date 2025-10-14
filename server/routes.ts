@@ -4,6 +4,19 @@ import { storage } from "./storage";
 import { insertOrderSchema } from "@shared/schema";
 import { z } from "zod";
 import { createPaypalOrder, capturePaypalOrder, loadPaypalDefault } from "./paypal";
+import { Client, Environment, LogLevel, OrdersController } from "@paypal/paypal-server-sdk";
+
+// Initialize PayPal client for order verification
+const { PAYPAL_CLIENT_ID, PAYPAL_CLIENT_SECRET } = process.env;
+const paypalClient = new Client({
+  clientCredentialsAuthCredentials: {
+    oAuthClientId: PAYPAL_CLIENT_ID!,
+    oAuthClientSecret: PAYPAL_CLIENT_SECRET!,
+  },
+  environment: process.env.NODE_ENV === "production" ? Environment.Production : Environment.Sandbox,
+  logging: { logLevel: LogLevel.Error },
+});
+const paypalOrdersController = new OrdersController(paypalClient);
 
 export async function registerRoutes(app: Express): Promise<Server> {
   
@@ -52,9 +65,66 @@ export async function registerRoutes(app: Express): Promise<Server> {
     await loadPaypalDefault(req, res);
   });
 
+  // SECURE PayPal order creation - calculates server total from cart
   app.post("/paypal/order", async (req, res) => {
-    // Request body should contain: { intent, amount, currency }
-    await createPaypalOrder(req, res);
+    try {
+      const { items, promoCode } = req.body;
+
+      if (!items || items.length === 0) {
+        return res.status(400).json({ error: "No items in cart" });
+      }
+
+      // CRITICAL: Validate quantities are positive integers
+      for (const item of items) {
+        if (!item.quantity || !Number.isInteger(item.quantity) || item.quantity <= 0 || item.quantity > 100) {
+          return res.status(400).json({ error: "Invalid quantities" });
+        }
+      }
+
+      // SERVER-SIDE RECALCULATION - same logic as completion endpoint
+      let serverSubtotal = 0;
+      for (const item of items) {
+        const product = await storage.getProduct(item.productId);
+        if (!product) {
+          return res.status(404).json({ error: `Product ${item.productId} not found` });
+        }
+        serverSubtotal += parseFloat(product.price) * item.quantity;
+      }
+
+      // Validate promo code
+      let serverDiscount = 0;
+      if (promoCode && promoCode.toUpperCase() === "WELCOME10") {
+        serverDiscount = serverSubtotal * 0.1;
+      }
+
+      // Calculate shipping
+      const serverShipping = serverSubtotal >= 100 ? 0 : 8.99;
+      const serverTotal = serverSubtotal - serverDiscount + serverShipping;
+
+      if (serverTotal <= 0) {
+        return res.status(400).json({ error: "Invalid total" });
+      }
+
+      // Create PayPal order with SERVER-calculated total
+      const { body, ...httpResponse } = await paypalOrdersController.createOrder({
+        body: {
+          intent: "CAPTURE",
+          purchaseUnits: [{
+            amount: {
+              currencyCode: "USD",
+              value: serverTotal.toFixed(2)
+            }
+          }]
+        },
+        prefer: "return=minimal"
+      });
+
+      const jsonResponse = JSON.parse(String(body));
+      res.status(httpResponse.statusCode).json(jsonResponse);
+    } catch (error) {
+      console.error("Failed to create PayPal order:", error);
+      res.status(500).json({ error: "Failed to create order" });
+    }
   });
 
   app.post("/paypal/order/:orderID/capture", async (req, res) => {
@@ -64,41 +134,185 @@ export async function registerRoutes(app: Express): Promise<Server> {
   // Handle PayPal payment completion
   app.post("/api/complete-paypal-payment", async (req, res) => {
     try {
-      const { paypalOrderId, productId, customerEmail, customerName, policyAcknowledged } = req.body;
+      const { 
+        paypalOrderId, 
+        items, 
+        customerEmail, 
+        customerName, 
+        policyAcknowledged,
+        promoCode
+      } = req.body;
       
       if (!policyAcknowledged) {
         return res.status(400).json({ message: "Policy acknowledgment required" });
       }
 
-      const product = await storage.getProduct(productId);
-      if (!product) {
-        return res.status(404).json({ message: "Product not found" });
+      if (!items || items.length === 0) {
+        return res.status(400).json({ message: "No items in cart" });
       }
 
-      if (product.remainingInventory <= 0) {
-        return res.status(400).json({ message: "Product out of stock" });
+      // CRITICAL: Validate all quantities are positive integers
+      for (const item of items) {
+        if (!item.quantity || !Number.isInteger(item.quantity) || item.quantity <= 0) {
+          return res.status(400).json({ 
+            message: "Invalid quantity. All quantities must be positive integers." 
+          });
+        }
+        if (item.quantity > 100) {
+          return res.status(400).json({ 
+            message: "Quantity exceeds maximum allowed per item (100)." 
+          });
+        }
       }
 
-      // Create order record
-      const order = await storage.createOrder({
-        productId,
-        customerEmail,
-        customerName,
-        paypalOrderId,
-        amount: product.price,
-        policyAcknowledged,
+      // SERVER-SIDE RECALCULATION - NEVER TRUST CLIENT PRICES
+      let serverSubtotal = 0;
+      const validatedItems = [];
+
+      // Verify all products exist, have sufficient inventory, and calculate actual prices
+      for (const item of items) {
+        const product = await storage.getProduct(item.productId);
+        if (!product) {
+          return res.status(404).json({ message: `Product ${item.productId} not found` });
+        }
+
+        if (product.remainingInventory < item.quantity) {
+          return res.status(400).json({ 
+            message: `Insufficient inventory for ${product.name}. Only ${product.remainingInventory} remaining.` 
+          });
+        }
+
+        // Calculate line item total from SERVER database, not client
+        const lineTotal = parseFloat(product.price) * item.quantity;
+        serverSubtotal += lineTotal;
+
+        validatedItems.push({
+          productId: item.productId,
+          quantity: item.quantity,
+          unitPrice: product.price,
+          lineTotal: lineTotal.toFixed(2),
+          product
+        });
+      }
+
+      // Validate and apply promo code on SERVER
+      let serverDiscount = 0;
+      let validPromoCode = null;
+      if (promoCode && promoCode.toUpperCase() === "WELCOME10") {
+        serverDiscount = serverSubtotal * 0.1;
+        validPromoCode = "WELCOME10";
+      }
+
+      // Calculate shipping on SERVER
+      const serverShipping = serverSubtotal >= 100 ? 0 : 8.99;
+      
+      // Calculate final total on SERVER
+      const serverTotal = serverSubtotal - serverDiscount + serverShipping;
+
+      // CRITICAL: Reject orders with invalid totals
+      if (serverTotal <= 0) {
+        return res.status(400).json({ 
+          message: "Invalid order total. Total must be greater than $0." 
+        });
+      }
+
+      // CRITICAL SECURITY: Prevent replay attacks - check if PayPal order already processed
+      const existingOrder = await storage.getOrderByPaypalOrderId(paypalOrderId);
+      if (existingOrder) {
+        return res.status(400).json({ 
+          message: "This PayPal order has already been processed. Duplicate orders are not allowed." 
+        });
+      }
+
+      // CRITICAL SECURITY: Verify PayPal order was actually captured using SDK
+      try {
+        const { body, ...httpResponse } = await paypalOrdersController.showOrderDetails({
+          id: paypalOrderId
+        });
+        
+        const paypalOrder = JSON.parse(String(body));
+        
+        if (httpResponse.statusCode !== 200) {
+          return res.status(400).json({ 
+            message: "Invalid PayPal order ID. Payment verification failed." 
+          });
+        }
+        
+        // Verify order is captured/completed
+        if (paypalOrder.status !== 'COMPLETED') {
+          return res.status(400).json({ 
+            message: "PayPal payment not completed. Please try again." 
+          });
+        }
+
+        // Verify captures exist
+        if (!paypalOrder.purchase_units?.[0]?.payments?.captures?.[0]) {
+          return res.status(400).json({ 
+            message: "PayPal payment not captured. Please contact support." 
+          });
+        }
+
+        // Verify captured amount AND currency match our calculated total
+        const captureData = paypalOrder.purchase_units[0].payments.captures[0];
+        const capturedAmount = parseFloat(captureData.amount.value);
+        const capturedCurrency = captureData.amount.currency_code;
+        
+        if (capturedCurrency !== 'USD') {
+          return res.status(400).json({ 
+            message: "Invalid payment currency. Only USD is accepted." 
+          });
+        }
+        
+        if (Math.abs(capturedAmount - serverTotal) > 0.01) { // Allow 1 cent rounding
+          return res.status(400).json({ 
+            message: `Payment amount mismatch. Expected $${serverTotal.toFixed(2)}, received $${capturedAmount.toFixed(2)}` 
+          });
+        }
+      } catch (paypalError) {
+        console.error("PayPal verification error:", paypalError);
+        return res.status(500).json({ 
+          message: "Failed to verify PayPal payment. Please contact support." 
+        });
+      }
+
+      // Create order records and update inventory for each item
+      const orderIds: string[] = [];
+      
+      for (const validatedItem of validatedItems) {
+        // Create order record for this item with SERVER-calculated price
+        const order = await storage.createOrder({
+          productId: validatedItem.productId,
+          customerEmail,
+          customerName,
+          paypalOrderId,
+          amount: validatedItem.lineTotal,
+          policyAcknowledged,
+        });
+        
+        // Update order status to completed
+        await storage.updateOrderStatus(order.id, "completed");
+        
+        // Decrease inventory
+        await storage.updateProductInventory(
+          validatedItem.productId, 
+          validatedItem.product.remainingInventory - validatedItem.quantity
+        );
+
+        // Increase sold count
+        await storage.updateProductSoldCount(
+          validatedItem.productId,
+          validatedItem.product.soldCount + validatedItem.quantity
+        );
+        
+        orderIds.push(order.id);
+      }
+
+      res.json({ 
+        success: true, 
+        orderIds,
+        total: serverTotal.toFixed(2),
+        promoCode: validPromoCode 
       });
-      
-      // Update order status to completed
-      await storage.updateOrderStatus(order.id, "completed");
-      
-      // Decrease inventory
-      await storage.updateProductInventory(
-        productId, 
-        product.remainingInventory - 1
-      );
-
-      res.json({ success: true, orderId: order.id });
     } catch (error: any) {
       res.status(500).json({ message: "Error completing payment: " + error.message });
     }

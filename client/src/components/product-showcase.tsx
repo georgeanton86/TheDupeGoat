@@ -117,54 +117,23 @@ export default function ProductShowcase() {
             
             {/* CTA Buttons */}
             <div className="space-y-4">
-              {isPreOrder ? (
-                <div className="space-y-4">
-                  <Link href="/checkout">
-                    <Button 
-                      className="w-full lg:w-auto bg-champagne text-luxury-black px-12 py-4 text-lg font-semibold tracking-wide hover:bg-yellow-500 transition-all duration-300 transform hover:scale-[1.02] shadow-xl"
-                      data-testid="button-pre-order"
-                    >
-                      ⚠️ Pre-Order (No Product Ready)
-                    </Button>
-                  </Link>
-                  <div className="bg-gradient-to-r from-champagne/10 to-luxury-black/10 p-4 rounded-lg">
-                    <h4 className="font-semibold text-luxury-black mb-2">Pre-Order Benefits:</h4>
-                    <ul className="text-sm text-gray-700 space-y-1">
-                      <li>✓ Guaranteed bottle from limited edition</li>
-                      <li>✓ Blessed pre-order pricing (save $30)</li>
-                      <li>✓ First access to exclusive fragrance</li>
-                      <li>✓ Exclusive pre-order pricing</li>
-                    </ul>
-                  </div>
-                </div>
-              ) : remaining > 0 ? (
-                <Link href="/checkout">
-                  <Button 
-                    className="w-full lg:w-auto bg-luxury-black text-white px-12 py-4 text-lg font-semibold tracking-wide hover:bg-charcoal transition-all duration-300 transform hover:scale-[1.02] shadow-xl"
-                    data-testid="button-purchase"
-                  >
-                    SECURE YOURS NOW
-                  </Button>
-                </Link>
-              ) : (
-                <div className="text-center">
-                  <Button 
-                    className="w-full lg:w-auto bg-red-600 text-white px-12 py-4 text-lg font-semibold tracking-wide cursor-not-allowed opacity-75"
-                    disabled
-                    data-testid="button-sold-out"
-                  >
-                    ✨ COMPLETELY SOLD OUT ✨
-                  </Button>
-                  <p className="text-sm text-gray-600 mt-3">
-                    <i className="fas fa-star mr-1"></i>
-                    This limited edition sold all 600 bottles! Join our waitlist for the next release.
-                  </p>
-                </div>
-              )}
-              <p className="text-xs text-gray-500 text-center lg:text-left max-w-md">
-                <i className="fas fa-shield-alt mr-1"></i>
-                WARNING: This is a pre-order only. No actual product available for shipping yet.
-              </p>
+              <Link href="/shop">
+                <Button 
+                  className="w-full lg:w-auto bg-luxury-black text-white px-12 py-4 text-lg font-semibold tracking-wide hover:bg-charcoal transition-all duration-300 transform hover:scale-[1.02] shadow-xl"
+                  data-testid="button-shop-now"
+                >
+                  SHOP NOW
+                </Button>
+              </Link>
+              <div className="bg-gradient-to-r from-champagne/10 to-luxury-black/10 p-4 rounded-lg">
+                <h4 className="font-semibold text-luxury-black mb-2">✨ What's Included:</h4>
+                <ul className="text-sm text-gray-700 space-y-1">
+                  <li>✓ 15 powerful biblical fragrances</li>
+                  <li>✓ FREE shipping over $100</li>
+                  <li>✓ Use code WELCOME10 for 10% off</li>
+                  <li>✓ One-click PayPal checkout</li>
+                </ul>
+              </div>
             </div>
           </div>
         </div>

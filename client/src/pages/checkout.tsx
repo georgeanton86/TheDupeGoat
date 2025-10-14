@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { apiRequest } from "@/lib/queryClient";
 import { useToast } from "@/hooks/use-toast";
 import { Button } from "@/components/ui/button";
@@ -6,13 +6,27 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Checkbox } from "@/components/ui/checkbox";
-import { useQuery } from "@tanstack/react-query";
 import { useLocation } from "wouter";
 import Header from "@/components/header";
 import Footer from "@/components/footer";
 import PayPalButton from "@/components/PayPalButton";
+import type { Product } from "@shared/schema";
 
-const CheckoutForm = ({ product }: { product: any }) => {
+interface CartItem {
+  product: Product;
+  quantity: number;
+}
+
+interface CheckoutData {
+  items: CartItem[];
+  promoCode: string | null;
+  subtotal: number;
+  discount: number;
+  shipping: number;
+  total: number;
+}
+
+const CheckoutForm = ({ checkoutData }: { checkoutData: CheckoutData }) => {
   const { toast } = useToast();
   const [, setLocation] = useLocation();
   const [customerEmail, setCustomerEmail] = useState("");
@@ -44,15 +58,22 @@ const CheckoutForm = ({ product }: { product: any }) => {
     try {
       const response = await apiRequest("POST", "/api/complete-paypal-payment", {
         paypalOrderId,
-        productId: product.id,
+        items: checkoutData.items.map(item => ({
+          productId: item.product.id,
+          quantity: item.quantity
+        })),
         customerEmail,
         customerName,
         policyAcknowledged,
+        promoCode: checkoutData.promoCode
       });
 
       const result = await response.json();
 
       if (result.success) {
+        // Clear cart from sessionStorage
+        sessionStorage.removeItem('checkoutCart');
+        
         toast({
           title: "Payment Successful",
           description: "Thank you for your purchase!",
@@ -83,18 +104,46 @@ const CheckoutForm = ({ product }: { product: any }) => {
           <Card className="bg-gray-50">
             <CardContent className="pt-6">
               <h4 className="font-semibold mb-3">Order Summary</h4>
-              <div className="flex justify-between items-center">
-                <span>{product.name} ({product.volume})</span>
-                <span className="font-semibold">${product.price}</span>
-              </div>
-              <div className="flex justify-between items-center text-sm text-gray-600 mt-2">
-                <span>Shipping</span>
-                <span className="text-green-600">Free</span>
-              </div>
+              
+              {checkoutData.items.map((item) => (
+                <div key={item.product.id} className="flex justify-between items-center mb-2">
+                  <span className="text-sm">
+                    {item.product.name} ({item.product.volume}) x {item.quantity}
+                  </span>
+                  <span className="font-semibold text-sm">
+                    ${(parseFloat(item.product.price) * item.quantity).toFixed(2)}
+                  </span>
+                </div>
+              ))}
+
               <hr className="my-3" />
+              
+              <div className="space-y-2 text-sm">
+                <div className="flex justify-between items-center">
+                  <span>Subtotal</span>
+                  <span>${checkoutData.subtotal.toFixed(2)}</span>
+                </div>
+                
+                {checkoutData.discount > 0 && (
+                  <div className="flex justify-between items-center text-green-600">
+                    <span>Discount ({checkoutData.promoCode})</span>
+                    <span>-${checkoutData.discount.toFixed(2)}</span>
+                  </div>
+                )}
+                
+                <div className="flex justify-between items-center">
+                  <span>Shipping</span>
+                  <span className={checkoutData.shipping === 0 ? "text-green-600" : ""}>
+                    {checkoutData.shipping === 0 ? "FREE" : `$${checkoutData.shipping.toFixed(2)}`}
+                  </span>
+                </div>
+              </div>
+
+              <hr className="my-3" />
+              
               <div className="flex justify-between items-center font-bold text-lg">
                 <span>Total</span>
-                <span>${product.price}</span>
+                <span>${checkoutData.total.toFixed(2)}</span>
               </div>
             </CardContent>
           </Card>
@@ -133,7 +182,7 @@ const CheckoutForm = ({ product }: { product: any }) => {
                   <Checkbox
                     id="policy"
                     checked={policyAcknowledged}
-                    onCheckedChange={setPolicyAcknowledged}
+                    onCheckedChange={(checked) => setPolicyAcknowledged(checked === true)}
                     required
                     data-testid="checkbox-policy"
                   />
@@ -148,7 +197,7 @@ const CheckoutForm = ({ product }: { product: any }) => {
               <Label>Payment Method</Label>
               <div className="border rounded-lg p-8 text-center">
                 <PayPalButton
-                  amount={product.price}
+                  amount={checkoutData.total.toFixed(2)}
                   currency="USD"
                   intent="CAPTURE"
                 />
@@ -179,11 +228,31 @@ const CheckoutForm = ({ product }: { product: any }) => {
 };
 
 export default function Checkout() {
-  const { data: product, isLoading } = useQuery({
-    queryKey: ["/api/product"],
-  });
+  const [, setLocation] = useLocation();
+  const [checkoutData, setCheckoutData] = useState<CheckoutData | null>(null);
 
-  if (isLoading) {
+  useEffect(() => {
+    const cartData = sessionStorage.getItem('checkoutCart');
+    if (!cartData) {
+      // No cart data, redirect to shop
+      setLocation('/shop');
+      return;
+    }
+
+    try {
+      const data = JSON.parse(cartData) as CheckoutData;
+      if (!data.items || data.items.length === 0) {
+        setLocation('/shop');
+        return;
+      }
+      setCheckoutData(data);
+    } catch (error) {
+      console.error('Error parsing cart data:', error);
+      setLocation('/shop');
+    }
+  }, [setLocation]);
+
+  if (!checkoutData) {
     return (
       <div className="min-h-screen bg-white">
         <Header />
@@ -195,23 +264,11 @@ export default function Checkout() {
     );
   }
 
-  if (!product) {
-    return (
-      <div className="min-h-screen bg-white">
-        <Header />
-        <div className="h-screen flex items-center justify-center">
-          <p>Product not found</p>
-        </div>
-        <Footer />
-      </div>
-    );
-  }
-
   return (
     <div className="min-h-screen bg-white">
       <Header />
       <div className="pt-16">
-        <CheckoutForm product={product} />
+        <CheckoutForm checkoutData={checkoutData} />
       </div>
       <Footer />
     </div>

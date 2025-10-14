@@ -1,5 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 import { useState } from "react";
+import { useLocation } from "wouter";
 import Header from "@/components/header";
 import Footer from "@/components/footer";
 import { Button } from "@/components/ui/button";
@@ -16,6 +17,7 @@ interface CartItem {
 }
 
 export default function Shop() {
+  const [, setLocation] = useLocation();
   const [cart, setCart] = useState<CartItem[]>([]);
   const [promoCode, setPromoCode] = useState("");
   const [promoApplied, setPromoApplied] = useState(false);
@@ -64,6 +66,19 @@ export default function Shop() {
   const discount = promoApplied ? subtotal * 0.1 : 0;
   const shipping = subtotal >= 100 ? 0 : 8.99;
   const total = subtotal - discount + shipping;
+
+  const handleCheckout = () => {
+    // Store cart data in sessionStorage for checkout page
+    sessionStorage.setItem('checkoutCart', JSON.stringify({
+      items: cart,
+      promoCode: promoApplied ? promoCode : null,
+      subtotal,
+      discount,
+      shipping,
+      total
+    }));
+    setLocation('/checkout');
+  };
 
   if (isLoading) {
     return (
@@ -213,6 +228,8 @@ export default function Shop() {
                       <Button
                         className="w-full bg-luxury-black text-white hover:bg-charcoal"
                         size="lg"
+                        onClick={handleCheckout}
+                        data-testid="button-checkout"
                       >
                         Checkout with PayPal
                       </Button>
