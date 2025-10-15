@@ -10,9 +10,6 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Input } from "@/components/ui/input";
 import type { Product } from "@shared/schema";
 import { ShoppingCart, Tag, Truck } from "lucide-react";
-import shieldLogo from "@assets/file_00000000bbe861f59a1f386791e71acf_1760480859007.png";
-
-const perfumeImage = new URL("../../attached_assets/generated_images/Luxury_Summer_of_Singhs_perfume_dfd15174.png", import.meta.url).href;
 
 interface CartItem {
   product: Product;
@@ -271,7 +268,7 @@ function ProductCard({ product, onAddToCart }: { product: Product; onAddToCart: 
       <CardContent className="p-0">
         <div className="relative h-64 bg-gradient-to-br from-champagne/10 to-luxury-black/10 flex items-center justify-center">
           <img 
-            src={perfumeImage} 
+            src={product.imageUrl} 
             alt={product.name}
             className="h-full w-auto object-contain"
             data-testid={`img-product-${product.id}`}
@@ -286,7 +283,7 @@ function ProductCard({ product, onAddToCart }: { product: Product; onAddToCart: 
           {/* Shield logo overlay - positioned on the bottle */}
           <div className="absolute bottom-6 left-1/2 transform -translate-x-1/2">
             <img 
-              src={shieldLogo} 
+              src="/shield-logo.png" 
               alt="RVLTN Shield" 
               className="w-14 h-14 object-contain opacity-80"
             />

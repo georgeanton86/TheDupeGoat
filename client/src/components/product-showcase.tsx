@@ -3,9 +3,6 @@ import { Link } from "wouter";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import CountdownTimer from "./countdown-timer";
-import shieldLogo from "@assets/file_00000000bbe861f59a1f386791e71acf_1760480859007.png";
-
-const perfumeImage = new URL("../../attached_assets/generated_images/Luxury_Summer_of_Singhs_perfume_dfd15174.png", import.meta.url).href;
 
 export default function ProductShowcase() {
   const { data: product, isLoading } = useQuery({
@@ -129,7 +126,7 @@ export default function ProductShowcase() {
               <div className="bg-white/5 backdrop-blur-sm border border-champagne/20 p-4 rounded-lg">
                 <h4 className="font-semibold text-champagne mb-2">✨ What's Included:</h4>
                 <ul className="text-sm text-champagne/80 space-y-1">
-                  <li>✓ 15 powerful biblical fragrances</li>
+                  <li>✓ 8 powerful biblical fragrances</li>
                   <li>✓ FREE shipping over $100</li>
                   <li>✓ Use code WELCOME10 for 10% off</li>
                   <li>✓ One-click PayPal checkout</li>
@@ -145,7 +142,7 @@ export default function ProductShowcase() {
             {/* Main bottle image */}
             <div className="relative w-80 h-96 rounded-2xl overflow-hidden shadow-2xl group-hover:shadow-3xl transition-all duration-500 bg-gradient-to-br from-champagne/10 to-luxury-black/10 flex items-center justify-center">
               <img 
-                src={perfumeImage} 
+                src={product.imageUrl} 
                 alt={`${product.name} - RVLTN Parfums Limited Edition`} 
                 className="h-full w-auto object-contain"
                 data-testid="img-product"
@@ -163,7 +160,7 @@ export default function ProductShowcase() {
               {/* Shield logo overlay on bottle */}
               <div className="absolute bottom-12 left-1/2 transform -translate-x-1/2">
                 <img 
-                  src={shieldLogo} 
+                  src="/shield-logo.png" 
                   alt="RVLTN Shield" 
                   className="w-20 h-20 object-contain opacity-90 group-hover:opacity-100 transition-opacity"
                 />
