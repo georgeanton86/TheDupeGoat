@@ -36,7 +36,7 @@ export class MemStorage implements IStorage {
   private async initializeDefaultProduct() {
     // MEN'S COLOGNES (4)
     
-    // THE WARRIOR (inspired by Dior Sauvage)
+    // THE WARRIOR
     const theWarrior: Product = {
       id: randomUUID(),
       name: "THE WARRIOR",
@@ -44,7 +44,7 @@ export class MemStorage implements IStorage {
       price: "35.00",
       originalPrice: null,
       volume: "30ml Eau de Cologne",
-      notes: "Bergamot, Pepper, Ambroxan",
+      notes: "Calabrian Bergamot, Sichuan Pepper, Ambroxan, Vanilla",
       type: "Men's Cologne",
       imageUrl: "/the-warrior.png",
       bibleVerse: "Blessed be the LORD, my rock, who trains my hands for war",
@@ -60,7 +60,7 @@ export class MemStorage implements IStorage {
     };
     this.products.set(theWarrior.id, theWarrior);
 
-    // THE KING (inspired by Creed Aventus)
+    // THE KING
     const theKing: Product = {
       id: randomUUID(),
       name: "THE KING",
@@ -68,7 +68,7 @@ export class MemStorage implements IStorage {
       price: "35.00",
       originalPrice: null,
       volume: "30ml Eau de Cologne",
-      notes: "Pineapple, Birch, Musk",
+      notes: "Pineapple, Blackcurrant, Birch, Oakmoss, Musk",
       type: "Men's Cologne",
       imageUrl: "/the-king.png",
       bibleVerse: "Blessed is the one who finds wisdom, more precious than gold",
@@ -84,7 +84,7 @@ export class MemStorage implements IStorage {
     };
     this.products.set(theKing.id, theKing);
 
-    // THE ROCK (inspired by Bleu de Chanel)
+    // THE ROCK
     const theRock: Product = {
       id: randomUUID(),
       name: "THE ROCK",
@@ -92,7 +92,7 @@ export class MemStorage implements IStorage {
       price: "35.00",
       originalPrice: null,
       volume: "30ml Eau de Cologne",
-      notes: "Citrus, Sandalwood, Cedar",
+      notes: "Citrus, Ginger, Sandalwood, Cedar, Vetiver",
       type: "Men's Cologne",
       imageUrl: "/the-rock.png",
       bibleVerse: "You are Peter, and on this rock I will build my church",
@@ -108,7 +108,7 @@ export class MemStorage implements IStorage {
     };
     this.products.set(theRock.id, theRock);
 
-    // THE BELOVED (inspired by Versace Eros)
+    // THE BELOVED
     const theBeloved: Product = {
       id: randomUUID(),
       name: "THE BELOVED",
@@ -116,7 +116,7 @@ export class MemStorage implements IStorage {
       price: "35.00",
       originalPrice: null,
       volume: "30ml Eau de Cologne",
-      notes: "Mint, Green Apple, Vanilla",
+      notes: "Mint, Green Apple, Tonka Bean, Vanilla, Oakmoss",
       type: "Men's Cologne",
       imageUrl: "/the-beloved.png",
       bibleVerse: "One of his disciples, whom Jesus loved, was reclining next to him",
@@ -134,7 +134,7 @@ export class MemStorage implements IStorage {
 
     // UNISEX PERFUMES (4)
 
-    // THE PROPHET (inspired by Le Labo Santal 33)
+    // THE PROPHET
     const theProphet: Product = {
       id: randomUUID(),
       name: "THE PROPHET",
@@ -142,7 +142,7 @@ export class MemStorage implements IStorage {
       price: "35.00",
       originalPrice: null,
       volume: "30ml Eau de Parfum",
-      notes: "Sandalwood, Cardamom, Leather",
+      notes: "Sandalwood, Cardamom, Iris, Violet, Leather",
       type: "Unisex Perfume",
       imageUrl: "/the-prophet.png",
       bibleVerse: "I heard the voice of the Lord saying, 'Whom shall I send?'",
@@ -158,7 +158,7 @@ export class MemStorage implements IStorage {
     };
     this.products.set(theProphet.id, theProphet);
 
-    // THE SHIELD (inspired by Tom Ford Ombré Leather)
+    // THE SHIELD
     const theShield: Product = {
       id: randomUUID(),
       name: "THE SHIELD",
@@ -166,7 +166,7 @@ export class MemStorage implements IStorage {
       price: "35.00",
       originalPrice: null,
       volume: "30ml Eau de Parfum",
-      notes: "Black Leather, Jasmine, Amber",
+      notes: "Leather, Jasmine Sambac, Amber, Patchouli, Moss",
       type: "Unisex Perfume",
       imageUrl: "/the-shield.png",
       bibleVerse: "Take up the shield of faith to extinguish the flaming arrows",
@@ -182,7 +182,7 @@ export class MemStorage implements IStorage {
     };
     this.products.set(theShield.id, theShield);
 
-    // THE CROWN (inspired by Tom Ford Lost Cherry)
+    // THE CROWN
     const theCrown: Product = {
       id: randomUUID(),
       name: "THE CROWN",
@@ -190,7 +190,7 @@ export class MemStorage implements IStorage {
       price: "35.00",
       originalPrice: null,
       volume: "30ml Eau de Parfum",
-      notes: "Cherry, Almond, Tonka Bean",
+      notes: "Black Cherry, Bitter Almond, Tonka Bean, Sandalwood",
       type: "Unisex Perfume",
       imageUrl: "/the-crown.png",
       bibleVerse: "There is laid up for me the crown of righteousness",
@@ -206,7 +206,7 @@ export class MemStorage implements IStorage {
     };
     this.products.set(theCrown.id, theCrown);
 
-    // THE LIGHT (inspired by Ariana Grande Cloud)
+    // THE LIGHT
     const theLight: Product = {
       id: randomUUID(),
       name: "THE LIGHT",
@@ -214,7 +214,7 @@ export class MemStorage implements IStorage {
       price: "35.00",
       originalPrice: null,
       volume: "30ml Eau de Parfum",
-      notes: "Vanilla, Coconut, Praline",
+      notes: "Lavender, Coconut, Vanilla, Praline, Musk",
       type: "Unisex Perfume",
       imageUrl: "/the-light.png",
       bibleVerse: "I am the light of the world. Whoever follows me will never walk in darkness",

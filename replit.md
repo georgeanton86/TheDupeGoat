@@ -5,16 +5,16 @@ This is a luxury perfume e-commerce application called "RVLTN PARFUMS" that focu
 ## Product Catalog (8 Fragrances)
 
 **Men's Colognes (4):**
-1. **THE WARRIOR** - Inspired by Dior Sauvage | Psalm 144:1 | "Blessed be the LORD, my rock, who trains my hands for war"
-2. **THE KING** - Inspired by Creed Aventus | Proverbs 3:13-14 | "Blessed is the one who finds wisdom, more precious than gold"
-3. **THE ROCK** - Inspired by Bleu de Chanel | Matthew 16:18 | "You are Peter, and on this rock I will build my church"
-4. **THE BELOVED** - Inspired by Versace Eros | John 13:23 | "One of his disciples, whom Jesus loved, was reclining next to him"
+1. **THE WARRIOR** - Psalm 144:1 | "Blessed be the LORD, my rock, who trains my hands for war" | Notes: Calabrian Bergamot, Sichuan Pepper, Ambroxan, Vanilla
+2. **THE KING** - Proverbs 3:13-14 | "Blessed is the one who finds wisdom, more precious than gold" | Notes: Pineapple, Blackcurrant, Birch, Oakmoss, Musk
+3. **THE ROCK** - Matthew 16:18 | "You are Peter, and on this rock I will build my church" | Notes: Citrus, Ginger, Sandalwood, Cedar, Vetiver
+4. **THE BELOVED** - John 13:23 | "One of his disciples, whom Jesus loved, was reclining next to him" | Notes: Mint, Green Apple, Tonka Bean, Vanilla, Oakmoss
 
 **Unisex Perfumes (4):**
-1. **THE PROPHET** - Inspired by Le Labo Santal 33 | Isaiah 6:8 | "I heard the voice of the Lord saying, 'Whom shall I send?'"
-2. **THE SHIELD** - Inspired by Tom Ford Ombré Leather | Ephesians 6:16 | "Take up the shield of faith to extinguish the flaming arrows"
-3. **THE CROWN** - Inspired by Tom Ford Lost Cherry | 2 Timothy 4:8 | "There is laid up for me the crown of righteousness"
-4. **THE LIGHT** - Inspired by Ariana Grande Cloud | John 8:12 | "I am the light of the world. Whoever follows me will never walk in darkness"
+1. **THE PROPHET** - Isaiah 6:8 | "I heard the voice of the Lord saying, 'Whom shall I send?'" | Notes: Sandalwood, Cardamom, Iris, Violet, Leather
+2. **THE SHIELD** - Ephesians 6:16 | "Take up the shield of faith to extinguish the flaming arrows" | Notes: Leather, Jasmine Sambac, Amber, Patchouli, Moss
+3. **THE CROWN** - 2 Timothy 4:8 | "There is laid up for me the crown of righteousness" | Notes: Black Cherry, Bitter Almond, Tonka Bean, Sandalwood
+4. **THE LIGHT** - John 8:12 | "I am the light of the world. Whoever follows me will never walk in darkness" | Notes: Lavender, Coconut, Vanilla, Praline, Musk
 
 # User Preferences
 
