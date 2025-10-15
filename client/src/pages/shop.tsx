@@ -103,7 +103,7 @@ export default function Shop() {
           <div className="text-center mb-8">
             <h1 className="text-5xl md:text-6xl font-serif font-bold text-champagne mb-4">Biblical Collection</h1>
             <p className="text-lg text-champagne/80 max-w-2xl mx-auto mb-6">
-              15 transformative fragrances inspired by Scripture. Each 30ml bottle carries divine purpose.
+              8 transformative fragrances inspired by Scripture. Each 30ml bottle carries divine purpose.
             </p>
             <div className="flex items-center justify-center gap-6 text-sm">
               <div className="flex items-center gap-2 text-champagne/90">
