@@ -3,20 +3,15 @@ import { createServer, type Server } from "http";
 import { storage } from "./storage";
 import { insertOrderSchema } from "@shared/schema";
 import { z } from "zod";
-import { createPaypalOrder, capturePaypalOrder, loadPaypalDefault } from "./paypal";
-import { Client, Environment, LogLevel, OrdersController } from "@paypal/paypal-server-sdk";
+import Stripe from "stripe";
 
-// Initialize PayPal client for order verification
-const { PAYPAL_CLIENT_ID, PAYPAL_CLIENT_SECRET } = process.env;
-const paypalClient = new Client({
-  clientCredentialsAuthCredentials: {
-    oAuthClientId: PAYPAL_CLIENT_ID!,
-    oAuthClientSecret: PAYPAL_CLIENT_SECRET!,
-  },
-  environment: process.env.NODE_ENV === "production" ? Environment.Production : Environment.Sandbox,
-  logging: { logLevel: LogLevel.Error },
+// Initialize Stripe
+if (!process.env.STRIPE_SECRET_KEY) {
+  throw new Error('Missing required Stripe secret: STRIPE_SECRET_KEY');
+}
+const stripe = new Stripe(process.env.STRIPE_SECRET_KEY, {
+  apiVersion: "2025-07-30.basil",
 });
-const paypalOrdersController = new OrdersController(paypalClient);
 
 export async function registerRoutes(app: Express): Promise<Server> {
   
@@ -60,13 +55,8 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
-  // PayPal routes
-  app.get("/paypal/setup", async (req, res) => {
-    await loadPaypalDefault(req, res);
-  });
-
-  // SECURE PayPal order creation - calculates server total from cart
-  app.post("/paypal/order", async (req, res) => {
+  // Stripe payment intent creation - SECURE: calculates server total from cart
+  app.post("/api/create-payment-intent", async (req, res) => {
     try {
       const { items, promoCode } = req.body;
 
@@ -81,7 +71,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
         }
       }
 
-      // SERVER-SIDE RECALCULATION - same logic as completion endpoint
+      // SERVER-SIDE RECALCULATION - NEVER TRUST CLIENT PRICES
       let serverSubtotal = 0;
       for (const item of items) {
         const product = await storage.getProduct(item.productId);
@@ -105,37 +95,59 @@ export async function registerRoutes(app: Express): Promise<Server> {
         return res.status(400).json({ error: "Invalid total" });
       }
 
-      // Create PayPal order with SERVER-calculated total
-      const { body, ...httpResponse } = await paypalOrdersController.createOrder({
-        body: {
-          intent: "CAPTURE",
-          purchaseUnits: [{
-            amount: {
-              currencyCode: "USD",
-              value: serverTotal.toFixed(2)
-            }
-          }]
+      // Create Stripe Payment Intent
+      const paymentIntent = await stripe.paymentIntents.create({
+        amount: Math.round(serverTotal * 100), // Convert to cents
+        currency: "usd",
+        metadata: {
+          items: JSON.stringify(items),
+          promoCode: promoCode || "",
+          subtotal: serverSubtotal.toFixed(2),
+          discount: serverDiscount.toFixed(2),
+          shipping: serverShipping.toFixed(2),
         },
-        prefer: "return=minimal"
       });
 
-      const jsonResponse = JSON.parse(String(body));
-      res.status(httpResponse.statusCode).json(jsonResponse);
-    } catch (error) {
-      console.error("Failed to create PayPal order:", error);
-      res.status(500).json({ error: "Failed to create order" });
+      res.json({ 
+        clientSecret: paymentIntent.client_secret,
+        total: serverTotal
+      });
+    } catch (error: any) {
+      console.error("Failed to create payment intent:", error);
+      res.status(500).json({ error: "Failed to create payment intent: " + error.message });
     }
   });
 
-  app.post("/paypal/order/:orderID/capture", async (req, res) => {
-    await capturePaypalOrder(req, res);
+  // Stripe webhook handler for payment completion
+  app.post("/api/webhook/stripe", async (req, res) => {
+    try {
+      // In production, verify webhook signature
+      const event = req.body;
+      
+      if (event.type === 'payment_intent.succeeded') {
+        const paymentIntent = event.data.object;
+        
+        // Extract metadata
+        const items = JSON.parse(paymentIntent.metadata.items || '[]');
+        const promoCode = paymentIntent.metadata.promoCode || '';
+        
+        // Process order (inventory deduction, etc.)
+        console.log('Payment succeeded:', paymentIntent.id);
+        console.log('Items:', items);
+      }
+      
+      res.json({ received: true });
+    } catch (error: any) {
+      console.error('Webhook error:', error);
+      res.status(400).json({ error: error.message });
+    }
   });
 
-  // Handle PayPal payment completion
-  app.post("/api/complete-paypal-payment", async (req, res) => {
+  // Complete Stripe payment and create order
+  app.post("/api/complete-stripe-payment", async (req, res) => {
     try {
       const { 
-        paypalOrderId, 
+        paymentIntentId,
         items, 
         customerEmail, 
         customerName, 
@@ -216,46 +228,19 @@ export async function registerRoutes(app: Express): Promise<Server> {
         });
       }
 
-      // CRITICAL SECURITY: Prevent replay attacks - check if PayPal order already processed
-      const existingOrder = await storage.getOrderByPaypalOrderId(paypalOrderId);
-      if (existingOrder) {
-        return res.status(400).json({ 
-          message: "This PayPal order has already been processed. Duplicate orders are not allowed." 
-        });
-      }
-
-      // CRITICAL SECURITY: Verify PayPal order was actually captured using SDK
+      // CRITICAL SECURITY: Verify payment intent was actually paid using Stripe API
       try {
-        const { body, ...httpResponse } = await paypalOrdersController.showOrderDetails({
-          id: paypalOrderId
-        });
+        const paymentIntent = await stripe.paymentIntents.retrieve(paymentIntentId);
         
-        const paypalOrder = JSON.parse(String(body));
-        
-        if (httpResponse.statusCode !== 200) {
+        if (paymentIntent.status !== 'succeeded') {
           return res.status(400).json({ 
-            message: "Invalid PayPal order ID. Payment verification failed." 
-          });
-        }
-        
-        // Verify order is captured/completed
-        if (paypalOrder.status !== 'COMPLETED') {
-          return res.status(400).json({ 
-            message: "PayPal payment not completed. Please try again." 
+            message: "Payment not completed. Please try again." 
           });
         }
 
-        // Verify captures exist
-        if (!paypalOrder.purchase_units?.[0]?.payments?.captures?.[0]) {
-          return res.status(400).json({ 
-            message: "PayPal payment not captured. Please contact support." 
-          });
-        }
-
-        // Verify captured amount AND currency match our calculated total
-        const captureData = paypalOrder.purchase_units[0].payments.captures[0];
-        const capturedAmount = parseFloat(captureData.amount.value);
-        const capturedCurrency = captureData.amount.currency_code;
+        // Verify amount matches our calculated total (allow 1 cent tolerance for rounding)
+        const paidAmount = paymentIntent.amount / 100; // Convert from cents
+        const capturedCurrency = paymentIntent.currency.toUpperCase();
         
         if (capturedCurrency !== 'USD') {
           return res.status(400).json({ 
@@ -263,15 +248,15 @@ export async function registerRoutes(app: Express): Promise<Server> {
           });
         }
         
-        if (Math.abs(capturedAmount - serverTotal) > 0.01) { // Allow 1 cent rounding
+        if (Math.abs(paidAmount - serverTotal) > 0.01) { // Allow 1 cent rounding
           return res.status(400).json({ 
-            message: `Payment amount mismatch. Expected $${serverTotal.toFixed(2)}, received $${capturedAmount.toFixed(2)}` 
+            message: `Payment amount mismatch. Expected $${serverTotal.toFixed(2)}, received $${paidAmount.toFixed(2)}` 
           });
         }
-      } catch (paypalError) {
-        console.error("PayPal verification error:", paypalError);
+      } catch (stripeError) {
+        console.error("Stripe verification error:", stripeError);
         return res.status(500).json({ 
-          message: "Failed to verify PayPal payment. Please contact support." 
+          message: "Failed to verify payment. Please contact support." 
         });
       }
 
@@ -284,7 +269,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
           productId: validatedItem.productId,
           customerEmail,
           customerName,
-          paypalOrderId,
+          paypalOrderId: paymentIntentId,
           amount: validatedItem.lineTotal,
           policyAcknowledged,
         });

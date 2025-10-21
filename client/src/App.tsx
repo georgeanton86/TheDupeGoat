@@ -5,7 +5,7 @@ import { Toaster } from "@/components/ui/toaster";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import Home from "@/pages/home";
 import Shop from "@/pages/shop";
-import Checkout from "@/pages/checkout";
+import StripeCheckout from "@/pages/stripe-checkout";
 import Policy from "@/pages/policy";
 import NotFound from "@/pages/not-found";
 
@@ -14,7 +14,7 @@ function Router() {
     <Switch>
       <Route path="/" component={Home} />
       <Route path="/shop" component={Shop} />
-      <Route path="/checkout" component={Checkout} />
+      <Route path="/checkout" component={StripeCheckout} />
       <Route path="/policy" component={Policy} />
       <Route component={NotFound} />
     </Switch>

@@ -69,14 +69,13 @@ export default function Shop() {
   const total = subtotal - discount + shipping;
 
   const handleCheckout = () => {
-    // Store cart data in sessionStorage for checkout page
-    sessionStorage.setItem('checkoutCart', JSON.stringify({
-      items: cart,
-      promoCode: promoApplied ? promoCode : null,
-      subtotal,
-      discount,
-      shipping,
-      total
+    // Store cart data in localStorage for Stripe checkout page
+    localStorage.setItem('checkoutCart', JSON.stringify({
+      cart: cart.map(item => ({
+        product: item.product,
+        quantity: item.quantity
+      })),
+      promoCode: promoApplied ? promoCode : null
     }));
     setLocation('/checkout');
   };
@@ -237,7 +236,7 @@ export default function Shop() {
                         onClick={handleCheckout}
                         data-testid="button-checkout"
                       >
-                        Checkout with PayPal
+                        Proceed to Checkout
                       </Button>
                     </>
                   )}
@@ -366,7 +365,7 @@ export default function Shop() {
                     onClick={handleCheckout}
                     data-testid="button-checkout-mobile"
                   >
-                    Checkout with PayPal
+                    Proceed to Checkout
                   </Button>
                 </>
               )}
