@@ -8,6 +8,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Input } from "@/components/ui/input";
+import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
 import type { Product } from "@shared/schema";
 import { ShoppingCart, Tag, Truck } from "lucide-react";
 
@@ -245,6 +246,133 @@ export default function Shop() {
             </div>
           </div>
         </div>
+      </div>
+
+      {/* Mobile Cart Button - Only visible on mobile */}
+      <div className="lg:hidden fixed bottom-6 right-6 z-50">
+        <Sheet>
+          <SheetTrigger asChild>
+            <Button 
+              size="lg" 
+              className="rounded-full w-16 h-16 bg-champagne text-luxury-black hover:bg-yellow-500 shadow-2xl relative"
+              data-testid="button-mobile-cart"
+            >
+              <ShoppingCart className="w-6 h-6" />
+              {cart.length > 0 && (
+                <Badge className="absolute -top-2 -right-2 bg-red-600 text-white border-2 border-white">
+                  {cart.length}
+                </Badge>
+              )}
+            </Button>
+          </SheetTrigger>
+          <SheetContent side="right" className="w-full sm:max-w-md overflow-y-auto">
+            <SheetHeader>
+              <SheetTitle className="flex items-center gap-2">
+                <ShoppingCart className="w-5 h-5" />
+                Your Cart
+                <Badge variant="secondary" className="ml-auto">{cart.length}</Badge>
+              </SheetTitle>
+            </SheetHeader>
+            
+            <div className="mt-6">
+              {cart.length === 0 ? (
+                <p className="text-gray-500 text-sm text-center py-8">Your cart is empty</p>
+              ) : (
+                <>
+                  <div className="space-y-3 mb-4">
+                    {cart.map(item => (
+                      <div key={item.product.id} className="flex items-center gap-3 p-3 bg-gray-50 rounded-lg">
+                        <div className="flex-1">
+                          <p className="font-semibold text-sm">{item.product.name}</p>
+                          <p className="text-xs text-gray-500">{item.product.verseReference}</p>
+                        </div>
+                        <Select
+                          value={item.quantity.toString()}
+                          onValueChange={(val) => updateQuantity(item.product.id, parseInt(val))}
+                        >
+                          <SelectTrigger className="w-16 h-8">
+                            <SelectValue />
+                          </SelectTrigger>
+                          <SelectContent>
+                            {[0, 1, 2, 3, 4, 5].map(n => (
+                              <SelectItem key={n} value={n.toString()}>
+                                {n === 0 ? "Remove" : n}
+                              </SelectItem>
+                            ))}
+                          </SelectContent>
+                        </Select>
+                        <p className="font-semibold text-sm w-16 text-right">
+                          ${(parseFloat(item.product.price) * item.quantity).toFixed(2)}
+                        </p>
+                      </div>
+                    ))}
+                  </div>
+
+                  {/* Promo Code */}
+                  <div className="mb-4 pb-4 border-b">
+                    <div className="flex gap-2">
+                      <Input
+                        placeholder="Promo code"
+                        value={promoCode}
+                        onChange={(e) => setPromoCode(e.target.value)}
+                        disabled={promoApplied}
+                        className="flex-1"
+                        data-testid="input-promo-code-mobile"
+                      />
+                      <Button
+                        onClick={applyPromoCode}
+                        disabled={promoApplied || !promoCode}
+                        variant="outline"
+                        data-testid="button-apply-promo-mobile"
+                      >
+                        Apply
+                      </Button>
+                    </div>
+                    {promoApplied && (
+                      <p className="text-xs text-green-600 mt-1">✓ 10% discount applied!</p>
+                    )}
+                  </div>
+
+                  {/* Totals */}
+                  <div className="space-y-2 text-sm mb-4">
+                    <div className="flex justify-between">
+                      <span>Subtotal:</span>
+                      <span>${subtotal.toFixed(2)}</span>
+                    </div>
+                    {promoApplied && (
+                      <div className="flex justify-between text-green-600">
+                        <span>Discount (10%):</span>
+                        <span>-${discount.toFixed(2)}</span>
+                      </div>
+                    )}
+                    <div className="flex justify-between">
+                      <span>Shipping:</span>
+                      <span>{shipping === 0 ? "FREE" : `$${shipping.toFixed(2)}`}</span>
+                    </div>
+                    {subtotal < 100 && subtotal > 0 && (
+                      <p className="text-xs text-gray-500">
+                        Add ${(100 - subtotal).toFixed(2)} more for free shipping!
+                      </p>
+                    )}
+                    <div className="flex justify-between font-bold text-lg pt-2 border-t">
+                      <span>Total:</span>
+                      <span>${total.toFixed(2)}</span>
+                    </div>
+                  </div>
+
+                  <Button
+                    className="w-full bg-luxury-black text-white hover:bg-charcoal"
+                    size="lg"
+                    onClick={handleCheckout}
+                    data-testid="button-checkout-mobile"
+                  >
+                    Checkout with PayPal
+                  </Button>
+                </>
+              )}
+            </div>
+          </SheetContent>
+        </Sheet>
       </div>
 
       <Footer />
