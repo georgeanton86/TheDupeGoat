@@ -176,13 +176,307 @@ export class MemStorage implements IStorage {
     };
     this.products.set(famesEdP.id, famesEdP);
 
+    const famesExtrait: Product = {
+      id: randomUUID(),
+      name: "FAMES",
+      description: "Desire & restraint. A haunting reminder of what we crave and cannot have.",
+      price: "119.00",
+      originalPrice: null,
+      volume: "100mL",
+      concentration: "Extrait de Parfum",
+      notes: "Dry Woods, Vetiver, Black Pepper",
+      topNotes: "Black Pepper, Cardamom, Ginger",
+      middleNotes: "Vetiver, Cedarwood, Patchouli",
+      baseNotes: "Dry Woods, Leather, Musk",
+      type: "Unisex Perfume",
+      imageUrl: "/assets/generated_images/Fames_luxury_bottle_fd04fa9c.png",
+      bibleVerse: "I looked, and behold, a black horse! And its rider had a pair of scales in his hand",
+      verseReference: "Revelation 6:5–6",
+      totalInventory: 50,
+      remainingInventory: 50,
+      soldCount: 0,
+      isActive: true,
+      releaseDate: new Date("2026-06-30"),
+      nextReleaseDate: null,
+      selloutTime: null,
+      createdAt: new Date(),
+    };
+    this.products.set(famesExtrait.id, famesExtrait);
+
     // FOURTH SEAL - MORTEM (Pale Horse) - PRE-ORDER
+    const mortemEdP: Product = {
+      id: randomUUID(),
+      name: "MORTEM",
+      description: "Stillness & eternity. The final horseman brings profound peace.",
+      price: "99.00",
+      originalPrice: null,
+      volume: "100mL",
+      concentration: "Eau de Parfum",
+      notes: "Incense, Cedar, Myrrh",
+      topNotes: "Frankincense, Myrrh, Cardamom",
+      middleNotes: "Cedarwood, Incense, Oud",
+      baseNotes: "Sandalwood, Amber, Musk",
+      type: "Unisex Perfume",
+      imageUrl: "/assets/generated_images/Mortem_luxury_bottle_f077a9fa.png",
+      bibleVerse: "I looked, and behold, a pale horse! And its rider's name was Death",
+      verseReference: "Revelation 6:7–8",
+      totalInventory: 100,
+      remainingInventory: 100,
+      soldCount: 0,
+      isActive: true,
+      releaseDate: new Date("2026-12-31"),
+      nextReleaseDate: null,
+      selloutTime: null,
+      createdAt: new Date(),
+    };
+    this.products.set(mortemEdP.id, mortemEdP);
+
+    const mortemExtrait: Product = {
+      id: randomUUID(),
+      name: "MORTEM",
+      description: "Stillness & eternity. The final horseman brings profound peace.",
+      price: "119.00",
+      originalPrice: null,
+      volume: "100mL",
+      concentration: "Extrait de Parfum",
+      notes: "Incense, Cedar, Myrrh",
+      topNotes: "Frankincense, Myrrh, Cardamom",
+      middleNotes: "Cedarwood, Incense, Oud",
+      baseNotes: "Sandalwood, Amber, Musk",
+      type: "Unisex Perfume",
+      imageUrl: "/assets/generated_images/Mortem_luxury_bottle_f077a9fa.png",
+      bibleVerse: "I looked, and behold, a pale horse! And its rider's name was Death",
+      verseReference: "Revelation 6:7–8",
+      totalInventory: 50,
+      remainingInventory: 50,
+      soldCount: 0,
+      isActive: true,
+      releaseDate: new Date("2026-12-31"),
+      nextReleaseDate: null,
+      selloutTime: null,
+      createdAt: new Date(),
+    };
+    this.products.set(mortemExtrait.id, mortemExtrait);
+
     // FIFTH SEAL - VOX CAELI - PRE-ORDER
+    const voxCaeliEdP: Product = {
+      id: randomUUID(),
+      name: "VOX CAELI",
+      description: "Prayer & transcendence. The voice of heaven rises above earthly chaos.",
+      price: "99.00",
+      originalPrice: null,
+      volume: "100mL",
+      concentration: "Eau de Parfum",
+      notes: "White Oud, Soft Smoke",
+      topNotes: "White Oud, Bergamot, Lavender",
+      middleNotes: "Incense, Rose, Jasmine",
+      baseNotes: "Sandalwood, Amber, Vanilla",
+      type: "Unisex Perfume",
+      imageUrl: "/assets/generated_images/Vox_Caeli_luxury_bottle_6b8efdf7.png",
+      bibleVerse: "I saw under the altar the souls of those who had been slain for the word of God",
+      verseReference: "Revelation 6:9–11",
+      totalInventory: 100,
+      remainingInventory: 100,
+      soldCount: 0,
+      isActive: true,
+      releaseDate: new Date("2027-06-30"),
+      nextReleaseDate: null,
+      selloutTime: null,
+      createdAt: new Date(),
+    };
+    this.products.set(voxCaeliEdP.id, voxCaeliEdP);
+
+    const voxCaeliExtrait: Product = {
+      id: randomUUID(),
+      name: "VOX CAELI",
+      description: "Prayer & transcendence. The voice of heaven rises above earthly chaos.",
+      price: "119.00",
+      originalPrice: null,
+      volume: "100mL",
+      concentration: "Extrait de Parfum",
+      notes: "White Oud, Soft Smoke",
+      topNotes: "White Oud, Bergamot, Lavender",
+      middleNotes: "Incense, Rose, Jasmine",
+      baseNotes: "Sandalwood, Amber, Vanilla",
+      type: "Unisex Perfume",
+      imageUrl: "/assets/generated_images/Vox_Caeli_luxury_bottle_6b8efdf7.png",
+      bibleVerse: "I saw under the altar the souls of those who had been slain for the word of God",
+      verseReference: "Revelation 6:9–11",
+      totalInventory: 50,
+      remainingInventory: 50,
+      soldCount: 0,
+      isActive: true,
+      releaseDate: new Date("2027-06-30"),
+      nextReleaseDate: null,
+      selloutTime: null,
+      createdAt: new Date(),
+    };
+    this.products.set(voxCaeliExtrait.id, voxCaeliExtrait);
+
     // SIXTH SEAL - TERRA TREMOR - PRE-ORDER
+    const terraTremorEdP: Product = {
+      id: randomUUID(),
+      name: "TERRA TREMOR",
+      description: "Power & awe. When the earth shakes, only the strongest foundations remain.",
+      price: "99.00",
+      originalPrice: null,
+      volume: "100mL",
+      concentration: "Eau de Parfum",
+      notes: "Amber, Patchouli, Volcanic Depth",
+      topNotes: "Volcanic Rock, Black Pepper, Grapefruit",
+      middleNotes: "Patchouli, Amber, Geranium",
+      baseNotes: "Oakmoss, Vetiver, Musk",
+      type: "Unisex Perfume",
+      imageUrl: "/assets/generated_images/Terra_Tremor_luxury_bottle_27a4bc2e.png",
+      bibleVerse: "There was a great earthquake, and the sun became black as sackcloth",
+      verseReference: "Revelation 6:12–17",
+      totalInventory: 100,
+      remainingInventory: 100,
+      soldCount: 0,
+      isActive: true,
+      releaseDate: new Date("2027-12-31"),
+      nextReleaseDate: null,
+      selloutTime: null,
+      createdAt: new Date(),
+    };
+    this.products.set(terraTremorEdP.id, terraTremorEdP);
+
+    const terraTremorExtrait: Product = {
+      id: randomUUID(),
+      name: "TERRA TREMOR",
+      description: "Power & awe. When the earth shakes, only the strongest foundations remain.",
+      price: "119.00",
+      originalPrice: null,
+      volume: "100mL",
+      concentration: "Extrait de Parfum",
+      notes: "Amber, Patchouli, Volcanic Depth",
+      topNotes: "Volcanic Rock, Black Pepper, Grapefruit",
+      middleNotes: "Patchouli, Amber, Geranium",
+      baseNotes: "Oakmoss, Vetiver, Musk",
+      type: "Unisex Perfume",
+      imageUrl: "/assets/generated_images/Terra_Tremor_luxury_bottle_27a4bc2e.png",
+      bibleVerse: "There was a great earthquake, and the sun became black as sackcloth",
+      verseReference: "Revelation 6:12–17",
+      totalInventory: 50,
+      remainingInventory: 50,
+      soldCount: 0,
+      isActive: true,
+      releaseDate: new Date("2027-12-31"),
+      nextReleaseDate: null,
+      selloutTime: null,
+      createdAt: new Date(),
+    };
+    this.products.set(terraTremorExtrait.id, terraTremorExtrait);
+
     // SEVENTH SEAL - SABBATUM - PRE-ORDER
+    const sabbatumEdP: Product = {
+      id: randomUUID(),
+      name: "SABBATUM",
+      description: "Sacred stillness. When heaven falls silent, divinity speaks.",
+      price: "99.00",
+      originalPrice: null,
+      volume: "100mL",
+      concentration: "Eau de Parfum",
+      notes: "Sandalwood, Linen, White Iris",
+      topNotes: "White Iris, Linen, Bergamot",
+      middleNotes: "Sandalwood, White Rose, Violet",
+      baseNotes: "Cashmere Woods, Musk, Vanilla",
+      type: "Unisex Perfume",
+      imageUrl: "/assets/generated_images/Sabbatum_luxury_bottle_b96d831e.png",
+      bibleVerse: "When the Lamb opened the seventh seal, there was silence in heaven for about half an hour",
+      verseReference: "Revelation 8:1",
+      totalInventory: 100,
+      remainingInventory: 100,
+      soldCount: 0,
+      isActive: true,
+      releaseDate: new Date("2028-06-30"),
+      nextReleaseDate: null,
+      selloutTime: null,
+      createdAt: new Date(),
+    };
+    this.products.set(sabbatumEdP.id, sabbatumEdP);
+
+    const sabbatumExtrait: Product = {
+      id: randomUUID(),
+      name: "SABBATUM",
+      description: "Sacred stillness. When heaven falls silent, divinity speaks.",
+      price: "119.00",
+      originalPrice: null,
+      volume: "100mL",
+      concentration: "Extrait de Parfum",
+      notes: "Sandalwood, Linen, White Iris",
+      topNotes: "White Iris, Linen, Bergamot",
+      middleNotes: "Sandalwood, White Rose, Violet",
+      baseNotes: "Cashmere Woods, Musk, Vanilla",
+      type: "Unisex Perfume",
+      imageUrl: "/assets/generated_images/Sabbatum_luxury_bottle_b96d831e.png",
+      bibleVerse: "When the Lamb opened the seventh seal, there was silence in heaven for about half an hour",
+      verseReference: "Revelation 8:1",
+      totalInventory: 50,
+      remainingInventory: 50,
+      soldCount: 0,
+      isActive: true,
+      releaseDate: new Date("2028-06-30"),
+      nextReleaseDate: null,
+      selloutTime: null,
+      createdAt: new Date(),
+    };
+    this.products.set(sabbatumExtrait.id, sabbatumExtrait);
+
     // LUX AETERNA (Eternal Light) - PRE-ORDER
-    
-    // Additional seals will be added as sequential releases continue
+    const luxAeternaEdP: Product = {
+      id: randomUUID(),
+      name: "LUX AETERNA",
+      description: "Completion & resurrection. The eternal light that never fades.",
+      price: "99.00",
+      originalPrice: null,
+      volume: "100mL",
+      concentration: "Eau de Parfum",
+      notes: "Golden Woods, Radiant Amber",
+      topNotes: "Golden Amber, Saffron, Orange Blossom",
+      middleNotes: "Radiant Oud, Jasmine, Rose",
+      baseNotes: "Sandalwood, Amberwood, White Musk",
+      type: "Unisex Perfume",
+      imageUrl: "/assets/generated_images/Lux_Aeterna_luxury_bottle_d2b6357e.png",
+      bibleVerse: "The city has no need of sun or moon, for the glory of God gives it light",
+      verseReference: "Revelation 21:23",
+      totalInventory: 100,
+      remainingInventory: 100,
+      soldCount: 0,
+      isActive: true,
+      releaseDate: new Date("2028-12-31"),
+      nextReleaseDate: null,
+      selloutTime: null,
+      createdAt: new Date(),
+    };
+    this.products.set(luxAeternaEdP.id, luxAeternaEdP);
+
+    const luxAeternaExtrait: Product = {
+      id: randomUUID(),
+      name: "LUX AETERNA",
+      description: "Completion & resurrection. The eternal light that never fades.",
+      price: "119.00",
+      originalPrice: null,
+      volume: "100mL",
+      concentration: "Extrait de Parfum",
+      notes: "Golden Woods, Radiant Amber",
+      topNotes: "Golden Amber, Saffron, Orange Blossom",
+      middleNotes: "Radiant Oud, Jasmine, Rose",
+      baseNotes: "Sandalwood, Amberwood, White Musk",
+      type: "Unisex Perfume",
+      imageUrl: "/assets/generated_images/Lux_Aeterna_luxury_bottle_d2b6357e.png",
+      bibleVerse: "The city has no need of sun or moon, for the glory of God gives it light",
+      verseReference: "Revelation 21:23",
+      totalInventory: 50,
+      remainingInventory: 50,
+      soldCount: 0,
+      isActive: true,
+      releaseDate: new Date("2028-12-31"),
+      nextReleaseDate: null,
+      selloutTime: null,
+      createdAt: new Date(),
+    };
+    this.products.set(luxAeternaExtrait.id, luxAeternaExtrait)
   }
 
   async getUser(id: string): Promise<User | undefined> {
@@ -203,15 +497,17 @@ export class MemStorage implements IStorage {
   }
 
   async getActiveProduct(): Promise<Product | undefined> {
-    // Return pre-order product if available, otherwise any active product
-    const preOrderProduct = Array.from(this.products.values()).find(
-      (product) => product.isActive && new Date(product.releaseDate) > new Date()
+    // Prioritize currently available products (release date has passed)
+    // Return EQUUS ALBUS first (the current release)
+    const currentProduct = Array.from(this.products.values()).find(
+      (product) => product.isActive && new Date(product.releaseDate) <= new Date() && product.remainingInventory > 0
     );
     
-    if (preOrderProduct) return preOrderProduct;
+    if (currentProduct) return currentProduct;
     
+    // If no current products, show next pre-order
     return Array.from(this.products.values()).find(
-      (product) => product.isActive && product.remainingInventory > 0
+      (product) => product.isActive && new Date(product.releaseDate) > new Date()
     );
   }
 
