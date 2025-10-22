@@ -97,6 +97,20 @@ export default function Home() {
       {/* Hero Section */}
       <section id="featured" className="pt-20 min-h-screen bg-gradient-to-br from-luxury-black via-charcoal to-luxury-black relative overflow-hidden">
         <div className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAiIGhlaWdodD0iNjAiIHZpZXdCb3g9IjAgMCA2MCA2MCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48ZyBmaWxsPSJub25lIiBmaWxsLXJ1bGU9ImV2ZW5vZGQiPjxnIGZpbGw9IiNmZmZmZmYiIGZpbGwtb3BhY2l0eT0iMC4wMiI+PHBhdGggZD0iTTM2IDM0djItaDJ2LTJoLTJ6bTAgNHYyaDJ2LTJoLTJ6bS0yIDJ2Mmgydi0yaC0yem0wLTR2Mmgydi0yaC0yem0yLTJ2LTJoLTJ2Mmgyem0wLTRoLTJ2Mmgydi0yem0yIDJ2LTJoLTJ2MmgyeiIvPjwvZz48L2c+PC9zdmc+')] opacity-30"></div>
+        
+        {/* Prominent Revelation 21:6 Banner */}
+        <div className="relative pt-8 pb-6">
+          <div className="max-w-4xl mx-auto px-4 text-center">
+            <div className="bg-champagne/10 backdrop-blur-sm border-2 border-champagne rounded-lg py-4 px-6 inline-block">
+              <p className="text-champagne/80 text-sm font-medium mb-1">Our Foundation</p>
+              <h2 className="text-champagne text-4xl md:text-5xl font-serif font-bold tracking-wide">
+                REVELATION 21:6
+              </h2>
+              <p className="text-champagne/70 text-sm mt-2 italic">"I am Alpha and Omega, the beginning and the end"</p>
+            </div>
+          </div>
+        </div>
+        
         <div className="relative">
           <ProductShowcase />
         </div>
