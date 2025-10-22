@@ -1,10 +1,16 @@
 import { Link, useLocation } from "wouter";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
+import { Badge } from "@/components/ui/badge";
 import { ShoppingCart } from "lucide-react";
 import brandLogo from "@assets/file_00000000c5c4622f8f60554b7297e0f4_1760480858957.png";
 
-export default function Header() {
+interface HeaderProps {
+  cartCount?: number;
+  onCartClick?: () => void;
+}
+
+export default function Header({ cartCount = 0, onCartClick }: HeaderProps = {}) {
   const [location] = useLocation();
 
   const scrollToSection = (sectionId: string) => {
@@ -53,16 +59,32 @@ export default function Header() {
             >
               Policy
             </Link>
-            <Link 
-              href="/shop" 
-              className="ml-4"
-              data-testid="link-cart"
-            >
-              <Button size="sm" className="bg-champagne text-luxury-black hover:bg-champagne/90 font-semibold">
-                <ShoppingCart className="w-4 h-4 mr-2" />
-                Shop Now
+            {onCartClick ? (
+              <Button 
+                size="sm" 
+                className="ml-4 bg-champagne text-luxury-black hover:bg-champagne/90 font-semibold relative"
+                onClick={onCartClick}
+                data-testid="button-cart-header"
+              >
+                <ShoppingCart className="w-5 h-5" />
+                {cartCount > 0 && (
+                  <Badge className="absolute -top-2 -right-2 bg-red-600 text-white border-2 border-luxury-black px-1.5 min-w-[20px] h-5">
+                    {cartCount}
+                  </Badge>
+                )}
               </Button>
-            </Link>
+            ) : (
+              <Link href="/shop" data-testid="link-cart">
+                <Button size="sm" className="ml-4 bg-champagne text-luxury-black hover:bg-champagne/90 font-semibold relative">
+                  <ShoppingCart className="w-5 h-5" />
+                  {cartCount > 0 && (
+                    <Badge className="absolute -top-2 -right-2 bg-red-600 text-white border-2 border-luxury-black px-1.5 min-w-[20px] h-5">
+                      {cartCount}
+                    </Badge>
+                  )}
+                </Button>
+              </Link>
+            )}
           </nav>
           
           {/* Mobile Menu */}
