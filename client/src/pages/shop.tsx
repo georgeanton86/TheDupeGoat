@@ -10,7 +10,8 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Input } from "@/components/ui/input";
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
 import type { Product } from "@shared/schema";
-import { ShoppingCart, Tag, Truck } from "lucide-react";
+import { ShoppingCart, Tag, Truck, Info } from "lucide-react";
+import ProductDetailModal from "@/components/product-detail-modal";
 import equusAlbusImage from "@assets/generated_images/Badass_Equus_Albus_bottle_bde8545f.png";
 import paxObscuraImage from "@assets/generated_images/Pax_Obscura_luxury_bottle_c6928f90.png";
 import famesImage from "@assets/generated_images/Fames_luxury_bottle_fd04fa9c.png";
@@ -31,6 +32,8 @@ export default function Shop() {
   const [promoCode, setPromoCode] = useState("");
   const [promoApplied, setPromoApplied] = useState(false);
   const [isCartOpen, setIsCartOpen] = useState(false);
+  const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
+  const [isDetailModalOpen, setIsDetailModalOpen] = useState(false);
 
   const { data: products, isLoading } = useQuery<Product[]>({
     queryKey: ["/api/products"],
@@ -114,7 +117,7 @@ export default function Shop() {
           <div className="text-center mb-8">
             <h1 className="text-5xl md:text-6xl font-serif font-bold text-champagne mb-4">The Seven Seals Collection</h1>
             <p className="text-lg text-champagne/80 max-w-2xl mx-auto mb-6">
-              8 apocalyptic fragrances inspired by Revelation. Each 30ml bottle carries prophetic power.
+              Sequential release of apocalyptic fragrances inspired by Revelation. 100mL premium bottles available in Eau de Parfum ($99) and Extrait de Parfum ($119).
             </p>
             <div className="flex items-center justify-center gap-6 text-sm">
               <div className="flex items-center gap-2 text-champagne/90">
@@ -141,6 +144,10 @@ export default function Shop() {
                   key={product.id}
                   product={product}
                   onAddToCart={addToCart}
+                  onViewDetails={(product) => {
+                    setSelectedProduct(product);
+                    setIsDetailModalOpen(true);
+                  }}
                 />
               ))}
             </div>
@@ -504,11 +511,25 @@ export default function Shop() {
       </div>
 
       <Footer />
+
+      {/* Product Detail Modal */}
+      <ProductDetailModal
+        product={selectedProduct}
+        isOpen={isDetailModalOpen}
+        onClose={() => {
+          setIsDetailModalOpen(false);
+          setSelectedProduct(null);
+        }}
+      />
     </div>
   );
 }
 
-function ProductCard({ product, onAddToCart }: { product: Product; onAddToCart: (product: Product, quantity: number) => void }) {
+function ProductCard({ product, onAddToCart, onViewDetails }: { 
+  product: Product; 
+  onAddToCart: (product: Product, quantity: number) => void;
+  onViewDetails: (product: Product) => void;
+}) {
   const [quantity, setQuantity] = useState(1);
 
   const handleAddToCart = () => {
@@ -580,10 +601,10 @@ function ProductCard({ product, onAddToCart }: { product: Product; onAddToCart: 
           </div>
         </div>
 
-        <div className="flex items-center justify-between mb-4">
+        <div className="flex items-center justify-between mb-2">
           <div>
             <p className="text-2xl font-bold text-luxury-black">${product.price}</p>
-            <p className="text-xs text-gray-500">{product.volume}</p>
+            <p className="text-xs text-gray-500">{product.volume} • {product.concentration}</p>
           </div>
           <Select value={quantity.toString()} onValueChange={(val) => setQuantity(parseInt(val))}>
             <SelectTrigger className="w-20" data-testid={`select-quantity-${product.id}`}>
@@ -598,6 +619,16 @@ function ProductCard({ product, onAddToCart }: { product: Product; onAddToCart: 
             </SelectContent>
           </Select>
         </div>
+
+          <Button
+            onClick={() => onViewDetails(product)}
+            variant="outline"
+            className="w-full mb-2 border-amber-600 text-amber-600 hover:bg-amber-50"
+            data-testid={`button-view-details-${product.id}`}
+          >
+            <Info className="w-4 h-4 mr-2" />
+            View Fragrance Notes
+          </Button>
 
           <Button
             onClick={handleAddToCart}

@@ -226,6 +226,8 @@ export class MemStorage implements IStorage {
       originalPrice: insertProduct.originalPrice ?? null,
       nextReleaseDate: insertProduct.nextReleaseDate ?? null,
       soldCount: insertProduct.soldCount ?? 0,
+      isActive: insertProduct.isActive ?? true,
+      selloutTime: insertProduct.selloutTime ?? null,
       id,
       createdAt: new Date(),
     };

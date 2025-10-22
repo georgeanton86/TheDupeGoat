@@ -123,15 +123,19 @@ export default function ProductShowcase() {
             {/* Product Details */}
             <div className="space-y-4 mb-10">
               <div className="flex items-center justify-center lg:justify-start">
-                <span className="text-sm font-medium text-champagne/60 w-24">Volume:</span>
+                <span className="text-sm font-medium text-champagne/60 w-32">Volume:</span>
                 <span className="text-sm font-semibold text-white">{product.volume}</span>
               </div>
               <div className="flex items-center justify-center lg:justify-start">
-                <span className="text-sm font-medium text-champagne/60 w-24">Notes:</span>
+                <span className="text-sm font-medium text-champagne/60 w-32">Concentration:</span>
+                <span className="text-sm font-semibold text-white">{product.concentration}</span>
+              </div>
+              <div className="flex items-center justify-center lg:justify-start">
+                <span className="text-sm font-medium text-champagne/60 w-32">Notes:</span>
                 <span className="text-sm text-champagne/80">{product.notes}</span>
               </div>
               <div className="flex items-center justify-center lg:justify-start">
-                <span className="text-sm font-medium text-champagne/60 w-24">Type:</span>
+                <span className="text-sm font-medium text-champagne/60 w-32">Type:</span>
                 <span className="text-sm text-champagne/80">{product.type}</span>
               </div>
             </div>
@@ -160,12 +164,12 @@ export default function ProductShowcase() {
                 </Button>
               </Link>
               <div className="bg-white/5 backdrop-blur-sm border border-champagne/20 p-4 rounded-lg">
-                <h4 className="font-semibold text-champagne mb-2">✨ What's Included:</h4>
+                <h4 className="font-semibold text-champagne mb-2">✨ The Seven Seals Collection:</h4>
                 <ul className="text-sm text-champagne/80 space-y-1">
-                  <li>✓ 8 powerful biblical fragrances</li>
+                  <li>✓ Sequential release - one seal at a time</li>
+                  <li>✓ 100mL premium bottles</li>
                   <li>✓ FREE shipping over $100</li>
                   <li>✓ Use code WELCOME10 for 10% off</li>
-                  <li>✓ One-click PayPal checkout</li>
                 </ul>
               </div>
             </div>
