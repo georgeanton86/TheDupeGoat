@@ -547,10 +547,11 @@ function ProductCard({ product, onAddToCart }: { product: Product; onAddToCart: 
           />
           
           {/* Product name overlay */}
-          <div className="absolute bottom-6 left-1/2 transform -translate-x-1/2 text-center">
-            <div className="bg-luxury-black/90 backdrop-blur-sm px-4 py-2 rounded-lg border border-amber-600/40">
-              <p className="text-amber-600 font-bold text-sm tracking-wider">{product.name}</p>
-              <p className="text-amber-500/70 text-[10px] font-medium mt-0.5">RVLTN PARFUMS</p>
+          <div className="absolute bottom-6 left-1/2 transform -translate-x-1/2 text-center w-11/12">
+            <div className="bg-luxury-black/90 backdrop-blur-sm px-3 py-2 rounded-lg border border-amber-600/40">
+              <p className="text-amber-600 font-bold text-xs tracking-wider">{product.name}</p>
+              <p className="text-amber-500/80 text-[9px] font-medium mt-0.5">{product.verseReference}</p>
+              <p className="text-amber-500/70 text-[9px] font-medium mt-0.5">RVLTN PARFUMS</p>
             </div>
           </div>
           
