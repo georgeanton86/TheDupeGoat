@@ -11,6 +11,7 @@ import { Input } from "@/components/ui/input";
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
 import type { Product } from "@shared/schema";
 import { ShoppingCart, Tag, Truck } from "lucide-react";
+import bottleImage from "@assets/Screenshot_20251020_205131_Photos_1761098663475.jpg";
 
 interface CartItem {
   product: Product;
@@ -393,20 +394,22 @@ function ProductCard({ product, onAddToCart }: { product: Product; onAddToCart: 
   return (
     <Card className="overflow-hidden hover:shadow-xl transition-all duration-300 hover:-translate-y-1">
       <CardContent className="p-0">
-        <div className="relative h-64 bg-gradient-to-br from-luxury-black via-charcoal to-luxury-black flex flex-col items-center justify-center text-center px-6">
-          {/* Logo */}
+        <div className="relative h-80 bg-gradient-to-br from-gray-50 to-gray-100 flex items-center justify-center">
+          {/* Actual bottle product photo */}
           <img 
-            src="/shield-logo.png" 
-            alt="RVLTN Shield" 
-            className="w-16 h-16 object-contain mb-4 opacity-90"
+            src={bottleImage} 
+            alt={`${product.name} bottle`}
+            className="h-72 w-auto object-contain"
+            data-testid={`img-product-${product.id}`}
           />
-          {/* Product Name */}
-          <h3 className="text-3xl font-serif font-bold text-champagne mb-2 tracking-wide">{product.name}</h3>
-          <p className="text-champagne/80 text-sm font-medium mb-1">RVLTN PARFUMS</p>
-          <p className="text-champagne/60 text-xs italic">{product.type}</p>
           
-          {/* Decorative divider */}
-          <div className="w-24 h-px bg-champagne/30 mt-4"></div>
+          {/* Product name overlay */}
+          <div className="absolute bottom-6 left-1/2 transform -translate-x-1/2 text-center">
+            <div className="bg-luxury-black/90 backdrop-blur-sm px-4 py-2 rounded-lg border border-champagne/40">
+              <p className="text-champagne font-bold text-sm tracking-wider">{product.name}</p>
+              <p className="text-champagne/70 text-[10px] font-medium mt-0.5">RVLTN PARFUMS</p>
+            </div>
+          </div>
           
           {/* Stock badge */}
           <Badge 
