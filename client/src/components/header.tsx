@@ -40,21 +40,21 @@ export default function Header({ cartCount = 0, onCartClick }: HeaderProps = {})
           <nav className="hidden md:flex items-center space-x-8">
             <Link 
               href="/shop" 
-              className="text-sm font-semibold text-champagne/90 hover:text-champagne transition-colors uppercase tracking-wide"
+              className="text-sm font-semibold text-white hover:text-champagne transition-colors uppercase tracking-wide"
               data-testid="link-shop"
             >
               Collection
             </Link>
             <button 
               onClick={() => scrollToSection('about')} 
-              className="text-sm font-semibold text-champagne/90 hover:text-champagne transition-colors uppercase tracking-wide"
+              className="text-sm font-semibold text-white hover:text-champagne transition-colors uppercase tracking-wide"
               data-testid="button-nav-about"
             >
               Our Story
             </button>
             <Link 
               href="/policy" 
-              className="text-sm font-semibold text-champagne/90 hover:text-champagne transition-colors uppercase tracking-wide"
+              className="text-sm font-semibold text-white hover:text-champagne transition-colors uppercase tracking-wide"
               data-testid="link-policy"
             >
               Policy
@@ -105,19 +105,19 @@ export default function Header({ cartCount = 0, onCartClick }: HeaderProps = {})
               <nav className="flex flex-col space-y-4">
                 <Link 
                   href="/shop" 
-                  className="text-sm font-semibold text-champagne/90 hover:text-champagne transition-colors uppercase tracking-wide"
+                  className="text-sm font-semibold text-white hover:text-champagne transition-colors uppercase tracking-wide"
                 >
                   Collection
                 </Link>
                 <button 
                   onClick={() => scrollToSection('about')} 
-                  className="text-sm font-semibold text-champagne/90 hover:text-champagne transition-colors text-left uppercase tracking-wide"
+                  className="text-sm font-semibold text-white hover:text-champagne transition-colors text-left uppercase tracking-wide"
                 >
                   Our Story
                 </button>
                 <Link 
                   href="/policy" 
-                  className="text-sm font-semibold text-champagne/90 hover:text-champagne transition-colors uppercase tracking-wide"
+                  className="text-sm font-semibold text-white hover:text-champagne transition-colors uppercase tracking-wide"
                 >
                   Policy
                 </Link>

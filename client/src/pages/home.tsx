@@ -102,11 +102,11 @@ export default function Home() {
         <div className="relative pt-8 pb-6">
           <div className="max-w-4xl mx-auto px-4 text-center">
             <div className="bg-champagne/10 backdrop-blur-sm border-2 border-champagne rounded-lg py-4 px-6 inline-block">
-              <p className="text-champagne/80 text-sm font-medium mb-1">Our Foundation</p>
+              <p className="text-white text-sm font-medium mb-1">Our Foundation</p>
               <h2 className="text-champagne text-4xl md:text-5xl font-serif font-bold tracking-wide">
                 REVELATION 21:6
               </h2>
-              <p className="text-champagne/70 text-sm mt-2 italic">"I am Alpha and Omega, the beginning and the end"</p>
+              <p className="text-white text-sm mt-2 italic">"I am Alpha and Omega, the beginning and the end"</p>
             </div>
           </div>
         </div>

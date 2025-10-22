@@ -2,14 +2,7 @@ import { useQuery } from "@tanstack/react-query";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Link } from "wouter";
-import summerOfSinghsImage from "@assets/generated_images/Luxury_Summer_of_Singhs_perfume_dfd15174.png";
-import septemberNoirImage from "@assets/generated_images/Black_September's_Noir_luxury_perfume_8e9e72db.png";
-import holyNoFiveImage from "@assets/generated_images/April's_Awakening_luxury_perfume_bottle_2eb39dcc.png";
-import angelEmbraceImage from "@assets/generated_images/May's_Mystique_luxury_perfume_bottle_de71f6d0.png";
-import sacredWatersImage from "@assets/generated_images/June's_Journey_luxury_perfume_bottle_9dff73d4.png";
-import divineOpiumImage from "@assets/generated_images/July's_Jewel_luxury_perfume_bottle_872dd6a6.png";
-import heavenlySauvageImage from "@assets/generated_images/August's_Allure_luxury_perfume_bottle_f9cf7a85.png";
-import rznImage from "@assets/generated_images/RZN_luxury_perfume_bottle_890ac3f2.png";
+import bottleImage from "@assets/Screenshot_20251020_205131_Photos_1761098663475.jpg";
 
 export default function ProductGallery() {
   const { data: products, isLoading } = useQuery({
@@ -46,19 +39,9 @@ export default function ProductGallery() {
           
           return (
             <div key={product.id} className="group">
-              <div className="relative overflow-hidden rounded-2xl">
+              <div className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-gray-50 to-gray-100 flex items-center justify-center p-8">
                 <img 
-                  src={
-                    product.name === "Summer of Singhs" ? summerOfSinghsImage : 
-                    product.name === "September's Noir" ? septemberNoirImage :
-                    product.name === "Holy No. 5" ? holyNoFiveImage :
-                    product.name === "Angel's Embrace" ? angelEmbraceImage :
-                    product.name === "Sacred Waters" ? sacredWatersImage :
-                    product.name === "Divine Opium" ? divineOpiumImage :
-                    product.name === "Heavenly Sauvage" ? heavenlySauvageImage :
-                    product.name === "RZN" ? rznImage :
-                    product.imageUrl
-                  }
+                  src={bottleImage}
                   alt={`${product.name} - RVLTN Parfums`}
                   className="w-full h-80 object-cover group-hover:scale-105 transition-transform duration-500"
                 />
