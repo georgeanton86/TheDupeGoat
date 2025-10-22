@@ -48,8 +48,8 @@ export default function ProductGallery() {
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
       <div className="text-center mb-16">
-        <h2 className="text-4xl font-serif font-bold text-luxury-black mb-4">Our Collections</h2>
-        <p className="text-gray-600 max-w-2xl mx-auto">
+        <h2 className="text-4xl font-serif font-bold text-amber-600 mb-4">Our Collections</h2>
+        <p className="text-amber-600/80 max-w-2xl mx-auto">
           Discover our exclusive fragrances - from sold-out successes to upcoming pre-orders
         </p>
       </div>
@@ -81,15 +81,15 @@ export default function ProductGallery() {
               </div>
               
               <div className="mt-6 text-center">
-                <h3 className="text-2xl font-serif font-bold text-luxury-black mb-2">
+                <h3 className="text-2xl font-serif font-bold text-amber-600 mb-2">
                   {product.name}
                 </h3>
-                <p className="text-gray-600 mb-4 text-sm">
+                <p className="text-amber-600/80 mb-4 text-sm">
                   {product.description}
                 </p>
                 
                 <div className="mb-4">
-                  <span className="text-2xl font-bold text-luxury-black">
+                  <span className="text-2xl font-bold text-amber-600">
                     ${product.price}
                   </span>
                   {product.originalPrice && (

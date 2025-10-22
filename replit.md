@@ -1,20 +1,20 @@
 # Overview
 
-This is a luxury perfume e-commerce application called "RVLTN PARFUMS" that focuses on selling exclusive, limited-edition Christian-themed fragrances. The application features 8 biblical fragrances (4 men's colognes + 4 unisex perfumes) inspired by top-selling luxury fragrances, each with Bible verses, premium brand experience, realistic sales counters, shopping cart with promo codes, and a strict no-returns policy. It's built as a full-stack application with production-grade secure PayPal payment processing.
+This is a luxury perfume e-commerce application called "RVLTN PARFUMS" that focuses on selling "The Seven Seals Collection" - exclusive, limited-edition apocalyptic fragrances inspired by Revelation 6-8. The application features 8 fragrances (all unisex) with Latin names, Revelation verses, premium brand experience with dark gradient backgrounds and brass/amber text, realistic sales counters, shopping cart with promo codes, and a strict no-returns policy. It's built as a full-stack application with production-grade secure PayPal payment processing.
 
-## Product Catalog (8 Fragrances)
+## Product Catalog - The Seven Seals Collection (8 Fragrances)
 
-**Men's Colognes (4):**
-1. **THE WARRIOR** - Psalm 144:1 | "Blessed be the LORD, my rock, who trains my hands for war" | Notes: Calabrian Bergamot, Sichuan Pepper, Ambroxan, Vanilla
-2. **THE KING** - Proverbs 3:13-14 | "Blessed is the one who finds wisdom, more precious than gold" | Notes: Pineapple, Blackcurrant, Birch, Oakmoss, Musk
-3. **THE ROCK** - Matthew 16:18 | "You are Peter, and on this rock I will build my church" | Notes: Citrus, Ginger, Sandalwood, Cedar, Vetiver
-4. **THE BELOVED** - John 13:23 | "One of his disciples, whom Jesus loved, was reclining next to him" | Notes: Mint, Green Apple, Tonka Bean, Vanilla, Oakmoss
+**The Four Horsemen:**
+1. **EQUUS ALBUS** (White Horse) - Revelation 6:1–2 | "I looked, and behold, a white horse! And its rider had a bow, and a crown was given to him" | Notes: Bright Amber, White Musk, Citrus | Theme: Conquest & awakening
+2. **PAX OBSCURA** (Red Horse) - Revelation 6:3–4 | "Out came another horse, bright red. Its rider was permitted to take peace from the earth" | Notes: Smoky Spice, Leather | Theme: Passion & chaos
+3. **FAMES** (Black Horse) - Revelation 6:5–6 | "I looked, and behold, a black horse! And its rider had a pair of scales in his hand" | Notes: Dry Woods, Vetiver, Black Pepper | Theme: Desire & restraint
+4. **MORTEM** (Pale Horse) - Revelation 6:7–8 | "I looked, and behold, a pale horse! And its rider's name was Death" | Notes: Incense, Cedar, Myrrh | Theme: Stillness & eternity
 
-**Unisex Perfumes (4):**
-1. **THE PROPHET** - Isaiah 6:8 | "I heard the voice of the Lord saying, 'Whom shall I send?'" | Notes: Sandalwood, Cardamom, Iris, Violet, Leather
-2. **THE SHIELD** - Ephesians 6:16 | "Take up the shield of faith to extinguish the flaming arrows" | Notes: Leather, Jasmine Sambac, Amber, Patchouli, Moss
-3. **THE CROWN** - 2 Timothy 4:8 | "There is laid up for me the crown of righteousness" | Notes: Black Cherry, Bitter Almond, Tonka Bean, Sandalwood
-4. **THE LIGHT** - John 8:12 | "I am the light of the world. Whoever follows me will never walk in darkness" | Notes: Lavender, Coconut, Vanilla, Praline, Musk
+**The Remaining Seals:**
+5. **VOX CAELI** (Fifth Seal) - Revelation 6:9–11 | "I saw under the altar the souls of those who had been slain for the word of God" | Notes: White Oud, Soft Smoke | Theme: Prayer & transcendence
+6. **TERRA TREMOR** (Sixth Seal) - Revelation 6:12–17 | "There was a great earthquake, and the sun became black as sackcloth" | Notes: Amber, Patchouli, Volcanic Depth | Theme: Power & awe
+7. **SABBATUM** (Seventh Seal) - Revelation 8:1 | "When the Lamb opened the seventh seal, there was silence in heaven for about half an hour" | Notes: Sandalwood, Linen, White Iris | Theme: Sacred stillness
+8. **LUX AETERNA** (Eternal Light) - Revelation 21:23 | "The city has no need of sun or moon, for the glory of God gives it light" | Notes: Golden Woods, Radiant Amber | Theme: Completion & resurrection
 
 # User Preferences
 
