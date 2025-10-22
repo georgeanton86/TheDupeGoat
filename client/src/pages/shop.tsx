@@ -393,30 +393,21 @@ function ProductCard({ product, onAddToCart }: { product: Product; onAddToCart: 
   return (
     <Card className="overflow-hidden hover:shadow-xl transition-all duration-300 hover:-translate-y-1">
       <CardContent className="p-0">
-        <div className="relative h-64 bg-gradient-to-br from-champagne/10 to-luxury-black/10 flex items-center justify-center">
+        <div className="relative h-64 bg-gradient-to-br from-luxury-black via-charcoal to-luxury-black flex flex-col items-center justify-center text-center px-6">
+          {/* Logo */}
           <img 
-            src={product.imageUrl} 
-            alt={product.name}
-            className="h-full w-auto object-contain"
-            data-testid={`img-product-${product.id}`}
+            src="/shield-logo.png" 
+            alt="RVLTN Shield" 
+            className="w-16 h-16 object-contain mb-4 opacity-90"
           />
-          {/* Product name label on bottle */}
-          <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-center pointer-events-none">
-            <div className="bg-luxury-black/80 backdrop-blur-sm px-3 py-2 rounded-lg border border-champagne/30">
-              <p className="text-champagne font-bold text-xs tracking-wider">{product.name}</p>
-              <p className="text-champagne/60 text-[8px] font-medium mt-0.5">RVLTN PARFUMS</p>
-            </div>
-          </div>
-          {/* Shield logo overlay - positioned on the bottle */}
-          <div className="absolute bottom-6 left-1/2 transform -translate-x-1/2">
-            <img 
-              src="/shield-logo.png" 
-              alt="RVLTN Shield" 
-              className="w-14 h-14 object-contain opacity-80"
-            />
-          </div>
-          {/* Gradient overlay */}
-          <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent pointer-events-none"></div>
+          {/* Product Name */}
+          <h3 className="text-3xl font-serif font-bold text-champagne mb-2 tracking-wide">{product.name}</h3>
+          <p className="text-champagne/80 text-sm font-medium mb-1">RVLTN PARFUMS</p>
+          <p className="text-champagne/60 text-xs italic">{product.type}</p>
+          
+          {/* Decorative divider */}
+          <div className="w-24 h-px bg-champagne/30 mt-4"></div>
+          
           {/* Stock badge */}
           <Badge 
             variant={isLowStock ? "destructive" : "secondary"} 
@@ -429,7 +420,7 @@ function ProductCard({ product, onAddToCart }: { product: Product; onAddToCart: 
         <div className="p-6">
           <div className="mb-3">
             <h3 className="text-xl font-bold text-luxury-black">{product.name}</h3>
-            <p className="text-xs text-champagne font-medium">{product.verseReference}</p>
+            <p className="text-xs text-gray-600 font-medium">{product.verseReference}</p>
           </div>
 
           <p className="text-sm text-gray-600 mb-2 italic">"{product.bibleVerse}"</p>

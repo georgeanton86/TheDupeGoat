@@ -36,10 +36,10 @@ export class MemStorage implements IStorage {
   private async initializeDefaultProduct() {
     // MEN'S COLOGNES (4)
     
-    // THE WARRIOR
+    // WARRIOR
     const theWarrior: Product = {
       id: randomUUID(),
-      name: "THE WARRIOR",
+      name: "WARRIOR",
       description: "Bold. Powerful. Untamed. A fierce fragrance for the modern warrior with divine strength.",
       price: "35.00",
       originalPrice: null,
@@ -60,10 +60,10 @@ export class MemStorage implements IStorage {
     };
     this.products.set(theWarrior.id, theWarrior);
 
-    // THE KING
+    // KING
     const theKing: Product = {
       id: randomUUID(),
-      name: "THE KING",
+      name: "KING",
       description: "Regal. Sophisticated. Timeless. The scent of wisdom and divine royalty.",
       price: "35.00",
       originalPrice: null,
@@ -84,10 +84,10 @@ export class MemStorage implements IStorage {
     };
     this.products.set(theKing.id, theKing);
 
-    // THE ROCK
+    // ROCK
     const theRock: Product = {
       id: randomUUID(),
-      name: "THE ROCK",
+      name: "ROCK",
       description: "Steadfast. Elegant. Unwavering. Built on the foundation of faith and strength.",
       price: "35.00",
       originalPrice: null,
@@ -108,10 +108,10 @@ export class MemStorage implements IStorage {
     };
     this.products.set(theRock.id, theRock);
 
-    // THE BELOVED
+    // BELOVED
     const theBeloved: Product = {
       id: randomUUID(),
-      name: "THE BELOVED",
+      name: "BELOVED",
       description: "Seductive. Passionate. Cherished. The fragrance of divine love and devotion.",
       price: "35.00",
       originalPrice: null,
@@ -134,10 +134,10 @@ export class MemStorage implements IStorage {
 
     // UNISEX PERFUMES (4)
 
-    // THE PROPHET
+    // PROPHET
     const theProphet: Product = {
       id: randomUUID(),
-      name: "THE PROPHET",
+      name: "PROPHET",
       description: "Mystic. Visionary. Transcendent. The voice of divine revelation in fragrance form.",
       price: "35.00",
       originalPrice: null,
@@ -158,10 +158,10 @@ export class MemStorage implements IStorage {
     };
     this.products.set(theProphet.id, theProphet);
 
-    // THE SHIELD
+    // SHIELD
     const theShield: Product = {
       id: randomUUID(),
-      name: "THE SHIELD",
+      name: "SHIELD",
       description: "Protective. Resilient. Empowering. Divine armor against all adversity.",
       price: "35.00",
       originalPrice: null,
@@ -182,10 +182,10 @@ export class MemStorage implements IStorage {
     };
     this.products.set(theShield.id, theShield);
 
-    // THE CROWN
+    // CROWN
     const theCrown: Product = {
       id: randomUUID(),
-      name: "THE CROWN",
+      name: "CROWN",
       description: "Victorious. Radiant. Eternal. The crown of righteousness awaits the faithful.",
       price: "35.00",
       originalPrice: null,
@@ -206,10 +206,10 @@ export class MemStorage implements IStorage {
     };
     this.products.set(theCrown.id, theCrown);
 
-    // THE LIGHT
+    // LIGHT
     const theLight: Product = {
       id: randomUUID(),
-      name: "THE LIGHT",
+      name: "LIGHT",
       description: "Luminous. Ethereal. Pure. Walk in the light as He is in the light.",
       price: "35.00",
       originalPrice: null,
