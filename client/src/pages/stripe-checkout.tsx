@@ -13,10 +13,10 @@ import Header from "@/components/header";
 import Footer from "@/components/footer";
 import { Loader2, CheckCircle } from "lucide-react";
 
-if (!import.meta.env.VITE_STRIPE_PUBLIC_KEY) {
-  throw new Error('Missing required Stripe key: VITE_STRIPE_PUBLIC_KEY');
+if (!import.meta.env.VITE_STRIPE_LIVE_PUBLIC_KEY) {
+  throw new Error('Missing required Stripe key: VITE_STRIPE_LIVE_PUBLIC_KEY');
 }
-const stripePromise = loadStripe(import.meta.env.VITE_STRIPE_PUBLIC_KEY);
+const stripePromise = loadStripe(import.meta.env.VITE_STRIPE_LIVE_PUBLIC_KEY);
 
 function CheckoutForm({ total, cart, promoCode }: { total: number; cart: any[]; promoCode: string | null }) {
   const stripe = useStripe();

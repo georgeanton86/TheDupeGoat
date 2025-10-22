@@ -70,7 +70,8 @@ Preferred communication style: Simple, everyday language.
 ## Payment Services
 - **PayPal**: Complete payment processing platform with PayPal Server SDK (@paypal/paypal-server-sdk)
 - **Environment**: PAYPAL_CLIENT_ID and PAYPAL_CLIENT_SECRET for OAuth authentication
-- **Stripe**: Available but not currently used (configured for future integration)
+- **Stripe**: Primary payment processor configured with LIVE keys for accepting real payments
+- **Environment**: STRIPE_LIVE_SECRET_KEY and VITE_STRIPE_LIVE_PUBLIC_KEY for production payment processing
 
 ## Database Services
 - **Neon Database**: Serverless PostgreSQL database with connection pooling (@neondatabase/serverless)

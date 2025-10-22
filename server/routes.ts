@@ -5,11 +5,11 @@ import { insertOrderSchema } from "@shared/schema";
 import { z } from "zod";
 import Stripe from "stripe";
 
-// Initialize Stripe
-if (!process.env.STRIPE_SECRET_KEY) {
-  throw new Error('Missing required Stripe secret: STRIPE_SECRET_KEY');
+// Initialize Stripe with LIVE keys
+if (!process.env.STRIPE_LIVE_SECRET_KEY) {
+  throw new Error('Missing required Stripe secret: STRIPE_LIVE_SECRET_KEY');
 }
-const stripe = new Stripe(process.env.STRIPE_SECRET_KEY, {
+const stripe = new Stripe(process.env.STRIPE_LIVE_SECRET_KEY, {
   apiVersion: "2025-07-30.basil",
 });
 
