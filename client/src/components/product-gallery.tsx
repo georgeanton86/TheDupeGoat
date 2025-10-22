@@ -82,9 +82,12 @@ export default function ProductGallery() {
               </div>
               
               <div className="mt-6 text-center">
-                <h3 className="text-2xl font-serif font-bold text-amber-600 mb-2">
+                <h3 className="text-2xl font-serif font-bold text-amber-600 mb-1">
                   {product.name}
                 </h3>
+                <p className="text-sm text-amber-600/70 font-medium mb-3">
+                  {product.verseReference.replace('Revelation', 'REV').replace('–', '-')}
+                </p>
                 <p className="text-amber-600/80 mb-4 text-sm">
                   {product.description}
                 </p>

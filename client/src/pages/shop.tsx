@@ -166,7 +166,7 @@ export default function Shop() {
                           <div key={item.product.id} className="flex items-center gap-3 p-3 bg-gray-50 rounded-lg">
                             <div className="flex-1">
                               <p className="font-semibold text-sm">{item.product.name}</p>
-                              <p className="text-xs text-gray-500">{item.product.verseReference}</p>
+                              <p className="text-xs text-gray-500">{item.product.verseReference.replace('Revelation', 'REV').replace('–', '-')}</p>
                             </div>
                             <Select
                               value={item.quantity.toString()}
@@ -279,7 +279,7 @@ export default function Shop() {
                     <div key={item.product.id} className="flex items-center gap-3 p-3 bg-gray-50 rounded-lg">
                       <div className="flex-1">
                         <p className="font-semibold text-sm">{item.product.name}</p>
-                        <p className="text-xs text-gray-500">{item.product.verseReference}</p>
+                        <p className="text-xs text-gray-500">{item.product.verseReference.replace('Revelation', 'REV').replace('–', '-')}</p>
                       </div>
                       <Select
                         value={item.quantity.toString()}
@@ -400,7 +400,7 @@ export default function Shop() {
                       <div key={item.product.id} className="flex items-center gap-3 p-3 bg-gray-50 rounded-lg">
                         <div className="flex-1">
                           <p className="font-semibold text-sm">{item.product.name}</p>
-                          <p className="text-xs text-gray-500">{item.product.verseReference}</p>
+                          <p className="text-xs text-gray-500">{item.product.verseReference.replace('Revelation', 'REV').replace('–', '-')}</p>
                         </div>
                         <Select
                           value={item.quantity.toString()}
@@ -546,15 +546,7 @@ function ProductCard({ product, onAddToCart }: { product: Product; onAddToCart: 
             data-testid={`img-product-${product.id}`}
           />
           
-          {/* Product name overlay */}
-          <div className="absolute bottom-6 left-1/2 transform -translate-x-1/2 text-center w-11/12">
-            <div className="bg-luxury-black/90 backdrop-blur-sm px-3 py-2 rounded-lg border border-amber-600/40">
-              <p className="text-amber-600 font-bold text-xs tracking-wider">{product.name}</p>
-              <p className="text-amber-500/80 text-[8px] italic mt-0.5 line-clamp-2">"{product.bibleVerse}"</p>
-              <p className="text-amber-500/70 text-[8px] font-medium mt-0.5">{product.verseReference}</p>
-              <p className="text-amber-500/70 text-[8px] font-medium mt-0.5">RVLTN PARFUMS</p>
-            </div>
-          </div>
+          {/* Product name overlay - REMOVED - clean bottle image only */}
           
           {/* Stock badge */}
           <Badge 
@@ -568,7 +560,7 @@ function ProductCard({ product, onAddToCart }: { product: Product; onAddToCart: 
         <div className="p-6">
           <div className="mb-3">
             <h3 className="text-xl font-bold text-amber-600">{product.name}</h3>
-            <p className="text-xs text-amber-600/70 font-medium">{product.verseReference}</p>
+            <p className="text-xs text-amber-600/70 font-medium">{product.verseReference.replace('Revelation', 'REV').replace('–', '-')}</p>
           </div>
 
           <p className="text-sm text-amber-600/80 mb-2 italic">"{product.bibleVerse}"</p>

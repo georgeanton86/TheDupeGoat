@@ -99,10 +99,12 @@ export default function ProductShowcase() {
               </Badge>
             )}
             
-            <h2 className="text-5xl lg:text-6xl font-serif font-bold text-champagne mb-4 leading-tight">
-              {product.name.split(' ').slice(0, -1).join(' ')}
-              <span className="text-white italic block">{product.name.split(' ').slice(-1)}</span>
+            <h2 className="text-5xl lg:text-6xl font-serif font-bold text-champagne mb-2 leading-tight">
+              {product.name}
             </h2>
+            <p className="text-lg text-champagne/70 font-medium mb-4">
+              {product.verseReference.replace('Revelation', 'REV').replace('–', '-')}
+            </p>
             
             <p className="text-xl text-champagne/80 mb-6 leading-relaxed max-w-lg">
               {product.description}
