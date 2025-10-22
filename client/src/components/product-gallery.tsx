@@ -2,7 +2,14 @@ import { useQuery } from "@tanstack/react-query";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Link } from "wouter";
-import bottleImage from "@assets/Screenshot_20251020_205131_Photos_1761098663475.jpg";
+import warriorImage from "@assets/generated_images/WARRIOR_luxury_perfume_bottle_9746f672.png";
+import kingImage from "@assets/generated_images/KING_luxury_perfume_bottle_ea3db720.png";
+import rockImage from "@assets/generated_images/ROCK_luxury_perfume_bottle_f6bf5bda.png";
+import belovedImage from "@assets/generated_images/BELOVED_luxury_perfume_bottle_3f1ccd05.png";
+import prophetImage from "@assets/generated_images/PROPHET_luxury_perfume_bottle_1a96c41d.png";
+import shieldImage from "@assets/generated_images/SHIELD_luxury_perfume_bottle_6fec8755.png";
+import crownImage from "@assets/generated_images/CROWN_luxury_perfume_bottle_149edd62.png";
+import lightImage from "@assets/generated_images/LIGHT_luxury_perfume_bottle_7d13bf45.png";
 
 export default function ProductGallery() {
   const { data: products, isLoading } = useQuery({
@@ -23,6 +30,21 @@ export default function ProductGallery() {
     );
   }
 
+  // Helper function to select the correct bottle image based on product name
+  const getBottleImage = (productName: string) => {
+    switch (productName) {
+      case "WARRIOR": return warriorImage;
+      case "KING": return kingImage;
+      case "ROCK": return rockImage;
+      case "BELOVED": return belovedImage;
+      case "PROPHET": return prophetImage;
+      case "SHIELD": return shieldImage;
+      case "CROWN": return crownImage;
+      case "LIGHT": return lightImage;
+      default: return warriorImage;
+    }
+  };
+
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
       <div className="text-center mb-16">
@@ -41,9 +63,9 @@ export default function ProductGallery() {
             <div key={product.id} className="group">
               <div className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-gray-50 to-gray-100 flex items-center justify-center p-8">
                 <img 
-                  src={bottleImage}
+                  src={getBottleImage(product.name)}
                   alt={`${product.name} - RVLTN Parfums`}
-                  className="w-full h-80 object-cover group-hover:scale-105 transition-transform duration-500"
+                  className="w-full h-80 object-contain group-hover:scale-105 transition-transform duration-500"
                 />
                 
                 {/* Status Badge */}

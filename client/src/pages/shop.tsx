@@ -11,7 +11,14 @@ import { Input } from "@/components/ui/input";
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
 import type { Product } from "@shared/schema";
 import { ShoppingCart, Tag, Truck } from "lucide-react";
-import bottleImage from "@assets/Screenshot_20251020_205131_Photos_1761098663475.jpg";
+import warriorImage from "@assets/generated_images/WARRIOR_luxury_perfume_bottle_9746f672.png";
+import kingImage from "@assets/generated_images/KING_luxury_perfume_bottle_ea3db720.png";
+import rockImage from "@assets/generated_images/ROCK_luxury_perfume_bottle_f6bf5bda.png";
+import belovedImage from "@assets/generated_images/BELOVED_luxury_perfume_bottle_3f1ccd05.png";
+import prophetImage from "@assets/generated_images/PROPHET_luxury_perfume_bottle_1a96c41d.png";
+import shieldImage from "@assets/generated_images/SHIELD_luxury_perfume_bottle_6fec8755.png";
+import crownImage from "@assets/generated_images/CROWN_luxury_perfume_bottle_149edd62.png";
+import lightImage from "@assets/generated_images/LIGHT_luxury_perfume_bottle_7d13bf45.png";
 
 interface CartItem {
   product: Product;
@@ -500,13 +507,28 @@ function ProductCard({ product, onAddToCart }: { product: Product; onAddToCart: 
   const stockPercent = (product.remainingInventory / product.totalInventory) * 100;
   const isLowStock = stockPercent < 20;
   
+  // Select the correct bottle image based on product name
+  const getBottleImage = () => {
+    switch (product.name) {
+      case "WARRIOR": return warriorImage;
+      case "KING": return kingImage;
+      case "ROCK": return rockImage;
+      case "BELOVED": return belovedImage;
+      case "PROPHET": return prophetImage;
+      case "SHIELD": return shieldImage;
+      case "CROWN": return crownImage;
+      case "LIGHT": return lightImage;
+      default: return warriorImage;
+    }
+  };
+  
   return (
     <Card className="overflow-hidden hover:shadow-xl transition-all duration-300 hover:-translate-y-1">
       <CardContent className="p-0">
         <div className="relative h-80 bg-gradient-to-br from-gray-50 to-gray-100 flex items-center justify-center">
-          {/* Actual bottle product photo */}
+          {/* Custom bottle image for each fragrance */}
           <img 
-            src={bottleImage} 
+            src={getBottleImage()} 
             alt={`${product.name} bottle`}
             className="h-72 w-auto object-contain"
             data-testid={`img-product-${product.id}`}
