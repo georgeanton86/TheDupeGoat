@@ -174,7 +174,8 @@ export default function ProductShowcase() {
               <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2 text-center w-11/12">
                 <div className="bg-luxury-black/90 backdrop-blur-sm px-4 py-2.5 rounded-lg border border-amber-600/40">
                   <p className="text-amber-600 font-bold text-sm tracking-wider">{product.name}</p>
-                  <p className="text-amber-500/80 text-[10px] font-medium mt-1">{product.verseReference}</p>
+                  <p className="text-amber-500/80 text-[9px] italic mt-1 line-clamp-2">"{product.bibleVerse}"</p>
+                  <p className="text-amber-500/70 text-[9px] font-medium mt-0.5">{product.verseReference}</p>
                   <p className="text-amber-500/70 text-[9px] font-medium mt-0.5">RVLTN PARFUMS</p>
                 </div>
               </div>

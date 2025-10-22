@@ -158,59 +158,59 @@ export default function Home() {
       </section>
 
       {/* Product Gallery Section */}
-      <section className="bg-warm-gray">
+      <section className="bg-gradient-to-br from-luxury-black via-charcoal to-luxury-black">
         <ProductGallery />
       </section>
 
       {/* Fun Facts Section */}
-      <section className="py-16 bg-warm-gray">
+      <section className="py-16 bg-gradient-to-br from-luxury-black via-charcoal to-luxury-black">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
           <FragranceFacts />
         </div>
       </section>
 
       {/* Features Section */}
-      <section className="py-20 bg-white">
+      <section className="py-20 bg-gradient-to-br from-luxury-black via-charcoal to-luxury-black">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
-            <h3 className="text-3xl font-serif font-bold text-luxury-black mb-4">Our Sacred Promise</h3>
-            <p className="text-lg text-gray-600 max-w-2xl mx-auto">
+            <h3 className="text-3xl font-serif font-bold text-amber-600 mb-4">Our Sacred Promise</h3>
+            <p className="text-lg text-amber-600/80 max-w-2xl mx-auto">
               Every fragrance tells a story of faith. Ours speaks of divine inspiration, sacred luxury, and the art of worship through scent.
             </p>
           </div>
           
           <div className="grid md:grid-cols-3 gap-12">
-            <Card className="text-center border-none shadow-none">
+            <Card className="text-center border-none shadow-none bg-transparent">
               <CardContent className="pt-6">
                 <div className="w-16 h-16 bg-champagne/10 rounded-full flex items-center justify-center mx-auto mb-6">
                   <i className="fas fa-certificate text-2xl text-champagne"></i>
                 </div>
-                <h4 className="text-xl font-serif font-semibold mb-4">Divinely Crafted</h4>
-                <p className="text-gray-600">
+                <h4 className="text-xl font-serif font-semibold mb-4 text-amber-600">Divinely Crafted</h4>
+                <p className="text-amber-600/80">
                   Hand-blended with prayer and devotion using sacred ingredients blessed through ancient traditions.
                 </p>
               </CardContent>
             </Card>
             
-            <Card className="text-center border-none shadow-none">
+            <Card className="text-center border-none shadow-none bg-transparent">
               <CardContent className="pt-6">
                 <div className="w-16 h-16 bg-champagne/10 rounded-full flex items-center justify-center mx-auto mb-6">
                   <i className="fas fa-crown text-2xl text-champagne"></i>
                 </div>
-                <h4 className="text-xl font-serif font-semibold mb-4">Blessed & Limited</h4>
-                <p className="text-gray-600">
+                <h4 className="text-xl font-serif font-semibold mb-4 text-amber-600">Blessed & Limited</h4>
+                <p className="text-amber-600/80">
                   Limited to 100 blessed bottles monthly. Each one is a unique blessing that cannot be replicated. ✨
                 </p>
               </CardContent>
             </Card>
             
-            <Card className="text-center border-none shadow-none">
+            <Card className="text-center border-none shadow-none bg-transparent">
               <CardContent className="pt-6">
                 <div className="w-16 h-16 bg-champagne/10 rounded-full flex items-center justify-center mx-auto mb-6">
                   <i className="fas fa-shipping-fast text-2xl text-champagne"></i>
                 </div>
-                <h4 className="text-xl font-serif font-semibold mb-4">Sacred Delivery</h4>
-                <p className="text-gray-600">
+                <h4 className="text-xl font-serif font-semibold mb-4 text-amber-600">Sacred Delivery</h4>
+                <p className="text-amber-600/80">
                   Careful packaging and blessed handling for each precious fragrance when available.
                 </p>
               </CardContent>
@@ -220,7 +220,7 @@ export default function Home() {
       </section>
 
       {/* Creator Story Section */}
-      <section id="about" className="py-20 bg-gradient-to-r from-warm-gray to-white">
+      <section id="about" className="py-20 bg-gradient-to-br from-luxury-black via-charcoal to-luxury-black">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid lg:grid-cols-2 gap-16 items-center">
             
@@ -238,29 +238,29 @@ export default function Home() {
             
             {/* Creator Story */}
             <div className="order-1 lg:order-2">
-              <h3 className="text-4xl font-serif font-bold text-luxury-black mb-6">From the Southside to Sacred Scents</h3>
-              <p className="text-lg text-gray-600 mb-6 leading-relaxed">
+              <h3 className="text-4xl font-serif font-bold text-amber-600 mb-6">From the Southside to Sacred Scents</h3>
+              <p className="text-lg text-amber-600/80 mb-6 leading-relaxed">
                 Born and raised on Chicago's southside, my journey took me from the working-class neighborhoods of Bridgeport to Blue Island, and eventually into the world of luxury fragrances. Growing up where authenticity and hard work were everything, I discovered that true luxury comes from passion and purpose.
               </p>
-              <p className="text-lg text-gray-600 mb-6 leading-relaxed">
+              <p className="text-lg text-amber-600/80 mb-6 leading-relaxed">
                 What started as experimenting with essential oils in my southside apartment transformed into a divine calling. I blend Chicago work ethic with biblical tradition - each fragrance telling stories of scripture while carrying that authentic southside soul. From Bridgeport to luxury boutiques worldwide, these scents represent where faith meets ambition.
               </p>
-              <p className="text-lg text-gray-600 mb-8 leading-relaxed">
+              <p className="text-lg text-amber-600/80 mb-8 leading-relaxed">
                 Like a sweet fragrance rising to heaven, may these scents be a blessing to all who wear them. - Psalm 141:2
               </p>
               
               <div className="space-y-4">
                 <div className="flex items-center">
                   <i className="fas fa-home text-champagne mr-3"></i>
-                  <span className="text-gray-700">From Bridgeport to Blue Island to luxury</span>
+                  <span className="text-amber-600/80">From Bridgeport to Blue Island to luxury</span>
                 </div>
                 <div className="flex items-center">
                   <i className="fas fa-cross text-champagne mr-3"></i>
-                  <span className="text-gray-700">Biblical inspiration meets urban authenticity</span>
+                  <span className="text-amber-600/80">Biblical inspiration meets urban authenticity</span>
                 </div>
                 <div className="flex items-center">
                   <i className="fas fa-heart text-champagne mr-3"></i>
-                  <span className="text-gray-700">Chicago work ethic with divine purpose</span>
+                  <span className="text-amber-600/80">Chicago work ethic with divine purpose</span>
                 </div>
               </div>
             </div>

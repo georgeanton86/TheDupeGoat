@@ -550,8 +550,9 @@ function ProductCard({ product, onAddToCart }: { product: Product; onAddToCart: 
           <div className="absolute bottom-6 left-1/2 transform -translate-x-1/2 text-center w-11/12">
             <div className="bg-luxury-black/90 backdrop-blur-sm px-3 py-2 rounded-lg border border-amber-600/40">
               <p className="text-amber-600 font-bold text-xs tracking-wider">{product.name}</p>
-              <p className="text-amber-500/80 text-[9px] font-medium mt-0.5">{product.verseReference}</p>
-              <p className="text-amber-500/70 text-[9px] font-medium mt-0.5">RVLTN PARFUMS</p>
+              <p className="text-amber-500/80 text-[8px] italic mt-0.5 line-clamp-2">"{product.bibleVerse}"</p>
+              <p className="text-amber-500/70 text-[8px] font-medium mt-0.5">{product.verseReference}</p>
+              <p className="text-amber-500/70 text-[8px] font-medium mt-0.5">RVLTN PARFUMS</p>
             </div>
           </div>
           
