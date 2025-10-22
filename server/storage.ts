@@ -36,19 +36,19 @@ export class MemStorage implements IStorage {
   private async initializeDefaultProduct() {
     // MEN'S COLOGNES (4)
     
-    // WARRIOR
+    // EQUUS ALBUS - White Horse
     const theWarrior: Product = {
       id: randomUUID(),
-      name: "WARRIOR",
-      description: "Bold. Powerful. Untamed. A fierce fragrance for the modern warrior with divine strength.",
+      name: "EQUUS ALBUS",
+      description: "Conquest & awakening. Ride forth with divine purpose and unstoppable momentum.",
       price: "35.00",
       originalPrice: null,
-      volume: "30ml Eau de Cologne",
-      notes: "Calabrian Bergamot, Sichuan Pepper, Ambroxan, Vanilla",
-      type: "Men's Cologne",
-      imageUrl: "/the-warrior.png",
-      bibleVerse: "Blessed be the LORD, my rock, who trains my hands for war",
-      verseReference: "Psalm 144:1",
+      volume: "30ml Eau de Parfum",
+      notes: "Bright Amber, White Musk, Citrus",
+      type: "Unisex Perfume",
+      imageUrl: "/equus-albus.png",
+      bibleVerse: "I looked, and behold, a white horse! And its rider had a bow, and a crown was given to him",
+      verseReference: "Revelation 6:1–2",
       totalInventory: 100,
       remainingInventory: 18,
       soldCount: 82,
@@ -60,19 +60,19 @@ export class MemStorage implements IStorage {
     };
     this.products.set(theWarrior.id, theWarrior);
 
-    // KING
+    // PAX OBSCURA - Darkened Peace
     const theKing: Product = {
       id: randomUUID(),
-      name: "KING",
-      description: "Regal. Sophisticated. Timeless. The scent of wisdom and divine royalty.",
+      name: "PAX OBSCURA",
+      description: "Passion & chaos. When peace is taken from the earth, intensity remains.",
       price: "35.00",
       originalPrice: null,
-      volume: "30ml Eau de Cologne",
-      notes: "Pineapple, Blackcurrant, Birch, Oakmoss, Musk",
-      type: "Men's Cologne",
-      imageUrl: "/the-king.png",
-      bibleVerse: "Blessed is the one who finds wisdom, more precious than gold",
-      verseReference: "Proverbs 3:13-14",
+      volume: "30ml Eau de Parfum",
+      notes: "Smoky Spice, Leather",
+      type: "Unisex Perfume",
+      imageUrl: "/pax-obscura.png",
+      bibleVerse: "Out came another horse, bright red. Its rider was permitted to take peace from the earth",
+      verseReference: "Revelation 6:3–4",
       totalInventory: 100,
       remainingInventory: 27,
       soldCount: 73,
@@ -84,19 +84,19 @@ export class MemStorage implements IStorage {
     };
     this.products.set(theKing.id, theKing);
 
-    // ROCK
+    // FAMES - Famine
     const theRock: Product = {
       id: randomUUID(),
-      name: "ROCK",
-      description: "Steadfast. Elegant. Unwavering. Built on the foundation of faith and strength.",
+      name: "FAMES",
+      description: "Desire & restraint. A haunting reminder of what we crave and cannot have.",
       price: "35.00",
       originalPrice: null,
-      volume: "30ml Eau de Cologne",
-      notes: "Citrus, Ginger, Sandalwood, Cedar, Vetiver",
-      type: "Men's Cologne",
-      imageUrl: "/the-rock.png",
-      bibleVerse: "You are Peter, and on this rock I will build my church",
-      verseReference: "Matthew 16:18",
+      volume: "30ml Eau de Parfum",
+      notes: "Dry Woods, Vetiver, Black Pepper",
+      type: "Unisex Perfume",
+      imageUrl: "/fames.png",
+      bibleVerse: "I looked, and behold, a black horse! And its rider had a pair of scales in his hand",
+      verseReference: "Revelation 6:5–6",
       totalInventory: 100,
       remainingInventory: 41,
       soldCount: 59,
@@ -108,19 +108,19 @@ export class MemStorage implements IStorage {
     };
     this.products.set(theRock.id, theRock);
 
-    // BELOVED
+    // MORTEM - Death
     const theBeloved: Product = {
       id: randomUUID(),
-      name: "BELOVED",
-      description: "Seductive. Passionate. Cherished. The fragrance of divine love and devotion.",
+      name: "MORTEM",
+      description: "Stillness & eternity. Face the inevitable with grace and sacred reverence.",
       price: "35.00",
       originalPrice: null,
-      volume: "30ml Eau de Cologne",
-      notes: "Mint, Green Apple, Tonka Bean, Vanilla, Oakmoss",
-      type: "Men's Cologne",
-      imageUrl: "/the-beloved.png",
-      bibleVerse: "One of his disciples, whom Jesus loved, was reclining next to him",
-      verseReference: "John 13:23",
+      volume: "30ml Eau de Parfum",
+      notes: "Incense, Cedar, Myrrh",
+      type: "Unisex Perfume",
+      imageUrl: "/mortem.png",
+      bibleVerse: "I looked, and behold, a pale horse! And its rider's name was Death",
+      verseReference: "Revelation 6:7–8",
       totalInventory: 100,
       remainingInventory: 53,
       soldCount: 47,
@@ -134,19 +134,19 @@ export class MemStorage implements IStorage {
 
     // UNISEX PERFUMES (4)
 
-    // PROPHET
+    // VOX CAELI - Voice of Heaven
     const theProphet: Product = {
       id: randomUUID(),
-      name: "PROPHET",
-      description: "Mystic. Visionary. Transcendent. The voice of divine revelation in fragrance form.",
+      name: "VOX CAELI",
+      description: "Prayer & transcendence. The martyrs cry out beneath the altar of heaven.",
       price: "35.00",
       originalPrice: null,
       volume: "30ml Eau de Parfum",
-      notes: "Sandalwood, Cardamom, Iris, Violet, Leather",
+      notes: "White Oud, Soft Smoke",
       type: "Unisex Perfume",
-      imageUrl: "/the-prophet.png",
-      bibleVerse: "I heard the voice of the Lord saying, 'Whom shall I send?'",
-      verseReference: "Isaiah 6:8",
+      imageUrl: "/vox-caeli.png",
+      bibleVerse: "I saw under the altar the souls of those who had been slain for the word of God",
+      verseReference: "Revelation 6:9–11",
       totalInventory: 100,
       remainingInventory: 12,
       soldCount: 88,
@@ -158,19 +158,19 @@ export class MemStorage implements IStorage {
     };
     this.products.set(theProphet.id, theProphet);
 
-    // SHIELD
+    // TERRA TREMOR - Earth Tremor
     const theShield: Product = {
       id: randomUUID(),
-      name: "SHIELD",
-      description: "Protective. Resilient. Empowering. Divine armor against all adversity.",
+      name: "TERRA TREMOR",
+      description: "Power & awe. When the earth shakes and the heavens tremble before Him.",
       price: "35.00",
       originalPrice: null,
       volume: "30ml Eau de Parfum",
-      notes: "Leather, Jasmine Sambac, Amber, Patchouli, Moss",
+      notes: "Amber, Patchouli, Volcanic Depth",
       type: "Unisex Perfume",
-      imageUrl: "/the-shield.png",
-      bibleVerse: "Take up the shield of faith to extinguish the flaming arrows",
-      verseReference: "Ephesians 6:16",
+      imageUrl: "/terra-tremor.png",
+      bibleVerse: "There was a great earthquake, and the sun became black as sackcloth",
+      verseReference: "Revelation 6:12–17",
       totalInventory: 100,
       remainingInventory: 34,
       soldCount: 66,
@@ -182,19 +182,19 @@ export class MemStorage implements IStorage {
     };
     this.products.set(theShield.id, theShield);
 
-    // CROWN
+    // SABBATUM - The Silence
     const theCrown: Product = {
       id: randomUUID(),
-      name: "CROWN",
-      description: "Victorious. Radiant. Eternal. The crown of righteousness awaits the faithful.",
+      name: "SABBATUM",
+      description: "Sacred stillness. When heaven fell silent for half an hour, all creation held its breath.",
       price: "35.00",
       originalPrice: null,
       volume: "30ml Eau de Parfum",
-      notes: "Black Cherry, Bitter Almond, Tonka Bean, Sandalwood",
+      notes: "Sandalwood, Linen, White Iris",
       type: "Unisex Perfume",
-      imageUrl: "/the-crown.png",
-      bibleVerse: "There is laid up for me the crown of righteousness",
-      verseReference: "2 Timothy 4:8",
+      imageUrl: "/sabbatum.png",
+      bibleVerse: "When the Lamb opened the seventh seal, there was silence in heaven for about half an hour",
+      verseReference: "Revelation 8:1",
       totalInventory: 100,
       remainingInventory: 9,
       soldCount: 91,
@@ -206,19 +206,19 @@ export class MemStorage implements IStorage {
     };
     this.products.set(theCrown.id, theCrown);
 
-    // LIGHT
+    // LUX AETERNA - Eternal Light (Bonus)
     const theLight: Product = {
       id: randomUUID(),
-      name: "LIGHT",
-      description: "Luminous. Ethereal. Pure. Walk in the light as He is in the light.",
+      name: "LUX AETERNA",
+      description: "Completion & resurrection. The radiant glory that remains when all seals are broken.",
       price: "35.00",
       originalPrice: null,
       volume: "30ml Eau de Parfum",
-      notes: "Lavender, Coconut, Vanilla, Praline, Musk",
+      notes: "Golden Woods, Radiant Amber",
       type: "Unisex Perfume",
-      imageUrl: "/the-light.png",
-      bibleVerse: "I am the light of the world. Whoever follows me will never walk in darkness",
-      verseReference: "John 8:12",
+      imageUrl: "/lux-aeterna.png",
+      bibleVerse: "The city has no need of sun or moon, for the glory of God gives it light",
+      verseReference: "Revelation 21:23",
       totalInventory: 100,
       remainingInventory: 15,
       soldCount: 85,

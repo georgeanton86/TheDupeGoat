@@ -3,14 +3,14 @@ import { Link } from "wouter";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import CountdownTimer from "./countdown-timer";
-import warriorImage from "@assets/generated_images/WARRIOR_luxury_perfume_bottle_9746f672.png";
-import kingImage from "@assets/generated_images/KING_luxury_perfume_bottle_ea3db720.png";
-import rockImage from "@assets/generated_images/ROCK_luxury_perfume_bottle_f6bf5bda.png";
-import belovedImage from "@assets/generated_images/BELOVED_luxury_perfume_bottle_3f1ccd05.png";
-import prophetImage from "@assets/generated_images/PROPHET_luxury_perfume_bottle_1a96c41d.png";
-import shieldImage from "@assets/generated_images/SHIELD_luxury_perfume_bottle_6fec8755.png";
-import crownImage from "@assets/generated_images/CROWN_luxury_perfume_bottle_149edd62.png";
-import lightImage from "@assets/generated_images/LIGHT_luxury_perfume_bottle_7d13bf45.png";
+import equusAlbusImage from "@assets/generated_images/Equus_Albus_luxury_bottle_3ba3e71b.png";
+import paxObscuraImage from "@assets/generated_images/Pax_Obscura_luxury_bottle_c6928f90.png";
+import famesImage from "@assets/generated_images/Fames_luxury_bottle_fd04fa9c.png";
+import mortemImage from "@assets/generated_images/Mortem_luxury_bottle_f077a9fa.png";
+import voxCaeliImage from "@assets/generated_images/Vox_Caeli_luxury_bottle_6b8efdf7.png";
+import terraTremorImage from "@assets/generated_images/Terra_Tremor_luxury_bottle_27a4bc2e.png";
+import sabbatumImage from "@assets/generated_images/Sabbatum_luxury_bottle_b96d831e.png";
+import luxAeternaImage from "@assets/generated_images/Lux_Aeterna_luxury_bottle_d2b6357e.png";
 
 export default function ProductShowcase() {
   const { data: product, isLoading } = useQuery({
@@ -61,15 +61,15 @@ export default function ProductShowcase() {
   // Select bottle image based on product name
   const getBottleImage = () => {
     switch (product.name) {
-      case "WARRIOR": return warriorImage;
-      case "KING": return kingImage;
-      case "ROCK": return rockImage;
-      case "BELOVED": return belovedImage;
-      case "PROPHET": return prophetImage;
-      case "SHIELD": return shieldImage;
-      case "CROWN": return crownImage;
-      case "LIGHT": return lightImage;
-      default: return warriorImage;
+      case "EQUUS ALBUS": return equusAlbusImage;
+      case "PAX OBSCURA": return paxObscuraImage;
+      case "FAMES": return famesImage;
+      case "MORTEM": return mortemImage;
+      case "VOX CAELI": return voxCaeliImage;
+      case "TERRA TREMOR": return terraTremorImage;
+      case "SABBATUM": return sabbatumImage;
+      case "LUX AETERNA": return luxAeternaImage;
+      default: return equusAlbusImage;
     }
   };
 
