@@ -2,6 +2,7 @@ import { useQuery } from "@tanstack/react-query";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Link } from "wouter";
+import type { Product } from "@shared/schema";
 import equusAlbusImage from "@assets/generated_images/Badass_Equus_Albus_bottle_bde8545f.png";
 import paxObscuraImage from "@assets/generated_images/Pax_Obscura_luxury_bottle_c6928f90.png";
 import famesImage from "@assets/generated_images/Fames_luxury_bottle_fd04fa9c.png";
@@ -12,7 +13,7 @@ import sabbatumImage from "@assets/generated_images/Sabbatum_luxury_bottle_b96d8
 import luxAeternaImage from "@assets/generated_images/Lux_Aeterna_luxury_bottle_d2b6357e.png";
 
 export default function ProductGallery() {
-  const { data: products, isLoading } = useQuery({
+  const { data: products, isLoading } = useQuery<Product[]>({
     queryKey: ["/api/products"],
   });
 

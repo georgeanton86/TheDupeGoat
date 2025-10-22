@@ -3,6 +3,7 @@ import { Link } from "wouter";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import CountdownTimer from "./countdown-timer";
+import type { Product } from "@shared/schema";
 import equusAlbusImage from "@assets/generated_images/Badass_Equus_Albus_bottle_bde8545f.png";
 import paxObscuraImage from "@assets/generated_images/Pax_Obscura_luxury_bottle_c6928f90.png";
 import famesImage from "@assets/generated_images/Fames_luxury_bottle_fd04fa9c.png";
@@ -13,11 +14,11 @@ import sabbatumImage from "@assets/generated_images/Sabbatum_luxury_bottle_b96d8
 import luxAeternaImage from "@assets/generated_images/Lux_Aeterna_luxury_bottle_d2b6357e.png";
 
 export default function ProductShowcase() {
-  const { data: product, isLoading } = useQuery({
+  const { data: product, isLoading } = useQuery<Product>({
     queryKey: ["/api/product"],
   });
 
-  const { data: inventory } = useQuery({
+  const { data: inventory } = useQuery<{ remaining: number; total: number }>({
     queryKey: ["/api/inventory", product?.id],
     enabled: !!product?.id,
     refetchInterval: 30000, // Refetch every 30 seconds
@@ -103,9 +104,19 @@ export default function ProductShowcase() {
               <span className="text-white italic block">{product.name.split(' ').slice(-1)}</span>
             </h2>
             
-            <p className="text-xl text-champagne/80 mb-8 leading-relaxed max-w-lg">
+            <p className="text-xl text-champagne/80 mb-6 leading-relaxed max-w-lg">
               {product.description}
             </p>
+
+            {/* Bible Verse */}
+            <div className="mb-8 p-4 bg-white/5 backdrop-blur-sm border border-champagne/20 rounded-lg max-w-lg">
+              <p className="text-sm text-champagne/90 italic leading-relaxed">
+                "{product.bibleVerse}"
+              </p>
+              <p className="text-xs text-champagne/70 font-medium mt-2 text-right">
+                — {product.verseReference}
+              </p>
+            </div>
             
             {/* Product Details */}
             <div className="space-y-4 mb-10">
@@ -170,15 +181,6 @@ export default function ProductShowcase() {
                 className="h-80 w-auto object-contain"
                 data-testid="img-product"
               />
-              {/* Product name label */}
-              <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2 text-center w-11/12">
-                <div className="bg-luxury-black/90 backdrop-blur-sm px-4 py-2.5 rounded-lg border border-amber-600/40">
-                  <p className="text-amber-600 font-bold text-sm tracking-wider">{product.name}</p>
-                  <p className="text-amber-500/80 text-[9px] italic mt-1 line-clamp-2">"{product.bibleVerse}"</p>
-                  <p className="text-amber-500/70 text-[9px] font-medium mt-0.5">{product.verseReference}</p>
-                  <p className="text-amber-500/70 text-[9px] font-medium mt-0.5">RVLTN PARFUMS</p>
-                </div>
-              </div>
             </div>
             
             {/* Floating Badge */}
@@ -197,7 +199,7 @@ export default function ProductShowcase() {
       
       {/* Countdown Timer */}
       <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2">
-        <CountdownTimer nextReleaseDate={product.releaseDate} isPreOrder={isPreOrder} />
+        <CountdownTimer nextReleaseDate={product.releaseDate.toString()} isPreOrder={isPreOrder} />
       </div>
     </div>
   );
