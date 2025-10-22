@@ -163,7 +163,7 @@ export default function ProductShowcase() {
         <div className="order-1 lg:order-2 flex justify-center">
           <div className="relative group">
             {/* Main bottle image */}
-            <div className="relative w-80 h-96 rounded-2xl overflow-hidden shadow-2xl group-hover:shadow-3xl transition-all duration-500 bg-gradient-to-br from-gray-50 to-gray-100 flex items-center justify-center">
+            <div className="relative w-80 h-96 rounded-2xl overflow-hidden shadow-2xl group-hover:shadow-3xl transition-all duration-500 bg-gradient-to-br from-luxury-black via-charcoal to-luxury-black flex items-center justify-center">
               <img 
                 src={getBottleImage()} 
                 alt={`${product.name} - RVLTN Parfums Limited Edition`} 
@@ -172,9 +172,9 @@ export default function ProductShowcase() {
               />
               {/* Product name label */}
               <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2 text-center">
-                <div className="bg-luxury-black/90 backdrop-blur-sm px-4 py-3 rounded-lg border border-champagne/40">
-                  <p className="text-champagne font-bold text-sm tracking-wider">{product.name}</p>
-                  <p className="text-champagne/70 text-[10px] font-medium mt-1">RVLTN PARFUMS</p>
+                <div className="bg-luxury-black/90 backdrop-blur-sm px-4 py-3 rounded-lg border border-amber-600/40">
+                  <p className="text-amber-600 font-bold text-sm tracking-wider">{product.name}</p>
+                  <p className="text-amber-500/70 text-[10px] font-medium mt-1">RVLTN PARFUMS</p>
                 </div>
               </div>
             </div>

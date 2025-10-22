@@ -61,7 +61,7 @@ export default function ProductGallery() {
           
           return (
             <div key={product.id} className="group">
-              <div className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-gray-50 to-gray-100 flex items-center justify-center p-8">
+              <div className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-luxury-black via-charcoal to-luxury-black flex items-center justify-center p-8">
                 <img 
                   src={getBottleImage(product.name)}
                   alt={`${product.name} - RVLTN Parfums`}
