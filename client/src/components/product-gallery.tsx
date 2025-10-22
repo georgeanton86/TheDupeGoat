@@ -138,9 +138,12 @@ export default function ProductGallery() {
       </div>
       
       {/* Product Disclaimer */}
-      <div className="mt-16 text-center">
-        <p className="text-xs text-gray-500 max-w-2xl mx-auto leading-relaxed">
-          *Product images are for illustration purposes only. Actual bottle designs, colors, and packaging may vary from images shown. Each fragrance is handcrafted and blessed individually, making every bottle uniquely sacred.
+      <div className="mt-16 text-center bg-amber-50 border border-amber-200 rounded-lg p-6 max-w-3xl mx-auto">
+        <p className="text-sm text-amber-900 font-medium mb-2">
+          ⚠️ Product Image Disclaimer
+        </p>
+        <p className="text-xs text-amber-800 leading-relaxed">
+          *Product images shown are AI-generated concept renderings for illustration purposes only. Actual bottle designs, colors, shapes, and packaging will vary from images shown. Each fragrance is handcrafted and bottled individually. Final product appearance is subject to change.
         </p>
       </div>
     </div>

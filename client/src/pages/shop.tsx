@@ -491,6 +491,18 @@ export default function Shop() {
         </Sheet>
       </div>
 
+      {/* Product Image Disclaimer */}
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-12">
+        <div className="bg-amber-50 border border-amber-200 rounded-lg p-6 text-center">
+          <p className="text-sm text-amber-900 font-medium mb-2">
+            ⚠️ Product Image Disclaimer
+          </p>
+          <p className="text-xs text-amber-800 leading-relaxed max-w-3xl mx-auto">
+            *Product images shown are AI-generated concept renderings for illustration purposes only. Actual bottle designs, colors, shapes, and packaging will vary from images shown. Each fragrance is handcrafted and bottled individually. Final product appearance is subject to change.
+          </p>
+        </div>
+      </div>
+
       <Footer />
     </div>
   );
