@@ -2,7 +2,7 @@ import { useQuery } from "@tanstack/react-query";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Link } from "wouter";
-import equusAlbusImage from "@assets/generated_images/Equus_Albus_luxury_bottle_3ba3e71b.png";
+import equusAlbusImage from "@assets/generated_images/Badass_Equus_Albus_bottle_bde8545f.png";
 import paxObscuraImage from "@assets/generated_images/Pax_Obscura_luxury_bottle_c6928f90.png";
 import famesImage from "@assets/generated_images/Fames_luxury_bottle_fd04fa9c.png";
 import mortemImage from "@assets/generated_images/Mortem_luxury_bottle_f077a9fa.png";

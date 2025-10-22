@@ -46,7 +46,7 @@ export class MemStorage implements IStorage {
       volume: "30ml Eau de Parfum",
       notes: "Bright Amber, White Musk, Citrus",
       type: "Unisex Perfume",
-      imageUrl: "/assets/generated_images/Equus_Albus_luxury_bottle_3ba3e71b.png",
+      imageUrl: "/assets/generated_images/Badass_Equus_Albus_bottle_bde8545f.png",
       bibleVerse: "I looked, and behold, a white horse! And its rider had a bow, and a crown was given to him",
       verseReference: "Revelation 6:1–2",
       totalInventory: 100,
