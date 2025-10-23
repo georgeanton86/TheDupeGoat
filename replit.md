@@ -1,6 +1,6 @@
 # Overview
 
-This is a luxury perfume e-commerce application called "RVLTN PARFUMS" that focuses on selling "The Seven Seals Collection" - exclusive, limited-edition apocalyptic fragrances inspired by Revelation 6-8. The application features 8 fragrances (all unisex) with Latin names, Revelation verses, premium brand experience with dark gradient backgrounds and brass/amber text, realistic sales counters, shopping cart with promo codes, and a strict no-returns policy. It's built as a full-stack application with production-grade secure PayPal payment processing.
+This is a luxury perfume e-commerce application called "RVLTN PARFUMS" that focuses on selling "The Seven Seals Collection" - exclusive, limited-edition apocalyptic fragrances inspired by Revelation 6-8. The application features 8 fragrances (all unisex) at $119 each for 100mL Extrait de Parfum bottles, with Latin names, Revelation verses, premium brand experience with dark gradient backgrounds and brass/amber text, realistic sales counters, shopping cart with promo codes, and a strict no-returns policy. It's built as a full-stack application with production-grade secure payment processing.
 
 ## Product Catalog - The Seven Seals Collection (8 Fragrances)
 
