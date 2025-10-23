@@ -121,7 +121,7 @@ export default function Home() {
             <div className="bg-white/5 backdrop-blur-sm border border-champagne/20 rounded-lg p-6 text-center">
               <Shield className="w-10 h-10 text-champagne mx-auto mb-3" />
               <h3 className="text-champagne font-semibold mb-2">Authentic Biblical Scents</h3>
-              <p className="text-champagne/70 text-sm">15 fragrances inspired by Scripture</p>
+              <p className="text-champagne/70 text-sm">8 fragrances inspired by Scripture</p>
             </div>
             <div className="bg-white/5 backdrop-blur-sm border border-champagne/20 rounded-lg p-6 text-center">
               <Truck className="w-10 h-10 text-champagne mx-auto mb-3" />
@@ -131,7 +131,7 @@ export default function Home() {
             <div className="bg-white/5 backdrop-blur-sm border border-champagne/20 rounded-lg p-6 text-center">
               <Award className="w-10 h-10 text-champagne mx-auto mb-3" />
               <h3 className="text-champagne font-semibold mb-2">Premium Quality</h3>
-              <p className="text-champagne/70 text-sm">30ml Eau de Parfum</p>
+              <p className="text-champagne/70 text-sm">100mL Extrait de Parfum</p>
             </div>
           </div>
         </div>

@@ -117,7 +117,7 @@ export default function Shop() {
           <div className="text-center mb-8">
             <h1 className="text-5xl md:text-6xl font-serif font-bold text-champagne mb-4">The Seven Seals Collection</h1>
             <p className="text-lg text-champagne/80 max-w-2xl mx-auto mb-6">
-              Sequential release of apocalyptic fragrances inspired by Revelation. 100mL premium bottles available in Eau de Parfum ($99) and Extrait de Parfum ($119).
+              Sequential release of apocalyptic fragrances inspired by Revelation. 100mL Extrait de Parfum bottles at $119 each.
             </p>
             <div className="flex items-center justify-center gap-6 text-sm">
               <div className="flex items-center gap-2 text-champagne/90">
