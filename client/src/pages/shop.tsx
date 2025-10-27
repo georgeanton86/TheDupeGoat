@@ -122,15 +122,15 @@ export default function Shop() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-8">
             <h1 className="text-5xl md:text-6xl font-serif font-bold text-champagne mb-4">The Seven Seals Collection</h1>
-            <p className="text-lg text-champagne/80 max-w-2xl mx-auto mb-6">
+            <p className="text-lg text-white max-w-2xl mx-auto mb-6">
               8 apocalyptic fragrances inspired by Revelation. Available in EDP & Extrait concentrations, multiple sizes.
             </p>
             <div className="flex items-center justify-center gap-6 text-sm">
-              <div className="flex items-center gap-2 text-champagne/90">
+              <div className="flex items-center gap-2 text-white">
                 <Truck className="w-5 h-5" />
                 <span>Free shipping over $100</span>
               </div>
-              <div className="flex items-center gap-2 text-champagne/90">
+              <div className="flex items-center gap-2 text-white">
                 <Tag className="w-5 h-5" />
                 <span>WELCOME10 for 10% off</span>
               </div>
