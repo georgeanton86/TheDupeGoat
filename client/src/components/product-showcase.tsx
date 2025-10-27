@@ -165,8 +165,8 @@ export default function ProductShowcase() {
               </Link>
               <div className="bg-white/5 backdrop-blur-sm border border-champagne/20 p-4 rounded-lg">
                 <h4 className="font-semibold text-champagne mb-2">✨ The Seven Seals Collection:</h4>
-                <ul className="text-sm text-champagne/80 space-y-1">
-                  <li>✓ Sequential release - one seal at a time</li>
+                <ul className="text-sm text-white/90 space-y-1">
+                  <li>✓ All 8 fragrances available now</li>
                   <li>✓ 100mL premium bottles</li>
                   <li>✓ FREE shipping over $100</li>
                   <li>✓ Use code WELCOME10 for 10% off</li>
