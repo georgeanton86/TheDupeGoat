@@ -197,9 +197,9 @@ export default function Home() {
                 <div className="w-16 h-16 bg-champagne/10 rounded-full flex items-center justify-center mx-auto mb-6">
                   <i className="fas fa-crown text-2xl text-champagne"></i>
                 </div>
-                <h4 className="text-xl font-serif font-semibold mb-4 text-amber-600">Rare & Limited</h4>
+                <h4 className="text-xl font-serif font-semibold mb-4 text-amber-600">Small Batch Excellence</h4>
                 <p className="text-amber-600/80">
-                  Limited to 100 bottles per fragrance. Each one crafted with intention and designed to endure. ✨
+                  Every batch is handcrafted with meticulous attention - never more than 100 bottles. Like fine craft spirits, our small batches ensure exceptional quality and a personal touch in every bottle. ✨
                 </p>
               </CardContent>
             </Card>
