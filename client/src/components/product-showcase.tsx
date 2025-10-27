@@ -83,13 +83,13 @@ export default function ProductShowcase() {
           <div className="text-center">
             {/* Scarcity Badge */}
             {isPreOrder ? (
-              <Badge variant="secondary" className="mb-6 bg-champagne text-luxury-black animate-pulse" data-testid="badge-pre-order">
-                <span className="w-2 h-2 bg-luxury-black rounded-full mr-2 animate-pulse"></span>
+              <Badge variant="secondary" className="mb-6 bg-champagne/20 text-white border-2 border-champagne animate-pulse" data-testid="badge-pre-order">
+                <span className="w-2 h-2 bg-white rounded-full mr-2 animate-pulse"></span>
                 PRE-ORDER NOW - <span className="font-semibold ml-1">{total}</span> bottles available
               </Badge>
             ) : remaining > 0 ? (
-              <Badge variant="destructive" className="mb-6 bg-champagne text-luxury-black animate-pulse" data-testid="badge-inventory">
-                <span className="w-2 h-2 bg-luxury-black rounded-full mr-2 animate-pulse"></span>
+              <Badge variant="destructive" className="mb-6 bg-champagne/20 text-white border-2 border-champagne animate-pulse" data-testid="badge-inventory">
+                <span className="w-2 h-2 bg-white rounded-full mr-2 animate-pulse"></span>
                 LIMITED EDITION - <span className="font-semibold ml-1">{remaining}</span> of {total} remaining
               </Badge>
             ) : (
