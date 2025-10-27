@@ -156,13 +156,18 @@ export class MemStorage implements IStorage {
       this.products.set(productId, product);
 
       // Create 6 variants for each fragrance
+      // Pricing optimized using luxury fragrance industry best practices:
+      // - Round numbers for premium positioning
+      // - Smaller sizes have convenience premium (higher per-mL)
+      // - Extrait 50-90% premium over EDP (industry standard)
+      // - 100mL bottles positioned as best value (decoy pricing)
       const variants = [
-        { size: "100mL", concentration: "Eau de Parfum", price: "99.99" },
-        { size: "100mL", concentration: "Extrait de Parfum", price: "119.99" },
-        { size: "50mL", concentration: "Eau de Parfum", price: "49.99" },
-        { size: "50mL", concentration: "Extrait de Parfum", price: "69.99" },
-        { size: "10mL", concentration: "Pure Oil Roll-on", price: "19.99" },
-        { size: "30mL", concentration: "Pure Oil Roll-on", price: "34.99" },
+        { size: "100mL", concentration: "Eau de Parfum", price: "120.00" },        // $1.20/mL - Best EDP value
+        { size: "50mL", concentration: "Eau de Parfum", price: "65.00" },          // $1.30/mL - Entry point
+        { size: "100mL", concentration: "Extrait de Parfum", price: "180.00" },    // $1.80/mL - Ultimate luxury
+        { size: "50mL", concentration: "Extrait de Parfum", price: "95.00" },      // $1.90/mL - Premium tier
+        { size: "10mL", concentration: "Pure Oil Roll-on", price: "28.00" },       // $2.80/mL - Luxury convenience
+        { size: "30mL", concentration: "Pure Oil Roll-on", price: "60.00" },       // $2.00/mL - Better value
       ];
 
       variants.forEach((v) => {

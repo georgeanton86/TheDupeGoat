@@ -47,7 +47,7 @@ export default function ProductDetailModal({ product, isOpen, onClose }: Product
               Multiple Sizes
             </Badge>
             <Badge className="bg-amber-600 text-white font-bold">
-              From $19.99
+              From $28
             </Badge>
           </div>
 

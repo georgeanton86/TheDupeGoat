@@ -125,7 +125,7 @@ export default function ProductShowcase() {
             {/* Pricing */}
             <div className="text-center mb-10">
               <span className="text-4xl font-serif font-bold text-champagne" data-testid="text-price">
-                From $19.99
+                From $28
               </span>
               <div className="text-sm text-white/80 font-medium mt-1">Multiple variants available</div>
             </div>

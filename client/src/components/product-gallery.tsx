@@ -91,7 +91,7 @@ export default function ProductGallery() {
                 
                 <div className="mb-4">
                   <span className="text-2xl font-bold text-amber-600">
-                    From $19.99
+                    From $28
                   </span>
                   <div className="text-xs text-amber-600/70 mt-1">
                     Multiple sizes & concentrations available
