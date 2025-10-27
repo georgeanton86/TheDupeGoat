@@ -25,6 +25,20 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
+  // Get featured product (first product - EQUUS ALBUS)
+  app.get("/api/product", async (req, res) => {
+    try {
+      const allProducts = await storage.getAllProducts();
+      if (allProducts.length === 0) {
+        return res.status(404).json({ message: "No products available" });
+      }
+      // Return the first product (EQUUS ALBUS)
+      res.json(allProducts[0]);
+    } catch (error: any) {
+      res.status(500).json({ message: "Error fetching product: " + error.message });
+    }
+  });
+
   // Get single product by ID
   app.get("/api/product/:id", async (req, res) => {
     try {
