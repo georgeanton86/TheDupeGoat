@@ -3,6 +3,7 @@ import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { Badge } from "@/components/ui/badge";
 import { ShoppingCart } from "lucide-react";
+import { useState } from "react";
 import brandLogo from "@assets/file_00000000c5c4622f8f60554b7297e0f4_1760480858957.png";
 
 interface HeaderProps {
@@ -12,8 +13,10 @@ interface HeaderProps {
 
 export default function Header({ cartCount = 0, onCartClick }: HeaderProps = {}) {
   const [location] = useLocation();
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   const scrollToSection = (sectionId: string) => {
+    setMobileMenuOpen(false);
     if (location !== "/") {
       window.location.href = `/#${sectionId}`;
       return;
@@ -23,6 +26,10 @@ export default function Header({ cartCount = 0, onCartClick }: HeaderProps = {})
     if (element) {
       element.scrollIntoView({ behavior: 'smooth' });
     }
+  };
+
+  const closeMobileMenu = () => {
+    setMobileMenuOpen(false);
   };
 
   return (
@@ -88,7 +95,7 @@ export default function Header({ cartCount = 0, onCartClick }: HeaderProps = {})
           </nav>
           
           {/* Mobile Menu */}
-          <Sheet>
+          <Sheet open={mobileMenuOpen} onOpenChange={setMobileMenuOpen}>
             <SheetTrigger asChild>
               <Button variant="ghost" size="icon" className="md:hidden" data-testid="button-mobile-menu">
                 <i className="fas fa-bars text-champagne"></i>
@@ -104,7 +111,8 @@ export default function Header({ cartCount = 0, onCartClick }: HeaderProps = {})
               </div>
               <nav className="flex flex-col space-y-4">
                 <Link 
-                  href="/shop" 
+                  href="/shop"
+                  onClick={closeMobileMenu}
                   className="text-sm font-semibold text-white hover:text-champagne transition-colors uppercase tracking-wide"
                 >
                   Collection
@@ -116,7 +124,8 @@ export default function Header({ cartCount = 0, onCartClick }: HeaderProps = {})
                   Our Story
                 </button>
                 <Link 
-                  href="/policy" 
+                  href="/policy"
+                  onClick={closeMobileMenu}
                   className="text-sm font-semibold text-white hover:text-champagne transition-colors uppercase tracking-wide"
                 >
                   Policy
