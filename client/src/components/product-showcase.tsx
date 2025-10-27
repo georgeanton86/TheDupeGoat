@@ -123,20 +123,20 @@ export default function ProductShowcase() {
             {/* Product Details */}
             <div className="space-y-4 mb-10">
               <div className="flex items-center justify-center lg:justify-start">
-                <span className="text-sm font-medium text-champagne/60 w-32">Volume:</span>
+                <span className="text-sm font-medium text-white/90 w-32">Volume:</span>
                 <span className="text-sm font-semibold text-white">{product.volume}</span>
               </div>
               <div className="flex items-center justify-center lg:justify-start">
-                <span className="text-sm font-medium text-champagne/60 w-32">Concentration:</span>
+                <span className="text-sm font-medium text-white/90 w-32">Concentration:</span>
                 <span className="text-sm font-semibold text-white">{product.concentration}</span>
               </div>
               <div className="flex items-center justify-center lg:justify-start">
-                <span className="text-sm font-medium text-champagne/60 w-32">Notes:</span>
-                <span className="text-sm text-champagne/80">{product.notes}</span>
+                <span className="text-sm font-medium text-white/90 w-32">Notes:</span>
+                <span className="text-sm text-white">{product.notes}</span>
               </div>
               <div className="flex items-center justify-center lg:justify-start">
-                <span className="text-sm font-medium text-champagne/60 w-32">Type:</span>
-                <span className="text-sm text-champagne/80">{product.type}</span>
+                <span className="text-sm font-medium text-white/90 w-32">Type:</span>
+                <span className="text-sm text-white">{product.type}</span>
               </div>
             </div>
             
