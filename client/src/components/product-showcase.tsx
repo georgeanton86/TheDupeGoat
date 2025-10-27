@@ -106,7 +106,7 @@ export default function ProductShowcase() {
               {product.verseReference.replace('Revelation', 'REV').replace('–', '-')}
             </p>
             
-            <p className="text-xl text-champagne/80 mb-6 leading-relaxed max-w-lg">
+            <p className="text-xl text-white mb-6 leading-relaxed max-w-lg">
               {product.description}
             </p>
 
