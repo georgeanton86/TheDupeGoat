@@ -1,6 +1,20 @@
-import { Link } from "wouter";
+import { Link, useLocation } from "wouter";
 
 export default function Footer() {
+  const [location, setLocation] = useLocation();
+
+  const scrollToAbout = (e: React.MouseEvent<HTMLAnchorElement>) => {
+    e.preventDefault();
+    if (location !== "/") {
+      window.location.href = "/#about";
+      return;
+    }
+    const element = document.getElementById("about");
+    if (element) {
+      element.scrollIntoView({ behavior: "smooth" });
+    }
+  };
+
   return (
     <footer className="bg-luxury-black text-white py-16">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -39,7 +53,7 @@ export default function Footer() {
             <h5 className="font-semibold mb-4">Quick Links</h5>
             <ul className="space-y-2 text-gray-300">
               <li><Link href="/" className="hover:text-champagne transition-colors">Home</Link></li>
-              <li><Link href="/#about" className="hover:text-champagne transition-colors">Our Story</Link></li>
+              <li><a href="/#about" onClick={scrollToAbout} className="hover:text-champagne transition-colors cursor-pointer">Our Story</a></li>
               <li><Link href="/shop" className="hover:text-champagne transition-colors">Shop</Link></li>
               <li><a href="mailto:info@rvltnparfums.com" className="hover:text-champagne transition-colors">Contact</a></li>
             </ul>
