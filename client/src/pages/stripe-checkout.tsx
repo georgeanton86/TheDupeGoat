@@ -2,6 +2,7 @@ import { useStripe, Elements, PaymentElement, useElements } from '@stripe/react-
 import { loadStripe } from '@stripe/stripe-js';
 import { useEffect, useState } from 'react';
 import { useLocation } from 'wouter';
+import { useQuery } from "@tanstack/react-query";
 import { apiRequest } from "@/lib/queryClient";
 import { useToast } from "@/hooks/use-toast";
 import { Button } from "@/components/ui/button";
@@ -12,13 +13,20 @@ import { Label } from "@/components/ui/label";
 import Header from "@/components/header";
 import Footer from "@/components/footer";
 import { Loader2, CheckCircle } from "lucide-react";
+import type { Product, ProductVariant } from "@shared/schema";
 
 if (!import.meta.env.VITE_STRIPE_LIVE_PUBLIC_KEY) {
   throw new Error('Missing required Stripe key: VITE_STRIPE_LIVE_PUBLIC_KEY');
 }
 const stripePromise = loadStripe(import.meta.env.VITE_STRIPE_LIVE_PUBLIC_KEY);
 
-function CheckoutForm({ total, cart, promoCode }: { total: number; cart: any[]; promoCode: string | null }) {
+interface CartItem {
+  variant: ProductVariant;
+  product: Product;
+  quantity: number;
+}
+
+function CheckoutForm({ total, cartItems, promoCode }: { total: number; cartItems: CartItem[]; promoCode: string | null }) {
   const stripe = useStripe();
   const elements = useElements();
   const { toast } = useToast();
@@ -78,8 +86,8 @@ function CheckoutForm({ total, cart, promoCode }: { total: number; cart: any[]; 
         // Complete the order on the backend
         const response = await apiRequest("POST", "/api/complete-stripe-payment", {
           paymentIntentId: paymentIntent.id,
-          items: cart.map(item => ({
-            productId: item.product.id,
+          items: cartItems.map(item => ({
+            variantId: item.variant.id,
             quantity: item.quantity
           })),
           customerEmail,
@@ -125,6 +133,31 @@ function CheckoutForm({ total, cart, promoCode }: { total: number; cart: any[]; 
 
   return (
     <form onSubmit={handleSubmit} className="space-y-6">
+      {/* Order Summary */}
+      <Card className="bg-gray-50">
+        <CardContent className="pt-6">
+          <h4 className="font-semibold mb-3">Order Summary</h4>
+          
+          {cartItems.map((item) => (
+            <div key={item.variant.id} className="flex justify-between items-center mb-2">
+              <span className="text-sm">
+                {item.product.name} ({item.variant.size} {item.variant.concentration}) x {item.quantity}
+              </span>
+              <span className="font-semibold text-sm">
+                ${(parseFloat(item.variant.price) * item.quantity).toFixed(2)}
+              </span>
+            </div>
+          ))}
+
+          <hr className="my-3" />
+          
+          <div className="flex justify-between items-center font-bold text-lg">
+            <span>Total</span>
+            <span>${total.toFixed(2)}</span>
+          </div>
+        </CardContent>
+      </Card>
+
       <div className="space-y-4">
         <div>
           <Label htmlFor="name">Full Name</Label>
@@ -189,11 +222,20 @@ function CheckoutForm({ total, cart, promoCode }: { total: number; cart: any[]; 
 export default function StripeCheckout() {
   const [clientSecret, setClientSecret] = useState("");
   const [total, setTotal] = useState(0);
-  const [cart, setCart] = useState<any[]>([]);
+  const [cartItems, setCartItems] = useState<CartItem[]>([]);
   const [promoCode, setPromoCode] = useState<string | null>(null);
   const [, setLocation] = useLocation();
   const [showSuccess, setShowSuccess] = useState(false);
   const [orderData, setOrderData] = useState<any>(null);
+  const [isLoadingCart, setIsLoadingCart] = useState(true);
+
+  const { data: products } = useQuery<Product[]>({
+    queryKey: ["/api/products"],
+  });
+
+  const { data: variants } = useQuery<ProductVariant[]>({
+    queryKey: ["/api/product-variants"],
+  });
 
   useEffect(() => {
     // Check for success state from URL
@@ -206,36 +248,71 @@ export default function StripeCheckout() {
         localStorage.removeItem('orderSuccess');
         localStorage.removeItem('checkoutCart');
       }
+      setIsLoadingCart(false);
       return;
     }
 
-    const cartData = localStorage.getItem('checkoutCart');
-    if (!cartData) {
+    const cartDataStr = localStorage.getItem('checkoutCart');
+    if (!cartDataStr) {
       setLocation('/shop');
       return;
     }
 
-    const { cart: cartItems, promoCode: code } = JSON.parse(cartData);
-    setCart(cartItems);
-    setPromoCode(code);
-    
-    apiRequest("POST", "/api/create-payment-intent", { 
-      items: cartItems.map((item: any) => ({
-        productId: item.product.id,
-        quantity: item.quantity
-      })),
-      promoCode: code
-    })
-      .then((res) => res.json())
-      .then((data) => {
-        setClientSecret(data.clientSecret);
-        setTotal(data.total);
-      })
-      .catch((error) => {
-        console.error('Payment intent error:', error);
+    try {
+      const cartData = JSON.parse(cartDataStr);
+      
+      // Wait for products and variants to load
+      if (!products || !variants) {
+        return;
+      }
+
+      // Build cart items from variant IDs
+      const items: CartItem[] = [];
+      for (const cartItem of cartData.cart) {
+        const variant = variants.find(v => v.id === cartItem.variantId);
+        if (!variant) continue;
+        
+        const product = products.find(p => p.id === variant.productId);
+        if (!product) continue;
+
+        items.push({
+          variant,
+          product,
+          quantity: cartItem.quantity
+        });
+      }
+
+      if (items.length === 0) {
         setLocation('/shop');
-      });
-  }, [setLocation]);
+        return;
+      }
+
+      setCartItems(items);
+      setPromoCode(cartData.promoCode);
+      setIsLoadingCart(false);
+
+      // Create payment intent
+      apiRequest("POST", "/api/create-payment-intent", { 
+        items: items.map(item => ({
+          variantId: item.variant.id,
+          quantity: item.quantity
+        })),
+        promoCode: cartData.promoCode
+      })
+        .then((res) => res.json())
+        .then((data) => {
+          setClientSecret(data.clientSecret);
+          setTotal(data.total);
+        })
+        .catch((error) => {
+          console.error('Payment intent error:', error);
+          setLocation('/shop');
+        });
+    } catch (error) {
+      console.error('Cart parsing error:', error);
+      setLocation('/shop');
+    }
+  }, [setLocation, products, variants]);
 
   if (showSuccess && orderData) {
     return (
@@ -274,7 +351,7 @@ export default function StripeCheckout() {
     );
   }
 
-  if (!clientSecret) {
+  if (isLoadingCart || !clientSecret) {
     return (
       <div className="min-h-screen bg-white">
         <Header />
@@ -300,7 +377,7 @@ export default function StripeCheckout() {
           </CardHeader>
           <CardContent>
             <Elements stripe={stripePromise} options={{ clientSecret }}>
-              <CheckoutForm total={total} cart={cart} promoCode={promoCode} />
+              <CheckoutForm total={total} cartItems={cartItems} promoCode={promoCode} />
             </Elements>
           </CardContent>
         </Card>
