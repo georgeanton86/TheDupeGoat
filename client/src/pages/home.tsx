@@ -173,9 +173,9 @@ export default function Home() {
       <section className="py-20 bg-gradient-to-br from-luxury-black via-charcoal to-luxury-black">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
-            <h3 className="text-3xl font-serif font-bold text-amber-600 mb-4">The RVLTN Standard</h3>
+            <h3 className="text-3xl font-serif font-bold text-amber-600 mb-4">Our Promise</h3>
             <p className="text-lg text-amber-600/80 max-w-2xl mx-auto">
-              Every fragrance tells a story. Ours speaks of transformation, mystery, and the art of presence.
+              Every fragrance tells a story. Ours speaks of inspiration, mystery, and timeless elegance.
             </p>
           </div>
           
@@ -238,29 +238,29 @@ export default function Home() {
             
             {/* Creator Story */}
             <div className="order-1 lg:order-2">
-              <h3 className="text-4xl font-serif font-bold text-amber-600 mb-6">From the Southside to Luxury</h3>
+              <h3 className="text-4xl font-serif font-bold text-amber-600 mb-6">Master Perfumer</h3>
               <p className="text-lg text-amber-600/80 mb-6 leading-relaxed">
-                Born and raised on Chicago's southside, my journey took me from the working-class neighborhoods of Bridgeport to Blue Island, and eventually into the world of luxury fragrances. Growing up where authenticity and hard work were everything, I discovered that true luxury comes from passion and purpose.
+                With over two decades dedicated to the art of perfumery, I've traveled the world studying ancient fragrance traditions and modern olfactory science. From the rose fields of Grasse to the incense markets of the Middle East, each journey has deepened my understanding of scent as both art and spiritual expression.
               </p>
               <p className="text-lg text-amber-600/80 mb-6 leading-relaxed">
-                What started as experimenting with essential oils in my southside apartment became something bigger. I blend Chicago work ethic with ancient inspiration - each fragrance telling timeless stories while carrying that authentic southside soul. From Bridgeport to luxury boutiques worldwide, these scents represent where heritage meets ambition.
+                The Seven Seals Collection represents the culmination of this lifelong pursuit - eight fragrances that bridge the eternal and the contemporary. Each composition is meticulously crafted using the finest raw materials, blending classical perfumery techniques with inspiration drawn from sacred texts.
               </p>
               <p className="text-lg text-amber-600/80 mb-8 leading-relaxed">
-                Each bottle is crafted to leave a lasting impression - powerful, intentional, unforgettable.
+                Like a sweet fragrance rising to heaven, may these scents be a blessing to all who wear them. - Psalm 141:2
               </p>
               
               <div className="space-y-4">
                 <div className="flex items-center">
-                  <i className="fas fa-home text-champagne mr-3"></i>
-                  <span className="text-amber-600/80">From Bridgeport to Blue Island to luxury</span>
+                  <i className="fas fa-flask text-champagne mr-3"></i>
+                  <span className="text-amber-600/80">20+ years mastering the art of perfumery</span>
                 </div>
                 <div className="flex items-center">
-                  <i className="fas fa-book text-champagne mr-3"></i>
-                  <span className="text-amber-600/80">Ancient inspiration meets urban authenticity</span>
+                  <i className="fas fa-cross text-champagne mr-3"></i>
+                  <span className="text-amber-600/80">Biblical inspiration meets luxury craftsmanship</span>
                 </div>
                 <div className="flex items-center">
                   <i className="fas fa-heart text-champagne mr-3"></i>
-                  <span className="text-amber-600/80">Chicago work ethic with timeless purpose</span>
+                  <span className="text-amber-600/80">Each fragrance crafted with intention and purpose</span>
                 </div>
               </div>
             </div>

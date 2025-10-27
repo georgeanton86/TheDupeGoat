@@ -40,7 +40,7 @@ export class MemStorage implements IStorage {
     const equusAlbus: Product = {
       id: randomUUID(),
       name: "EQUUS ALBUS",
-      description: "Conquest & awakening. Ride forth with unstoppable momentum and fierce intention.",
+      description: "Conquest & awakening. Ride forth with divine purpose and unstoppable momentum.",
       price: "119.00",
       originalPrice: null,
       volume: "100mL",
@@ -152,7 +152,7 @@ export class MemStorage implements IStorage {
     const voxCaeli: Product = {
       id: randomUUID(),
       name: "VOX CAELI",
-      description: "Elevation & transcendence. A voice that rises above the noise.",
+      description: "Prayer & transcendence. The voice of heaven rises above earthly chaos.",
       price: "119.00",
       originalPrice: null,
       volume: "100mL",
@@ -208,7 +208,7 @@ export class MemStorage implements IStorage {
     const sabbatum: Product = {
       id: randomUUID(),
       name: "SABBATUM",
-      description: "Perfect stillness. In silence, true power emerges.",
+      description: "Sacred stillness. When heaven falls silent, divinity speaks.",
       price: "119.00",
       originalPrice: null,
       volume: "100mL",
