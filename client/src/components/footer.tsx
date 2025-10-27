@@ -62,10 +62,10 @@ export default function Footer() {
           <div>
             <h5 className="font-semibold mb-4">Support</h5>
             <ul className="space-y-2 text-gray-300">
-              <li><Link href="/faq" className="hover:text-champagne transition-colors">FAQ</Link></li>
-              <li><Link href="/policy" className="hover:text-champagne transition-colors">Return Policy</Link></li>
+              <li><Link href="/faq" className="hover:text-champagne transition-colors cursor-pointer" data-testid="link-faq-support">FAQ</Link></li>
+              <li><Link href="/policy" className="hover:text-champagne transition-colors cursor-pointer" data-testid="link-policy-support">Return Policy</Link></li>
               <li><a href="mailto:info@rvltnparfums.com" className="hover:text-champagne transition-colors">Contact Us</a></li>
-              <li><Link href="/shop" className="hover:text-champagne transition-colors">Shop Collection</Link></li>
+              <li><Link href="/shop" className="hover:text-champagne transition-colors cursor-pointer">Shop Collection</Link></li>
             </ul>
           </div>
         </div>
@@ -73,8 +73,8 @@ export default function Footer() {
         <div className="border-t border-white/10 pt-8 flex flex-col md:flex-row justify-between items-center">
           <p className="text-gray-400 text-sm">© 2024 RVLTN Parfums. All rights reserved.</p>
           <div className="flex space-x-6 mt-4 md:mt-0">
-            <Link href="/policy" className="text-gray-400 hover:text-champagne text-sm transition-colors">Terms & Conditions</Link>
-            <Link href="/faq" className="text-gray-400 hover:text-champagne text-sm transition-colors">FAQ</Link>
+            <Link href="/policy" className="text-gray-400 hover:text-champagne text-sm transition-colors cursor-pointer" data-testid="link-policy-bottom">Terms & Conditions</Link>
+            <Link href="/faq" className="text-gray-400 hover:text-champagne text-sm transition-colors cursor-pointer" data-testid="link-faq-bottom">FAQ</Link>
             <a href="mailto:info@rvltnparfums.com" className="text-gray-400 hover:text-champagne text-sm transition-colors">Contact</a>
           </div>
         </div>
