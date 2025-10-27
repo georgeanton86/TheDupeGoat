@@ -117,7 +117,7 @@ export default function Shop() {
           <div className="text-center mb-8">
             <h1 className="text-5xl md:text-6xl font-serif font-bold text-champagne mb-4">The Seven Seals Collection</h1>
             <p className="text-lg text-champagne/80 max-w-2xl mx-auto mb-6">
-              Sequential release of apocalyptic fragrances inspired by Revelation. 100mL Extrait de Parfum bottles at $119 each.
+              8 apocalyptic fragrances inspired by Revelation. 100mL Extrait de Parfum bottles at $119 each. All available now.
             </p>
             <div className="flex items-center justify-center gap-6 text-sm">
               <div className="flex items-center gap-2 text-champagne/90">
@@ -590,7 +590,7 @@ function ProductCard({ product, onAddToCart, onViewDetails }: {
         {/* Sales Counter */}
         <div className="mb-4 p-3 bg-champagne/10 rounded-lg">
           <div className="flex justify-between text-sm mb-1">
-            <span className="font-medium">{product.soldCount} bottles blessed</span>
+            <span className="font-medium">{product.soldCount} claimed</span>
             <span className="text-gray-600">{product.remainingInventory} remaining</span>
           </div>
           <div className="w-full bg-gray-200 rounded-full h-2">

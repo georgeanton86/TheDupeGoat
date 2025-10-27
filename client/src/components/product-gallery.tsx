@@ -125,7 +125,7 @@ export default function ProductGallery() {
                       </Button>
                     </Link>
                     <p className="text-xs text-gray-600">
-                      Blessed Release: September 1st, 2025
+                      Release Date: TBA
                     </p>
                   </div>
                 ) : (

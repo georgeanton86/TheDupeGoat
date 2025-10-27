@@ -34,15 +34,13 @@ export class MemStorage implements IStorage {
   }
 
   private async initializeDefaultProduct() {
-    // THE SEVEN SEALS COLLECTION
-    // Sequential release strategy: One seal at a time, starting with EQUUS ALBUS
-    // Next seal releases when previous seal sells out
+    // THE SEVEN SEALS COLLECTION - All 8 fragrances available now
     
-    // FIRST SEAL - EQUUS ALBUS (White Horse) - NOW AVAILABLE
+    // FIRST SEAL - EQUUS ALBUS (White Horse)
     const equusAlbus: Product = {
       id: randomUUID(),
       name: "EQUUS ALBUS",
-      description: "Conquest & awakening. Ride forth with divine purpose and unstoppable momentum.",
+      description: "Conquest & awakening. Ride forth with unstoppable momentum and fierce intention.",
       price: "119.00",
       originalPrice: null,
       volume: "100mL",
@@ -59,14 +57,14 @@ export class MemStorage implements IStorage {
       remainingInventory: 82,
       soldCount: 18,
       isActive: true,
-      releaseDate: new Date("2025-01-01"),
+      releaseDate: new Date("2024-01-01"),
       nextReleaseDate: null,
       selloutTime: null,
       createdAt: new Date(),
     };
     this.products.set(equusAlbus.id, equusAlbus);
 
-    // SECOND SEAL - PAX OBSCURA (Red Horse) - PRE-ORDER (Releases after EQUUS ALBUS sells out)
+    // SECOND SEAL - PAX OBSCURA (Red Horse)
     const paxObscura: Product = {
       id: randomUUID(),
       name: "PAX OBSCURA",
@@ -87,14 +85,14 @@ export class MemStorage implements IStorage {
       remainingInventory: 100,
       soldCount: 0,
       isActive: true,
-      releaseDate: new Date("2025-12-31"),
+      releaseDate: new Date("2024-01-01"),
       nextReleaseDate: null,
       selloutTime: null,
       createdAt: new Date(),
     };
     this.products.set(paxObscura.id, paxObscura);
 
-    // THIRD SEAL - FAMES (Black Horse) - PRE-ORDER
+    // THIRD SEAL - FAMES (Black Horse)
     const fames: Product = {
       id: randomUUID(),
       name: "FAMES",
@@ -115,14 +113,14 @@ export class MemStorage implements IStorage {
       remainingInventory: 100,
       soldCount: 0,
       isActive: true,
-      releaseDate: new Date("2026-06-30"),
+      releaseDate: new Date("2024-01-01"),
       nextReleaseDate: null,
       selloutTime: null,
       createdAt: new Date(),
     };
     this.products.set(fames.id, fames);
 
-    // FOURTH SEAL - MORTEM (Pale Horse) - PRE-ORDER
+    // FOURTH SEAL - MORTEM (Pale Horse)
     const mortem: Product = {
       id: randomUUID(),
       name: "MORTEM",
@@ -143,18 +141,18 @@ export class MemStorage implements IStorage {
       remainingInventory: 100,
       soldCount: 0,
       isActive: true,
-      releaseDate: new Date("2026-12-31"),
+      releaseDate: new Date("2024-01-01"),
       nextReleaseDate: null,
       selloutTime: null,
       createdAt: new Date(),
     };
     this.products.set(mortem.id, mortem);
 
-    // FIFTH SEAL - VOX CAELI - PRE-ORDER
+    // FIFTH SEAL - VOX CAELI
     const voxCaeli: Product = {
       id: randomUUID(),
       name: "VOX CAELI",
-      description: "Prayer & transcendence. The voice of heaven rises above earthly chaos.",
+      description: "Elevation & transcendence. A voice that rises above the noise.",
       price: "119.00",
       originalPrice: null,
       volume: "100mL",
@@ -171,14 +169,14 @@ export class MemStorage implements IStorage {
       remainingInventory: 100,
       soldCount: 0,
       isActive: true,
-      releaseDate: new Date("2027-06-30"),
+      releaseDate: new Date("2024-01-01"),
       nextReleaseDate: null,
       selloutTime: null,
       createdAt: new Date(),
     };
     this.products.set(voxCaeli.id, voxCaeli);
 
-    // SIXTH SEAL - TERRA TREMOR - PRE-ORDER
+    // SIXTH SEAL - TERRA TREMOR
     const terraTremor: Product = {
       id: randomUUID(),
       name: "TERRA TREMOR",
@@ -199,18 +197,18 @@ export class MemStorage implements IStorage {
       remainingInventory: 100,
       soldCount: 0,
       isActive: true,
-      releaseDate: new Date("2027-12-31"),
+      releaseDate: new Date("2024-01-01"),
       nextReleaseDate: null,
       selloutTime: null,
       createdAt: new Date(),
     };
     this.products.set(terraTremor.id, terraTremor);
 
-    // SEVENTH SEAL - SABBATUM - PRE-ORDER
+    // SEVENTH SEAL - SABBATUM
     const sabbatum: Product = {
       id: randomUUID(),
       name: "SABBATUM",
-      description: "Sacred stillness. When heaven falls silent, divinity speaks.",
+      description: "Perfect stillness. In silence, true power emerges.",
       price: "119.00",
       originalPrice: null,
       volume: "100mL",
@@ -227,14 +225,14 @@ export class MemStorage implements IStorage {
       remainingInventory: 100,
       soldCount: 0,
       isActive: true,
-      releaseDate: new Date("2028-06-30"),
+      releaseDate: new Date("2024-01-01"),
       nextReleaseDate: null,
       selloutTime: null,
       createdAt: new Date(),
     };
     this.products.set(sabbatum.id, sabbatum);
 
-    // LUX AETERNA (Eternal Light) - PRE-ORDER
+    // LUX AETERNA (Eternal Light)
     const luxAeterna: Product = {
       id: randomUUID(),
       name: "LUX AETERNA",
@@ -255,7 +253,7 @@ export class MemStorage implements IStorage {
       remainingInventory: 100,
       soldCount: 0,
       isActive: true,
-      releaseDate: new Date("2028-12-31"),
+      releaseDate: new Date("2024-01-01"),
       nextReleaseDate: null,
       selloutTime: null,
       createdAt: new Date(),
