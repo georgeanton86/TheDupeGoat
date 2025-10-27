@@ -15,6 +15,18 @@ export default function Footer() {
     }
   };
 
+  const scrollToFAQ = (e: React.MouseEvent<HTMLAnchorElement>) => {
+    e.preventDefault();
+    if (location !== "/") {
+      window.location.href = "/#faq";
+      return;
+    }
+    const element = document.getElementById("faq");
+    if (element) {
+      element.scrollIntoView({ behavior: "smooth" });
+    }
+  };
+
   return (
     <footer className="bg-luxury-black text-white py-16">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -62,7 +74,7 @@ export default function Footer() {
           <div>
             <h5 className="font-semibold mb-4">Support</h5>
             <ul className="space-y-2 text-gray-300">
-              <li><Link href="/faq" className="hover:text-champagne transition-colors cursor-pointer" data-testid="link-faq-support">FAQ</Link></li>
+              <li><a href="/#faq" onClick={scrollToFAQ} className="hover:text-champagne transition-colors cursor-pointer" data-testid="link-faq-support">FAQ</a></li>
               <li><Link href="/policy" className="hover:text-champagne transition-colors cursor-pointer" data-testid="link-policy-support">Return Policy</Link></li>
               <li><a href="mailto:info@rvltnparfums.com" className="hover:text-champagne transition-colors">Contact Us</a></li>
               <li><Link href="/shop" className="hover:text-champagne transition-colors cursor-pointer">Shop Collection</Link></li>
@@ -74,7 +86,7 @@ export default function Footer() {
           <p className="text-gray-400 text-sm">© 2024 RVLTN Parfums. All rights reserved.</p>
           <div className="flex space-x-6 mt-4 md:mt-0">
             <Link href="/policy" className="text-gray-400 hover:text-champagne text-sm transition-colors cursor-pointer" data-testid="link-policy-bottom">Terms & Conditions</Link>
-            <Link href="/faq" className="text-gray-400 hover:text-champagne text-sm transition-colors cursor-pointer" data-testid="link-faq-bottom">FAQ</Link>
+            <a href="/#faq" onClick={scrollToFAQ} className="text-gray-400 hover:text-champagne text-sm transition-colors cursor-pointer" data-testid="link-faq-bottom">FAQ</a>
             <a href="mailto:info@rvltnparfums.com" className="text-gray-400 hover:text-champagne text-sm transition-colors">Contact</a>
           </div>
         </div>

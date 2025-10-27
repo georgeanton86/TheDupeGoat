@@ -9,6 +9,12 @@ import { Button } from "@/components/ui/button";
 import { Shield, Award, Truck } from "lucide-react";
 import { Link } from "wouter";
 import { useState, useEffect } from "react";
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from "@/components/ui/accordion";
 
 // Fun visitor counter with animations
 function VisitorCounter() {
@@ -260,6 +266,102 @@ export default function Home() {
               <p className="text-white/80 text-sm">Limited small batch production</p>
             </div>
           </div>
+        </div>
+      </section>
+
+      {/* FAQ Section */}
+      <section id="faq" className="py-20 bg-gradient-to-r from-luxury-black to-charcoal">
+        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-12">
+            <h3 className="text-4xl font-serif font-bold text-champagne mb-4">Frequently Asked Questions</h3>
+            <p className="text-lg text-white/80">Everything you need to know about RVLTN Parfums</p>
+          </div>
+          
+          <Accordion type="single" collapsible className="w-full space-y-4">
+            <AccordionItem value="item-1" className="bg-white/5 backdrop-blur-sm border border-champagne/20 rounded-lg px-6">
+              <AccordionTrigger className="text-left text-white hover:text-champagne py-4">
+                What is The Seven Seals Collection?
+              </AccordionTrigger>
+              <AccordionContent className="text-white/80 pb-4">
+                The Seven Seals Collection features 8 unique fragrances inspired by the Book of Revelation. Each scent is crafted to embody a specific biblical theme, from the Four Horsemen to the Seventh Seal, plus our signature Lux Aeterna (Eternal Light).
+              </AccordionContent>
+            </AccordionItem>
+
+            <AccordionItem value="item-2" className="bg-white/5 backdrop-blur-sm border border-champagne/20 rounded-lg px-6">
+              <AccordionTrigger className="text-left text-white hover:text-champagne py-4">
+                What does "Extrait de Parfum" mean?
+              </AccordionTrigger>
+              <AccordionContent className="text-white/80 pb-4">
+                Extrait de Parfum is the highest concentration of fragrance available, containing 20-40% pure perfume oil. This means longer-lasting scent, richer complexity, and exceptional quality compared to standard Eau de Parfum or Eau de Toilette.
+              </AccordionContent>
+            </AccordionItem>
+
+            <AccordionItem value="item-3" className="bg-white/5 backdrop-blur-sm border border-champagne/20 rounded-lg px-6">
+              <AccordionTrigger className="text-left text-white hover:text-champagne py-4">
+                Are your fragrances unisex?
+              </AccordionTrigger>
+              <AccordionContent className="text-white/80 pb-4">
+                Yes! All 8 fragrances in The Seven Seals Collection are designed to be unisex. We believe scent transcends gender - choose what resonates with your spirit.
+              </AccordionContent>
+            </AccordionItem>
+
+            <AccordionItem value="item-4" className="bg-white/5 backdrop-blur-sm border border-champagne/20 rounded-lg px-6">
+              <AccordionTrigger className="text-left text-white hover:text-champagne py-4">
+                What is your small batch approach?
+              </AccordionTrigger>
+              <AccordionContent className="text-white/80 pb-4">
+                Every batch is handcrafted with meticulous attention - never more than 100 bottles. Like fine craft spirits, our small batches ensure exceptional quality and a personal touch in every bottle.
+              </AccordionContent>
+            </AccordionItem>
+
+            <AccordionItem value="item-5" className="bg-white/5 backdrop-blur-sm border border-champagne/20 rounded-lg px-6">
+              <AccordionTrigger className="text-left text-white hover:text-champagne py-4">
+                Do you offer free shipping?
+              </AccordionTrigger>
+              <AccordionContent className="text-white/80 pb-4">
+                Yes! Orders over $100 qualify for free shipping nationwide. Since each bottle is $119, any single fragrance purchase includes complimentary delivery.
+              </AccordionContent>
+            </AccordionItem>
+
+            <AccordionItem value="item-6" className="bg-white/5 backdrop-blur-sm border border-champagne/20 rounded-lg px-6">
+              <AccordionTrigger className="text-left text-white hover:text-champagne py-4">
+                What is your promo code?
+              </AccordionTrigger>
+              <AccordionContent className="text-white/80 pb-4">
+                Use code <strong className="text-champagne">WELCOME10</strong> at checkout for 10% off your first order!
+              </AccordionContent>
+            </AccordionItem>
+
+            <AccordionItem value="item-7" className="bg-white/5 backdrop-blur-sm border border-champagne/20 rounded-lg px-6">
+              <AccordionTrigger className="text-left text-white hover:text-champagne py-4">
+                What is your return policy?
+              </AccordionTrigger>
+              <AccordionContent className="text-white/80 pb-4">
+                Due to health and safety regulations, we operate under a strict NO RETURN, NO REFUND policy. We only accept returns for defective products, shipping damage, or incorrect items shipped by our error. Please see our full <Link href="/policy" className="text-champagne hover:underline">Terms & Conditions</Link> page.
+              </AccordionContent>
+            </AccordionItem>
+
+            <AccordionItem value="item-8" className="bg-white/5 backdrop-blur-sm border border-champagne/20 rounded-lg px-6">
+              <AccordionTrigger className="text-left text-white hover:text-champagne py-4">
+                Are all 8 fragrances available now?
+              </AccordionTrigger>
+              <AccordionContent className="text-white/80 pb-4">
+                Yes! All 8 fragrances in The Seven Seals Collection are available for immediate purchase. Due to our small batch production, availability is limited - each batch contains no more than 100 bottles.
+              </AccordionContent>
+            </AccordionItem>
+
+            <AccordionItem value="item-9" className="bg-white/5 backdrop-blur-sm border border-champagne/20 rounded-lg px-6">
+              <AccordionTrigger className="text-left text-white hover:text-champagne py-4">
+                How do I contact customer service?
+              </AccordionTrigger>
+              <AccordionContent className="text-white/80 pb-4">
+                For questions, concerns, or support:<br/>
+                Email: info@rvltnparfums.com<br/>
+                Phone: 1-800-RVLTN-99<br/>
+                We respond within 24-48 hours
+              </AccordionContent>
+            </AccordionItem>
+          </Accordion>
         </div>
       </section>
 
