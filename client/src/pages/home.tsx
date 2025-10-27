@@ -3,7 +3,6 @@ import Header from "@/components/header";
 import Footer from "@/components/footer";
 import ProductShowcase from "@/components/product-showcase";
 import ProductGallery from "@/components/product-gallery";
-import creatorImage from "@assets/Screenshot_20250822_065742_Photos_1755864649303.jpg";
 import shieldLogo from "@assets/file_00000000bbe861f59a1f386791e71acf_1760480859007.png";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -215,55 +214,6 @@ export default function Home() {
                 </p>
               </CardContent>
             </Card>
-          </div>
-        </div>
-      </section>
-
-      {/* Creator Story Section */}
-      <section id="about" className="py-20 bg-gradient-to-br from-luxury-black via-charcoal to-luxury-black">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid lg:grid-cols-2 gap-16 items-center">
-            
-            {/* Creator Image */}
-            <div className="order-2 lg:order-1 flex justify-center">
-              <div className="relative">
-                <img 
-                  src={creatorImage} 
-                  alt="Master Perfumer - RVLTN Parfums Creator" 
-                  className="w-80 h-96 object-cover rounded-2xl shadow-2xl"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent rounded-2xl"></div>
-              </div>
-            </div>
-            
-            {/* Creator Story */}
-            <div className="order-1 lg:order-2">
-              <h3 className="text-4xl font-serif font-bold text-amber-600 mb-6">Master Perfumer</h3>
-              <p className="text-lg text-amber-600/80 mb-6 leading-relaxed">
-                With over two decades dedicated to the art of perfumery, I've traveled the world studying ancient fragrance traditions and modern olfactory science. From the rose fields of Grasse to the incense markets of the Middle East, each journey has deepened my understanding of scent as both art and spiritual expression.
-              </p>
-              <p className="text-lg text-amber-600/80 mb-6 leading-relaxed">
-                The Seven Seals Collection represents the culmination of this lifelong pursuit - eight fragrances that bridge the eternal and the contemporary. Each composition is meticulously crafted using the finest raw materials, blending classical perfumery techniques with inspiration drawn from sacred texts.
-              </p>
-              <p className="text-lg text-amber-600/80 mb-8 leading-relaxed">
-                Like a sweet fragrance rising to heaven, may these scents be a blessing to all who wear them. - Psalm 141:2
-              </p>
-              
-              <div className="space-y-4">
-                <div className="flex items-center">
-                  <i className="fas fa-flask text-champagne mr-3"></i>
-                  <span className="text-amber-600/80">20+ years mastering the art of perfumery</span>
-                </div>
-                <div className="flex items-center">
-                  <i className="fas fa-cross text-champagne mr-3"></i>
-                  <span className="text-amber-600/80">Biblical inspiration meets luxury craftsmanship</span>
-                </div>
-                <div className="flex items-center">
-                  <i className="fas fa-heart text-champagne mr-3"></i>
-                  <span className="text-amber-600/80">Each fragrance crafted with intention and purpose</span>
-                </div>
-              </div>
-            </div>
           </div>
         </div>
       </section>
