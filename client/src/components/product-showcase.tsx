@@ -112,10 +112,10 @@ export default function ProductShowcase() {
 
             {/* Bible Verse */}
             <div className="mb-8 p-4 bg-white/5 backdrop-blur-sm border border-champagne/20 rounded-lg max-w-lg">
-              <p className="text-sm text-champagne/90 italic leading-relaxed">
+              <p className="text-sm text-white italic leading-relaxed">
                 "{product.bibleVerse}"
               </p>
-              <p className="text-xs text-champagne/70 font-medium mt-2 text-right">
+              <p className="text-xs text-white/90 font-medium mt-2 text-right">
                 — {product.verseReference}
               </p>
             </div>
