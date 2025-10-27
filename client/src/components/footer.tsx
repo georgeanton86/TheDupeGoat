@@ -38,20 +38,20 @@ export default function Footer() {
           <div>
             <h5 className="font-semibold mb-4">Quick Links</h5>
             <ul className="space-y-2 text-gray-300">
-              <li><Link href="/" className="hover:text-champagne transition-colors">Featured</Link></li>
-              <li><Link href="/#about" className="hover:text-champagne transition-colors">About Us</Link></li>
-              <li><Link href="/policy" className="hover:text-champagne transition-colors">Return Policy</Link></li>
-              <li><a href="#" className="hover:text-champagne transition-colors">Contact</a></li>
+              <li><Link href="/" className="hover:text-champagne transition-colors">Home</Link></li>
+              <li><Link href="/#about" className="hover:text-champagne transition-colors">Our Story</Link></li>
+              <li><Link href="/shop" className="hover:text-champagne transition-colors">Shop</Link></li>
+              <li><a href="mailto:info@rvltnparfums.com" className="hover:text-champagne transition-colors">Contact</a></li>
             </ul>
           </div>
           
           <div>
             <h5 className="font-semibold mb-4">Support</h5>
             <ul className="space-y-2 text-gray-300">
-              <li><a href="#" className="hover:text-champagne transition-colors">Shipping Info</a></li>
-              <li><a href="#" className="hover:text-champagne transition-colors">Size Guide</a></li>
-              <li><a href="#" className="hover:text-champagne transition-colors">Care Instructions</a></li>
-              <li><a href="#" className="hover:text-champagne transition-colors">FAQ</a></li>
+              <li><Link href="/faq" className="hover:text-champagne transition-colors">FAQ</Link></li>
+              <li><Link href="/policy" className="hover:text-champagne transition-colors">Return Policy</Link></li>
+              <li><a href="mailto:info@rvltnparfums.com" className="hover:text-champagne transition-colors">Contact Us</a></li>
+              <li><Link href="/shop" className="hover:text-champagne transition-colors">Shop Collection</Link></li>
             </ul>
           </div>
         </div>
@@ -59,9 +59,9 @@ export default function Footer() {
         <div className="border-t border-white/10 pt-8 flex flex-col md:flex-row justify-between items-center">
           <p className="text-gray-400 text-sm">© 2024 RVLTN Parfums. All rights reserved.</p>
           <div className="flex space-x-6 mt-4 md:mt-0">
-            <a href="#" className="text-gray-400 hover:text-champagne text-sm transition-colors">Privacy Policy</a>
-            <a href="#" className="text-gray-400 hover:text-champagne text-sm transition-colors">Terms of Service</a>
-            <a href="#" className="text-gray-400 hover:text-champagne text-sm transition-colors">Legal</a>
+            <Link href="/policy" className="text-gray-400 hover:text-champagne text-sm transition-colors">Terms & Conditions</Link>
+            <Link href="/faq" className="text-gray-400 hover:text-champagne text-sm transition-colors">FAQ</Link>
+            <a href="mailto:info@rvltnparfums.com" className="text-gray-400 hover:text-champagne text-sm transition-colors">Contact</a>
           </div>
         </div>
       </div>

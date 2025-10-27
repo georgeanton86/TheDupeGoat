@@ -7,6 +7,7 @@ import Home from "@/pages/home";
 import Shop from "@/pages/shop";
 import StripeCheckout from "@/pages/stripe-checkout";
 import Policy from "@/pages/policy";
+import FAQ from "@/pages/faq";
 import NotFound from "@/pages/not-found";
 
 function Router() {
@@ -16,6 +17,7 @@ function Router() {
       <Route path="/shop" component={Shop} />
       <Route path="/checkout" component={StripeCheckout} />
       <Route path="/policy" component={Policy} />
+      <Route path="/faq" component={FAQ} />
       <Route component={NotFound} />
     </Switch>
   );

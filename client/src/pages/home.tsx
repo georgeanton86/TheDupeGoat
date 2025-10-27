@@ -218,6 +218,51 @@ export default function Home() {
         </div>
       </section>
 
+      {/* About Us Section */}
+      <section id="about" className="py-20 bg-gradient-to-br from-luxury-black via-charcoal to-luxury-black">
+        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+          <h3 className="text-4xl font-serif font-bold text-champagne mb-8">Our Story</h3>
+          
+          <p className="text-lg text-white/90 mb-6 leading-relaxed">
+            The Seven Seals Collection represents a unique intersection of faith and fragrance. Each of our eight biblical fragrances draws inspiration from the Book of Revelation, transforming sacred scripture into wearable art.
+          </p>
+          
+          <p className="text-lg text-white/90 mb-6 leading-relaxed">
+            Every batch is handcrafted with meticulous attention - never more than 100 bottles. Like fine craft spirits, our small batches ensure exceptional quality and a personal touch in every bottle.
+          </p>
+          
+          <p className="text-lg text-white/90 mb-8 leading-relaxed italic">
+            "Like a sweet fragrance rising to heaven, may these scents be a blessing to all who wear them." - Psalm 141:2
+          </p>
+          
+          <div className="grid md:grid-cols-3 gap-8 mt-12">
+            <div>
+              <div className="w-16 h-16 bg-champagne/10 rounded-full flex items-center justify-center mx-auto mb-4">
+                <i className="fas fa-flask text-2xl text-champagne"></i>
+              </div>
+              <h4 className="font-semibold text-champagne mb-2">Premium Quality</h4>
+              <p className="text-white/80 text-sm">100mL Extrait de Parfum concentration</p>
+            </div>
+            
+            <div>
+              <div className="w-16 h-16 bg-champagne/10 rounded-full flex items-center justify-center mx-auto mb-4">
+                <i className="fas fa-cross text-2xl text-champagne"></i>
+              </div>
+              <h4 className="font-semibold text-champagne mb-2">Biblical Inspiration</h4>
+              <p className="text-white/80 text-sm">Each scent rooted in Scripture</p>
+            </div>
+            
+            <div>
+              <div className="w-16 h-16 bg-champagne/10 rounded-full flex items-center justify-center mx-auto mb-4">
+                <i className="fas fa-heart text-2xl text-champagne"></i>
+              </div>
+              <h4 className="font-semibold text-champagne mb-2">Crafted with Care</h4>
+              <p className="text-white/80 text-sm">Limited small batch production</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
       <Footer />
       <VisitorCounter />
     </div>
