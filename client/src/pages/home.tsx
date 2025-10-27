@@ -41,7 +41,7 @@ function VisitorCounter() {
     >
       <div className="flex items-center space-x-2">
         <div className={`w-2 h-2 bg-green-500 rounded-full ${isHovered ? 'animate-bounce' : 'animate-pulse'}`}></div>
-        <span className="text-sm font-medium text-luxury-black">
+        <span className="text-sm font-medium text-champagne">
           {visitors} {isHovered ? 'here now' : 'viewing now'}
         </span>
         {showWow && (
@@ -81,8 +81,8 @@ function FragranceFacts() {
   
   return (
     <div className="bg-gradient-to-r from-champagne/10 to-luxury-black/10 p-6 rounded-lg text-center">
-      <h4 className="text-lg font-serif font-semibold text-luxury-black mb-3">✨ Fun Fragrance Facts ✨</h4>
-      <p className={`text-gray-700 transition-opacity duration-500 ${isVisible ? 'opacity-100' : 'opacity-0'}`}>
+      <h4 className="text-lg font-serif font-semibold text-champagne mb-3">✨ Fun Fragrance Facts ✨</h4>
+      <p className={`text-white/80 transition-opacity duration-500 ${isVisible ? 'opacity-100' : 'opacity-0'}`}>
         {facts[currentFact]}
       </p>
     </div>

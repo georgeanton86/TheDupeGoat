@@ -49,8 +49,8 @@ export default function ProductShowcase() {
     return (
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
         <div className="text-center">
-          <h2 className="text-4xl font-serif font-bold text-luxury-black">No Product Available</h2>
-          <p className="text-gray-600 mt-4">Check back soon for our next limited release.</p>
+          <h2 className="text-4xl font-serif font-bold text-champagne">No Product Available</h2>
+          <p className="text-white/80 mt-4">Check back soon for our next limited release.</p>
         </div>
       </div>
     );
