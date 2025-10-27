@@ -80,7 +80,7 @@ export default function ProductShowcase() {
         
         {/* Product Showcase */}
         <div className="order-2 lg:order-1">
-          <div className="text-center lg:text-left">
+          <div className="text-center">
             {/* Scarcity Badge */}
             {isPreOrder ? (
               <Badge variant="secondary" className="mb-6 bg-champagne text-luxury-black animate-pulse" data-testid="badge-pre-order">
@@ -102,16 +102,16 @@ export default function ProductShowcase() {
             <h2 className="text-5xl lg:text-6xl font-serif font-bold text-champagne mb-2 leading-tight">
               {product.name}
             </h2>
-            <p className="text-lg text-champagne/70 font-medium mb-4">
+            <p className="text-lg text-white font-medium mb-4">
               {product.verseReference.replace('Revelation', 'REV').replace('–', '-')}
             </p>
             
-            <p className="text-xl text-white mb-6 leading-relaxed max-w-lg">
+            <p className="text-xl text-white mb-6 leading-relaxed max-w-lg mx-auto">
               {product.description}
             </p>
 
             {/* Bible Verse */}
-            <div className="mb-8 p-4 bg-white/5 backdrop-blur-sm border border-champagne/20 rounded-lg max-w-lg">
+            <div className="mb-8 p-4 bg-white/5 backdrop-blur-sm border border-champagne/20 rounded-lg max-w-lg mx-auto">
               <p className="text-sm text-white italic leading-relaxed">
                 "{product.bibleVerse}"
               </p>
@@ -122,26 +122,26 @@ export default function ProductShowcase() {
             
             {/* Product Details */}
             <div className="space-y-4 mb-10">
-              <div className="flex items-center justify-center lg:justify-start">
+              <div className="flex items-center justify-center">
                 <span className="text-sm font-medium text-white/90 w-32">Volume:</span>
                 <span className="text-sm font-semibold text-white">{product.volume}</span>
               </div>
-              <div className="flex items-center justify-center lg:justify-start">
+              <div className="flex items-center justify-center">
                 <span className="text-sm font-medium text-white/90 w-32">Concentration:</span>
                 <span className="text-sm font-semibold text-white">{product.concentration}</span>
               </div>
-              <div className="flex items-center justify-center lg:justify-start">
+              <div className="flex items-center justify-center">
                 <span className="text-sm font-medium text-white/90 w-32">Notes:</span>
                 <span className="text-sm text-white">{product.notes}</span>
               </div>
-              <div className="flex items-center justify-center lg:justify-start">
+              <div className="flex items-center justify-center">
                 <span className="text-sm font-medium text-white/90 w-32">Type:</span>
                 <span className="text-sm text-white">{product.type}</span>
               </div>
             </div>
             
             {/* Pricing */}
-            <div className="text-center lg:text-left mb-10">
+            <div className="text-center mb-10">
               <span className="text-4xl font-serif font-bold text-champagne" data-testid="text-price">
                 ${product.price}
               </span>
