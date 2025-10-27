@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { useQuery } from "@tanstack/react-query";
 import { apiRequest } from "@/lib/queryClient";
 import { useToast } from "@/hooks/use-toast";
 import { Button } from "@/components/ui/button";
@@ -10,15 +11,24 @@ import { useLocation } from "wouter";
 import Header from "@/components/header";
 import Footer from "@/components/footer";
 import CartPayPalButton from "@/components/CartPayPalButton";
-import type { Product } from "@shared/schema";
+import type { Product, ProductVariant } from "@shared/schema";
 
-interface CartItem {
+interface CartData {
+  cart: Array<{
+    variantId: string;
+    quantity: number;
+  }>;
+  promoCode: string | null;
+}
+
+interface CheckoutItem {
+  variant: ProductVariant;
   product: Product;
   quantity: number;
 }
 
 interface CheckoutData {
-  items: CartItem[];
+  items: CheckoutItem[];
   promoCode: string | null;
   subtotal: number;
   discount: number;
@@ -59,7 +69,7 @@ const CheckoutForm = ({ checkoutData }: { checkoutData: CheckoutData }) => {
       const response = await apiRequest("POST", "/api/complete-paypal-payment", {
         paypalOrderId,
         items: checkoutData.items.map(item => ({
-          productId: item.product.id,
+          variantId: item.variant.id,
           quantity: item.quantity
         })),
         customerEmail,
@@ -71,8 +81,7 @@ const CheckoutForm = ({ checkoutData }: { checkoutData: CheckoutData }) => {
       const result = await response.json();
 
       if (result.success) {
-        // Clear cart from sessionStorage
-        sessionStorage.removeItem('checkoutCart');
+        localStorage.removeItem('checkoutCart');
         
         toast({
           title: "Payment Successful",
@@ -106,12 +115,12 @@ const CheckoutForm = ({ checkoutData }: { checkoutData: CheckoutData }) => {
               <h4 className="font-semibold mb-3">Order Summary</h4>
               
               {checkoutData.items.map((item) => (
-                <div key={item.product.id} className="flex justify-between items-center mb-2">
+                <div key={item.variant.id} className="flex justify-between items-center mb-2">
                   <span className="text-sm">
-                    {item.product.name} ({item.product.volume}) x {item.quantity}
+                    {item.product.name} ({item.variant.size} {item.variant.concentration}) x {item.quantity}
                   </span>
                   <span className="font-semibold text-sm">
-                    ${(parseFloat(item.product.price) * item.quantity).toFixed(2)}
+                    ${(parseFloat(item.variant.price) * item.quantity).toFixed(2)}
                   </span>
                 </div>
               ))}
@@ -198,7 +207,7 @@ const CheckoutForm = ({ checkoutData }: { checkoutData: CheckoutData }) => {
               <div className="border rounded-lg p-8 text-center">
                 <CartPayPalButton
                   items={checkoutData.items.map(item => ({
-                    productId: item.product.id,
+                    variantId: item.variant.id,
                     quantity: item.quantity
                   }))}
                   promoCode={checkoutData.promoCode}
@@ -235,26 +244,80 @@ export default function Checkout() {
   const [, setLocation] = useLocation();
   const [checkoutData, setCheckoutData] = useState<CheckoutData | null>(null);
 
+  const { data: products } = useQuery<Product[]>({
+    queryKey: ["/api/products"],
+  });
+
+  const { data: variants } = useQuery<ProductVariant[]>({
+    queryKey: ["/api/product-variants"],
+  });
+
   useEffect(() => {
-    const cartData = sessionStorage.getItem('checkoutCart');
-    if (!cartData) {
-      // No cart data, redirect to shop
+    const cartDataStr = localStorage.getItem('checkoutCart');
+    if (!cartDataStr) {
       setLocation('/shop');
       return;
     }
 
     try {
-      const data = JSON.parse(cartData) as CheckoutData;
-      if (!data.items || data.items.length === 0) {
+      const cartData = JSON.parse(cartDataStr) as CartData;
+      if (!cartData.cart || cartData.cart.length === 0) {
         setLocation('/shop');
         return;
       }
-      setCheckoutData(data);
+
+      // Wait for both products and variants to be loaded
+      if (!products || !variants) {
+        return;
+      }
+
+      // Build checkout data from cart
+      const items: CheckoutItem[] = [];
+      
+      for (const cartItem of cartData.cart) {
+        const variant = variants.find(v => v.id === cartItem.variantId);
+        if (!variant) {
+          console.error(`Variant ${cartItem.variantId} not found`);
+          continue;
+        }
+        
+        const product = products.find(p => p.id === variant.productId);
+        if (!product) {
+          console.error(`Product ${variant.productId} not found`);
+          continue;
+        }
+
+        items.push({
+          variant,
+          product,
+          quantity: cartItem.quantity
+        });
+      }
+
+      if (items.length === 0) {
+        setLocation('/shop');
+        return;
+      }
+
+      // Calculate totals
+      const subtotal = items.reduce((sum, item) => sum + (parseFloat(item.variant.price) * item.quantity), 0);
+      const discount = cartData.promoCode?.toUpperCase() === "WELCOME10" ? subtotal * 0.1 : 0;
+      const shipping = subtotal >= 100 ? 0 : 8.99;
+      const total = subtotal - discount + shipping;
+
+      setCheckoutData({
+        items,
+        promoCode: cartData.promoCode,
+        subtotal,
+        discount,
+        shipping,
+        total
+      });
     } catch (error) {
       console.error('Error parsing cart data:', error);
       setLocation('/shop');
     }
-  }, [setLocation]);
+  }, [setLocation, products, variants]);
 
   if (!checkoutData) {
     return (

@@ -38,16 +38,16 @@ export default function ProductDetailModal({ product, isOpen, onClose }: Product
             <p className="text-white/80">{product.description}</p>
           </div>
 
-          {/* Concentration & Volume */}
+          {/* Available Options */}
           <div className="flex gap-4">
             <Badge className="bg-champagne text-luxury-black">
-              {product.concentration}
+              EDP & Extrait Available
             </Badge>
             <Badge className="bg-champagne/80 text-luxury-black">
-              {product.volume}
+              Multiple Sizes
             </Badge>
             <Badge className="bg-amber-600 text-white font-bold">
-              ${product.price}
+              From $19.99
             </Badge>
           </div>
 
@@ -71,10 +71,10 @@ export default function ProductDetailModal({ product, isOpen, onClose }: Product
             </div>
           </div>
 
-          {/* Availability */}
+          {/* Availability Note */}
           <div className="text-center">
             <p className="text-champagne/80 text-sm">
-              {product.remainingInventory} of {product.totalInventory} bottles remaining
+              Available in multiple sizes and concentrations
             </p>
           </div>
         </div>

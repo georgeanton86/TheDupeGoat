@@ -18,12 +18,6 @@ export default function ProductShowcase() {
     queryKey: ["/api/product"],
   });
 
-  const { data: inventory } = useQuery<{ remaining: number; total: number }>({
-    queryKey: ["/api/inventory", product?.id],
-    enabled: !!product?.id,
-    refetchInterval: 30000, // Refetch every 30 seconds
-  });
-
   // Check if this is a pre-order product (release date is in the future)
   const isPreOrder = product && new Date(product.releaseDate) > new Date();
 
@@ -56,9 +50,6 @@ export default function ProductShowcase() {
     );
   }
 
-  const remaining = inventory?.remaining ?? product.remainingInventory;
-  const total = inventory?.total ?? product.totalInventory;
-
   // Select bottle image based on product name
   const getBottleImage = () => {
     switch (product.name) {
@@ -81,21 +72,16 @@ export default function ProductShowcase() {
         {/* Product Showcase */}
         <div className="order-2 lg:order-1">
           <div className="text-center">
-            {/* Scarcity Badge */}
+            {/* Collection Badge */}
             {isPreOrder ? (
               <Badge variant="secondary" className="mb-6 bg-champagne/20 text-white border-2 border-champagne animate-pulse" data-testid="badge-pre-order">
                 <span className="w-2 h-2 bg-white rounded-full mr-2 animate-pulse"></span>
-                PRE-ORDER NOW - <span className="font-semibold ml-1">{total}</span> bottles available
-              </Badge>
-            ) : remaining > 0 ? (
-              <Badge variant="destructive" className="mb-6 bg-champagne/20 text-white border-2 border-champagne animate-pulse" data-testid="badge-inventory">
-                <span className="w-2 h-2 bg-white rounded-full mr-2 animate-pulse"></span>
-                LIMITED EDITION - <span className="font-semibold ml-1">{remaining}</span> of {total} remaining
+                PRE-ORDER NOW
               </Badge>
             ) : (
-              <Badge variant="secondary" className="mb-6 bg-red-600 text-white" data-testid="badge-sold-out">
-                <span className="w-2 h-2 bg-white rounded-full mr-2"></span>
-                SOLD OUT - <span className="font-semibold ml-1">{total}</span> bottles sold
+              <Badge variant="destructive" className="mb-6 bg-champagne/20 text-white border-2 border-champagne animate-pulse" data-testid="badge-inventory">
+                <span className="w-2 h-2 bg-white rounded-full mr-2 animate-pulse"></span>
+                LIMITED EDITION - AVAILABLE NOW
               </Badge>
             )}
             
@@ -123,14 +109,6 @@ export default function ProductShowcase() {
             {/* Product Details */}
             <div className="space-y-4 mb-10">
               <div className="flex items-center justify-center">
-                <span className="text-sm font-medium text-white/90 w-32">Volume:</span>
-                <span className="text-sm font-semibold text-white">{product.volume}</span>
-              </div>
-              <div className="flex items-center justify-center">
-                <span className="text-sm font-medium text-white/90 w-32">Concentration:</span>
-                <span className="text-sm font-semibold text-white">{product.concentration}</span>
-              </div>
-              <div className="flex items-center justify-center">
                 <span className="text-sm font-medium text-white/90 w-32">Notes:</span>
                 <span className="text-sm text-white">{product.notes}</span>
               </div>
@@ -138,19 +116,18 @@ export default function ProductShowcase() {
                 <span className="text-sm font-medium text-white/90 w-32">Type:</span>
                 <span className="text-sm text-white">{product.type}</span>
               </div>
+              <div className="flex items-center justify-center">
+                <span className="text-sm font-medium text-white/90 w-32">Available In:</span>
+                <span className="text-sm text-white">EDP & Extrait, Multiple Sizes</span>
+              </div>
             </div>
             
             {/* Pricing */}
             <div className="text-center mb-10">
               <span className="text-4xl font-serif font-bold text-champagne" data-testid="text-price">
-                ${product.price}
+                From $19.99
               </span>
-              {product.originalPrice && (
-                <span className="text-lg text-champagne/50 line-through ml-3">
-                  ${product.originalPrice}
-                </span>
-              )}
-              <div className="text-sm text-white/80 font-medium mt-1">Limited Release Pricing</div>
+              <div className="text-sm text-white/80 font-medium mt-1">Multiple variants available</div>
             </div>
             
             {/* CTA Buttons */}
@@ -193,11 +170,9 @@ export default function ProductShowcase() {
             <Badge className={`absolute -top-4 -right-4 shadow-lg ${
               isPreOrder 
                 ? "bg-champagne text-luxury-black" 
-                : remaining > 0 
-                  ? "bg-champagne text-luxury-black" 
-                  : "bg-red-600 text-white"
+                : "bg-champagne text-luxury-black"
             }`}>
-              {isPreOrder ? "PRE-ORDER" : remaining > 0 ? "NEW" : "SOLD OUT"}
+              {isPreOrder ? "PRE-ORDER" : "AVAILABLE"}
             </Badge>
           </div>
         </div>

@@ -9,7 +9,7 @@ import { Badge } from "@/components/ui/badge";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Input } from "@/components/ui/input";
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
-import type { Product } from "@shared/schema";
+import type { Product, ProductVariant } from "@shared/schema";
 import { ShoppingCart, Tag, Truck, Info } from "lucide-react";
 import ProductDetailModal from "@/components/product-detail-modal";
 import equusAlbusImage from "@assets/generated_images/Badass_Equus_Albus_bottle_bde8545f.png";
@@ -22,6 +22,7 @@ import sabbatumImage from "@assets/generated_images/Sabbatum_luxury_bottle_b96d8
 import luxAeternaImage from "@assets/generated_images/Lux_Aeterna_luxury_bottle_d2b6357e.png";
 
 interface CartItem {
+  variant: ProductVariant;
   product: Product;
   quantity: number;
 }
@@ -35,36 +36,42 @@ export default function Shop() {
   const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
   const [isDetailModalOpen, setIsDetailModalOpen] = useState(false);
 
-  const { data: products, isLoading } = useQuery<Product[]>({
+  const { data: products, isLoading: productsLoading } = useQuery<Product[]>({
     queryKey: ["/api/products"],
   });
 
-  const addToCart = (product: Product, quantity: number) => {
+  const { data: variants, isLoading: variantsLoading } = useQuery<ProductVariant[]>({
+    queryKey: ["/api/product-variants"],
+  });
+
+  const isLoading = productsLoading || variantsLoading;
+
+  const addToCart = (variant: ProductVariant, product: Product, quantity: number) => {
     setCart(prevCart => {
-      const existing = prevCart.find(item => item.product.id === product.id);
+      const existing = prevCart.find(item => item.variant.id === variant.id);
       if (existing) {
         return prevCart.map(item =>
-          item.product.id === product.id
+          item.variant.id === variant.id
             ? { ...item, quantity: item.quantity + quantity }
             : item
         );
       }
-      return [...prevCart, { product, quantity }];
+      return [...prevCart, { variant, product, quantity }];
     });
   };
 
-  const removeFromCart = (productId: string) => {
-    setCart(prevCart => prevCart.filter(item => item.product.id !== productId));
+  const removeFromCart = (variantId: string) => {
+    setCart(prevCart => prevCart.filter(item => item.variant.id !== variantId));
   };
 
-  const updateQuantity = (productId: string, quantity: number) => {
+  const updateQuantity = (variantId: string, quantity: number) => {
     if (quantity === 0) {
-      removeFromCart(productId);
+      removeFromCart(variantId);
       return;
     }
     setCart(prevCart =>
       prevCart.map(item =>
-        item.product.id === productId ? { ...item, quantity } : item
+        item.variant.id === variantId ? { ...item, quantity } : item
       )
     );
   };
@@ -75,7 +82,7 @@ export default function Shop() {
     }
   };
 
-  const subtotal = cart.reduce((sum, item) => sum + (parseFloat(item.product.price) * item.quantity), 0);
+  const subtotal = cart.reduce((sum, item) => sum + (parseFloat(item.variant.price) * item.quantity), 0);
   const discount = promoApplied ? subtotal * 0.1 : 0;
   const shipping = subtotal >= 100 ? 0 : 8.99;
   const total = subtotal - discount + shipping;
@@ -84,7 +91,7 @@ export default function Shop() {
     // Store cart data in localStorage for Stripe checkout page
     localStorage.setItem('checkoutCart', JSON.stringify({
       cart: cart.map(item => ({
-        product: item.product,
+        variantId: item.variant.id,
         quantity: item.quantity
       })),
       promoCode: promoApplied ? promoCode : null
@@ -95,7 +102,7 @@ export default function Shop() {
   if (isLoading) {
     return (
       <div className="min-h-screen bg-gradient-to-br from-luxury-black via-charcoal to-luxury-black">
-        <Header cartCount={cart.length} onCartClick={() => setIsCartOpen(true)} />
+        <Header cartCount={0} onCartClick={() => setIsCartOpen(true)} />
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
           <div className="animate-pulse text-champagne">Loading...</div>
         </div>
@@ -104,7 +111,6 @@ export default function Shop() {
   }
 
   const activeProducts = products?.filter(p => p.isActive) || [];
-
   const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
 
   return (
@@ -117,7 +123,7 @@ export default function Shop() {
           <div className="text-center mb-8">
             <h1 className="text-5xl md:text-6xl font-serif font-bold text-champagne mb-4">The Seven Seals Collection</h1>
             <p className="text-lg text-champagne/80 max-w-2xl mx-auto mb-6">
-              8 apocalyptic fragrances inspired by Revelation. 100mL Extrait de Parfum bottles at $119 each. All available now.
+              8 apocalyptic fragrances inspired by Revelation. Available in EDP & Extrait concentrations, multiple sizes.
             </p>
             <div className="flex items-center justify-center gap-6 text-sm">
               <div className="flex items-center gap-2 text-champagne/90">
@@ -134,22 +140,25 @@ export default function Shop() {
       </div>
       
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-
         <div className="grid lg:grid-cols-3 gap-8">
           {/* Products Grid */}
           <div className="lg:col-span-2">
             <div className="grid md:grid-cols-2 gap-6">
-              {activeProducts.map((product) => (
-                <ProductCard
-                  key={product.id}
-                  product={product}
-                  onAddToCart={addToCart}
-                  onViewDetails={(product) => {
-                    setSelectedProduct(product);
-                    setIsDetailModalOpen(true);
-                  }}
-                />
-              ))}
+              {activeProducts.map((product) => {
+                const productVariants = variants?.filter(v => v.productId === product.id) || [];
+                return (
+                  <ProductCard
+                    key={product.id}
+                    product={product}
+                    variants={productVariants}
+                    onAddToCart={addToCart}
+                    onViewDetails={(product) => {
+                      setSelectedProduct(product);
+                      setIsDetailModalOpen(true);
+                    }}
+                  />
+                );
+              })}
             </div>
           </div>
 
@@ -170,14 +179,14 @@ export default function Shop() {
                     <>
                       <div className="space-y-3 mb-4">
                         {cart.map(item => (
-                          <div key={item.product.id} className="flex items-center gap-3 p-3 bg-gray-50 rounded-lg">
+                          <div key={item.variant.id} className="flex items-center gap-3 p-3 bg-gray-50 rounded-lg">
                             <div className="flex-1">
                               <p className="font-semibold text-sm">{item.product.name}</p>
-                              <p className="text-xs text-gray-500">{item.product.verseReference.replace('Revelation', 'REV').replace('–', '-')}</p>
+                              <p className="text-xs text-gray-500">{item.variant.size} • {item.variant.concentration}</p>
                             </div>
                             <Select
                               value={item.quantity.toString()}
-                              onValueChange={(val) => updateQuantity(item.product.id, parseInt(val))}
+                              onValueChange={(val) => updateQuantity(item.variant.id, parseInt(val))}
                             >
                               <SelectTrigger className="w-16 h-8">
                                 <SelectValue />
@@ -191,7 +200,7 @@ export default function Shop() {
                               </SelectContent>
                             </Select>
                             <p className="font-semibold text-sm w-16 text-right">
-                              ${(parseFloat(item.product.price) * item.quantity).toFixed(2)}
+                              ${(parseFloat(item.variant.price) * item.quantity).toFixed(2)}
                             </p>
                           </div>
                         ))}
@@ -283,14 +292,14 @@ export default function Shop() {
               <>
                 <div className="space-y-3 mb-4">
                   {cart.map(item => (
-                    <div key={item.product.id} className="flex items-center gap-3 p-3 bg-gray-50 rounded-lg">
+                    <div key={item.variant.id} className="flex items-center gap-3 p-3 bg-gray-50 rounded-lg">
                       <div className="flex-1">
                         <p className="font-semibold text-sm">{item.product.name}</p>
-                        <p className="text-xs text-gray-500">{item.product.verseReference.replace('Revelation', 'REV').replace('–', '-')}</p>
+                        <p className="text-xs text-gray-500">{item.variant.size} • {item.variant.concentration}</p>
                       </div>
                       <Select
                         value={item.quantity.toString()}
-                        onValueChange={(val) => updateQuantity(item.product.id, parseInt(val))}
+                        onValueChange={(val) => updateQuantity(item.variant.id, parseInt(val))}
                       >
                         <SelectTrigger className="w-16 h-8">
                           <SelectValue />
@@ -304,7 +313,7 @@ export default function Shop() {
                         </SelectContent>
                       </Select>
                       <p className="font-semibold text-sm w-16 text-right">
-                        ${(parseFloat(item.product.price) * item.quantity).toFixed(2)}
+                        ${(parseFloat(item.variant.price) * item.quantity).toFixed(2)}
                       </p>
                     </div>
                   ))}
@@ -404,14 +413,14 @@ export default function Shop() {
                 <>
                   <div className="space-y-3 mb-4">
                     {cart.map(item => (
-                      <div key={item.product.id} className="flex items-center gap-3 p-3 bg-gray-50 rounded-lg">
+                      <div key={item.variant.id} className="flex items-center gap-3 p-3 bg-gray-50 rounded-lg">
                         <div className="flex-1">
                           <p className="font-semibold text-sm">{item.product.name}</p>
-                          <p className="text-xs text-gray-500">{item.product.verseReference.replace('Revelation', 'REV').replace('–', '-')}</p>
+                          <p className="text-xs text-gray-500">{item.variant.size} • {item.variant.concentration}</p>
                         </div>
                         <Select
                           value={item.quantity.toString()}
-                          onValueChange={(val) => updateQuantity(item.product.id, parseInt(val))}
+                          onValueChange={(val) => updateQuantity(item.variant.id, parseInt(val))}
                         >
                           <SelectTrigger className="w-16 h-8">
                             <SelectValue />
@@ -425,7 +434,7 @@ export default function Shop() {
                           </SelectContent>
                         </Select>
                         <p className="font-semibold text-sm w-16 text-right">
-                          ${(parseFloat(item.product.price) * item.quantity).toFixed(2)}
+                          ${(parseFloat(item.variant.price) * item.quantity).toFixed(2)}
                         </p>
                       </div>
                     ))}
@@ -525,19 +534,25 @@ export default function Shop() {
   );
 }
 
-function ProductCard({ product, onAddToCart, onViewDetails }: { 
-  product: Product; 
-  onAddToCart: (product: Product, quantity: number) => void;
+function ProductCard({ product, variants, onAddToCart, onViewDetails }: { 
+  product: Product;
+  variants: ProductVariant[];
+  onAddToCart: (variant: ProductVariant, product: Product, quantity: number) => void;
   onViewDetails: (product: Product) => void;
 }) {
   const [quantity, setQuantity] = useState(1);
+  const [selectedVariantId, setSelectedVariantId] = useState(variants[0]?.id || "");
+
+  const selectedVariant = variants.find(v => v.id === selectedVariantId) || variants[0];
 
   const handleAddToCart = () => {
-    onAddToCart(product, quantity);
-    setQuantity(1);
+    if (selectedVariant) {
+      onAddToCart(selectedVariant, product, quantity);
+      setQuantity(1);
+    }
   };
 
-  const stockPercent = (product.remainingInventory / product.totalInventory) * 100;
+  const stockPercent = selectedVariant ? (selectedVariant.remainingInventory / selectedVariant.totalInventory) * 100 : 0;
   const isLowStock = stockPercent < 20;
   
   // Select the correct bottle image based on product name
@@ -554,12 +569,16 @@ function ProductCard({ product, onAddToCart, onViewDetails }: {
       default: return equusAlbusImage;
     }
   };
+
+  // Group variants into a nice display format
+  const getVariantDisplay = (v: ProductVariant) => {
+    return `${v.size} ${v.concentration} - $${v.price}`;
+  };
   
   return (
     <Card className="overflow-hidden hover:shadow-xl transition-all duration-300 hover:-translate-y-1">
       <CardContent className="p-0">
         <div className="relative h-80 bg-gradient-to-br from-luxury-black via-charcoal to-luxury-black flex items-center justify-center">
-          {/* Custom bottle image for each fragrance */}
           <img 
             src={getBottleImage()} 
             alt={`${product.name} bottle`}
@@ -567,15 +586,14 @@ function ProductCard({ product, onAddToCart, onViewDetails }: {
             data-testid={`img-product-${product.id}`}
           />
           
-          {/* Product name overlay - REMOVED - clean bottle image only */}
-          
-          {/* Stock badge */}
-          <Badge 
-            variant={isLowStock ? "destructive" : "secondary"} 
-            className={`absolute top-3 right-3 text-xs border-0 ${isLowStock ? 'bg-red-600 text-white' : 'bg-champagne text-luxury-black'}`}
-          >
-            {product.remainingInventory} left
-          </Badge>
+          {selectedVariant && (
+            <Badge 
+              variant={isLowStock ? "destructive" : "secondary"} 
+              className={`absolute top-3 right-3 text-xs border-0 ${isLowStock ? 'bg-red-600 text-white' : 'bg-champagne text-luxury-black'}`}
+            >
+              {selectedVariant.remainingInventory} left
+            </Badge>
+          )}
         </div>
         
         <div className="p-6">
@@ -587,56 +605,78 @@ function ProductCard({ product, onAddToCart, onViewDetails }: {
           <p className="text-sm text-amber-600/80 mb-2 italic">"{product.bibleVerse}"</p>
           <p className="text-sm text-amber-600/80 mb-4">{product.description}</p>
 
-        {/* Sales Counter */}
-        <div className="mb-4 p-3 bg-champagne/10 rounded-lg">
-          <div className="flex justify-between text-sm mb-1">
-            <span className="font-medium">{product.soldCount} claimed</span>
-            <span className="text-gray-600">{product.remainingInventory} remaining</span>
+          {/* Variant Selection */}
+          <div className="mb-4">
+            <label className="text-sm font-medium text-gray-700 mb-2 block">Select Size & Concentration:</label>
+            <Select value={selectedVariantId} onValueChange={setSelectedVariantId}>
+              <SelectTrigger className="w-full" data-testid={`select-variant-${product.id}`}>
+                <SelectValue />
+              </SelectTrigger>
+              <SelectContent>
+                {variants.map(variant => (
+                  <SelectItem key={variant.id} value={variant.id}>
+                    {getVariantDisplay(variant)}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
           </div>
-          <div className="w-full bg-gray-200 rounded-full h-2">
-            <div
-              className="bg-champagne h-2 rounded-full transition-all"
-              style={{ width: `${(product.soldCount / product.totalInventory) * 100}%` }}
-            />
+
+          {/* Sales Counter for selected variant */}
+          {selectedVariant && (
+            <div className="mb-4 p-3 bg-champagne/10 rounded-lg">
+              <div className="flex justify-between text-sm mb-1">
+                <span className="font-medium">{selectedVariant.soldCount} claimed</span>
+                <span className="text-gray-600">{selectedVariant.remainingInventory} remaining</span>
+              </div>
+              <div className="w-full bg-gray-200 rounded-full h-2">
+                <div
+                  className="bg-champagne h-2 rounded-full transition-all"
+                  style={{ width: `${(selectedVariant.soldCount / selectedVariant.totalInventory) * 100}%` }}
+                />
+              </div>
+            </div>
+          )}
+
+          <div className="flex items-center justify-between mb-4">
+            <div>
+              <p className="text-2xl font-bold text-luxury-black">
+                ${selectedVariant?.price || "—"}
+              </p>
+              {selectedVariant && (
+                <p className="text-xs text-gray-500">{selectedVariant.size} • {selectedVariant.concentration}</p>
+              )}
+            </div>
+            <Select value={quantity.toString()} onValueChange={(val) => setQuantity(parseInt(val))}>
+              <SelectTrigger className="w-20" data-testid={`select-quantity-${product.id}`}>
+                <SelectValue />
+              </SelectTrigger>
+              <SelectContent>
+                {[1, 2, 3, 4, 5].map(n => (
+                  <SelectItem key={n} value={n.toString()}>{n}</SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
           </div>
-        </div>
 
-        <div className="flex items-center justify-between mb-2">
-          <div>
-            <p className="text-2xl font-bold text-luxury-black">${product.price}</p>
-            <p className="text-xs text-gray-500">{product.volume} • {product.concentration}</p>
+          <div className="flex gap-2">
+            <Button
+              onClick={handleAddToCart}
+              disabled={!selectedVariant || selectedVariant.remainingInventory === 0}
+              className="flex-1 bg-champagne text-luxury-black hover:bg-yellow-500"
+              data-testid={`button-add-to-cart-${product.id}`}
+            >
+              {selectedVariant && selectedVariant.remainingInventory > 0 ? "Add to Cart" : "Out of Stock"}
+            </Button>
+            <Button
+              variant="outline"
+              size="icon"
+              onClick={() => onViewDetails(product)}
+              data-testid={`button-view-details-${product.id}`}
+            >
+              <Info className="w-4 h-4" />
+            </Button>
           </div>
-          <Select value={quantity.toString()} onValueChange={(val) => setQuantity(parseInt(val))}>
-            <SelectTrigger className="w-20" data-testid={`select-quantity-${product.id}`}>
-              <SelectValue />
-            </SelectTrigger>
-            <SelectContent>
-              {[1, 2, 3, 4, 5].map(n => (
-                <SelectItem key={n} value={n.toString()} data-testid={`option-${n}`}>
-                  {n}
-                </SelectItem>
-              ))}
-            </SelectContent>
-          </Select>
-        </div>
-
-          <Button
-            onClick={() => onViewDetails(product)}
-            variant="outline"
-            className="w-full mb-2 border-amber-600 text-amber-600 hover:bg-amber-50"
-            data-testid={`button-view-details-${product.id}`}
-          >
-            <Info className="w-4 h-4 mr-2" />
-            View Fragrance Notes
-          </Button>
-
-          <Button
-            onClick={handleAddToCart}
-            className="w-full bg-champagne text-luxury-black hover:bg-yellow-500"
-            data-testid={`button-add-to-cart-${product.id}`}
-          >
-            Add to Cart
-          </Button>
         </div>
       </CardContent>
     </Card>

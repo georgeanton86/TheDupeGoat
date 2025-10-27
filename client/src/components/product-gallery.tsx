@@ -58,7 +58,6 @@ export default function ProductGallery() {
       <div className="grid md:grid-cols-2 gap-12">
         {products?.map((product: any) => {
           const isPreOrder = new Date(product.releaseDate) > new Date();
-          const isSoldOut = product.remainingInventory === 0;
           
           return (
             <div key={product.id} className="group">
@@ -73,11 +72,9 @@ export default function ProductGallery() {
                 <Badge className={`absolute top-4 right-4 ${
                   isPreOrder 
                     ? "bg-champagne text-luxury-black" 
-                    : isSoldOut 
-                      ? "bg-red-600 text-white" 
-                      : "bg-champagne text-luxury-black"
+                    : "bg-champagne text-luxury-black"
                 }`}>
-                  {isPreOrder ? "PRE-ORDER" : isSoldOut ? "SOLD OUT" : "AVAILABLE"}
+                  {isPreOrder ? "PRE-ORDER" : "AVAILABLE"}
                 </Badge>
               </div>
               
@@ -94,32 +91,16 @@ export default function ProductGallery() {
                 
                 <div className="mb-4">
                   <span className="text-2xl font-bold text-amber-600">
-                    ${product.price}
+                    From $19.99
                   </span>
-                  {product.originalPrice && (
-                    <span className="text-lg text-gray-500 line-through ml-2">
-                      ${product.originalPrice}
-                    </span>
-                  )}
+                  <div className="text-xs text-amber-600/70 mt-1">
+                    Multiple sizes & concentrations available
+                  </div>
                 </div>
 
-                {isSoldOut ? (
-                  <div className="text-center">
-                    <p className="text-sm text-red-600 font-medium mb-2">
-                      ✨ {product.totalInventory} bottles sold
-                    </p>
-                    {product.selloutTime && (
-                      <p className="text-xs text-orange-600 font-bold bg-orange-50 px-2 py-1 rounded mb-2">
-                        ⚡ Sold out in {product.selloutTime}
-                      </p>
-                    )}
-                    <p className="text-xs text-gray-500">
-                      This limited edition is completely sold out
-                    </p>
-                  </div>
-                ) : isPreOrder ? (
+                {isPreOrder ? (
                   <div className="space-y-3">
-                    <Link href="/checkout">
+                    <Link href="/shop">
                       <Button className="w-full bg-champagne text-luxury-black hover:bg-yellow-500">
                         🌟 Pre-Order Now
                       </Button>
@@ -129,9 +110,9 @@ export default function ProductGallery() {
                     </p>
                   </div>
                 ) : (
-                  <Link href="/checkout">
+                  <Link href="/shop">
                     <Button className="w-full bg-luxury-black text-white hover:bg-charcoal">
-                      Buy Now
+                      Shop Now
                     </Button>
                   </Link>
                 )}
