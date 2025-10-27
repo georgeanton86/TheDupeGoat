@@ -15,17 +15,22 @@ const stripe = new Stripe(process.env.STRIPE_LIVE_SECRET_KEY, {
 
 export async function registerRoutes(app: Express): Promise<Server> {
   
-  // Get featured product (active or first available)
-  app.get("/api/product", async (req, res) => {
+  // Get all products (base fragrances)
+  app.get("/api/products", async (req, res) => {
     try {
-      const product = await storage.getActiveProduct();
+      const allProducts = await storage.getAllProducts();
+      res.json(allProducts);
+    } catch (error: any) {
+      res.status(500).json({ message: "Error fetching products: " + error.message });
+    }
+  });
+
+  // Get single product by ID
+  app.get("/api/product/:id", async (req, res) => {
+    try {
+      const product = await storage.getProduct(req.params.id);
       if (!product) {
-        // If no active product, get the first product (could be sold out for showcase)
-        const allProducts = await storage.getAllProducts();
-        if (allProducts.length > 0) {
-          return res.json(allProducts[0]);
-        }
-        return res.status(404).json({ message: "No product found" });
+        return res.status(404).json({ message: "Product not found" });
       }
       res.json(product);
     } catch (error: any) {
@@ -33,29 +38,40 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
-  // Get all products (including sold out)
-  app.get("/api/products", async (req, res) => {
+  // Get all product variants
+  app.get("/api/product-variants", async (req, res) => {
     try {
-      const allProducts = await storage.getAllProducts();
-      // Sort by: pre-order first, then active, then sold out
-      const sortedProducts = allProducts.sort((a, b) => {
-        const aIsPreOrder = new Date(a.releaseDate) > new Date();
-        const bIsPreOrder = new Date(b.releaseDate) > new Date();
-        
-        if (aIsPreOrder && !bIsPreOrder) return -1;
-        if (!aIsPreOrder && bIsPreOrder) return 1;
-        if (a.isActive && !b.isActive) return -1;
-        if (!a.isActive && b.isActive) return 1;
-        return 0;
-      });
-      
-      res.json(sortedProducts);
+      const allVariants = await storage.getAllProductVariants();
+      res.json(allVariants);
     } catch (error: any) {
-      res.status(500).json({ message: "Error fetching products: " + error.message });
+      res.status(500).json({ message: "Error fetching product variants: " + error.message });
     }
   });
 
-  // Stripe payment intent creation - SECURE: calculates server total from cart
+  // Get variants for a specific product
+  app.get("/api/product-variants/:productId", async (req, res) => {
+    try {
+      const variants = await storage.getProductVariants(req.params.productId);
+      res.json(variants);
+    } catch (error: any) {
+      res.status(500).json({ message: "Error fetching product variants: " + error.message });
+    }
+  });
+
+  // Get single variant by ID
+  app.get("/api/variant/:id", async (req, res) => {
+    try {
+      const variant = await storage.getProductVariant(req.params.id);
+      if (!variant) {
+        return res.status(404).json({ message: "Product variant not found" });
+      }
+      res.json(variant);
+    } catch (error: any) {
+      res.status(500).json({ message: "Error fetching product variant: " + error.message });
+    }
+  });
+
+  // Stripe payment intent creation - SECURE: calculates server total from cart using variant IDs
   app.post("/api/create-payment-intent", async (req, res) => {
     try {
       const { items, promoCode } = req.body;
@@ -74,11 +90,11 @@ export async function registerRoutes(app: Express): Promise<Server> {
       // SERVER-SIDE RECALCULATION - NEVER TRUST CLIENT PRICES
       let serverSubtotal = 0;
       for (const item of items) {
-        const product = await storage.getProduct(item.productId);
-        if (!product) {
-          return res.status(404).json({ error: `Product ${item.productId} not found` });
+        const variant = await storage.getProductVariant(item.variantId);
+        if (!variant) {
+          return res.status(404).json({ error: `Product variant ${item.variantId} not found` });
         }
-        serverSubtotal += parseFloat(product.price) * item.quantity;
+        serverSubtotal += parseFloat(variant.price) * item.quantity;
       }
 
       // Validate promo code
@@ -181,29 +197,29 @@ export async function registerRoutes(app: Express): Promise<Server> {
       let serverSubtotal = 0;
       const validatedItems = [];
 
-      // Verify all products exist, have sufficient inventory, and calculate actual prices
+      // Verify all product variants exist, have sufficient inventory, and calculate actual prices
       for (const item of items) {
-        const product = await storage.getProduct(item.productId);
-        if (!product) {
-          return res.status(404).json({ message: `Product ${item.productId} not found` });
+        const variant = await storage.getProductVariant(item.variantId);
+        if (!variant) {
+          return res.status(404).json({ message: `Product variant ${item.variantId} not found` });
         }
 
-        if (product.remainingInventory < item.quantity) {
+        if (variant.remainingInventory < item.quantity) {
           return res.status(400).json({ 
-            message: `Insufficient inventory for ${product.name}. Only ${product.remainingInventory} remaining.` 
+            message: `Insufficient inventory. Only ${variant.remainingInventory} remaining.` 
           });
         }
 
         // Calculate line item total from SERVER database, not client
-        const lineTotal = parseFloat(product.price) * item.quantity;
+        const lineTotal = parseFloat(variant.price) * item.quantity;
         serverSubtotal += lineTotal;
 
         validatedItems.push({
-          productId: item.productId,
+          variantId: item.variantId,
           quantity: item.quantity,
-          unitPrice: product.price,
+          unitPrice: variant.price,
           lineTotal: lineTotal.toFixed(2),
-          product
+          variant
         });
       }
 
@@ -266,7 +282,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
       for (const validatedItem of validatedItems) {
         // Create order record for this item with SERVER-calculated price
         const order = await storage.createOrder({
-          productId: validatedItem.productId,
+          variantId: validatedItem.variantId,
           customerEmail,
           customerName,
           paypalOrderId: paymentIntentId,
@@ -278,15 +294,15 @@ export async function registerRoutes(app: Express): Promise<Server> {
         await storage.updateOrderStatus(order.id, "completed");
         
         // Decrease inventory
-        await storage.updateProductInventory(
-          validatedItem.productId, 
-          validatedItem.product.remainingInventory - validatedItem.quantity
+        await storage.updateProductVariantInventory(
+          validatedItem.variantId, 
+          validatedItem.variant.remainingInventory - validatedItem.quantity
         );
 
         // Increase sold count
-        await storage.updateProductSoldCount(
-          validatedItem.productId,
-          validatedItem.product.soldCount + validatedItem.quantity
+        await storage.updateProductVariantSoldCount(
+          validatedItem.variantId,
+          validatedItem.variant.soldCount + validatedItem.quantity
         );
         
         orderIds.push(order.id);
@@ -303,19 +319,19 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
-  // Get inventory count
-  app.get("/api/inventory/:productId", async (req, res) => {
+  // Get inventory count for a variant
+  app.get("/api/inventory/:variantId", async (req, res) => {
     try {
-      const { productId } = req.params;
-      const product = await storage.getProduct(productId);
+      const { variantId } = req.params;
+      const variant = await storage.getProductVariant(variantId);
       
-      if (!product) {
-        return res.status(404).json({ message: "Product not found" });
+      if (!variant) {
+        return res.status(404).json({ message: "Product variant not found" });
       }
 
       res.json({ 
-        remaining: product.remainingInventory,
-        total: product.totalInventory 
+        remaining: variant.remainingInventory,
+        total: variant.totalInventory 
       });
     } catch (error: any) {
       res.status(500).json({ message: "Error fetching inventory: " + error.message });

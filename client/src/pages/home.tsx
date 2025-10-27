@@ -247,7 +247,7 @@ export default function Home() {
                 <i className="fas fa-flask text-2xl text-champagne"></i>
               </div>
               <h4 className="font-semibold text-champagne mb-2">Premium Quality</h4>
-              <p className="text-white/80 text-sm">100mL Extrait de Parfum concentration</p>
+              <p className="text-white/80 text-sm">Multiple sizes and concentrations available</p>
             </div>
             
             <div>
