@@ -289,10 +289,12 @@ export default function Home() {
 
             <AccordionItem value="item-2" className="bg-white/5 backdrop-blur-sm border border-champagne/20 rounded-lg px-6">
               <AccordionTrigger className="text-left text-white hover:text-champagne py-4">
-                What does "Extrait de Parfum" mean?
+                What's the difference between Eau de Parfum and Extrait de Parfum?
               </AccordionTrigger>
               <AccordionContent className="text-white/80 pb-4">
-                Extrait de Parfum is the highest concentration of fragrance available, containing 20-40% pure perfume oil. This means longer-lasting scent, richer complexity, and exceptional quality compared to standard Eau de Parfum or Eau de Toilette.
+                We offer two concentration levels:<br/><br/>
+                <strong className="text-champagne">Eau de Parfum (30% concentration)</strong> - A luxurious everyday fragrance with excellent longevity and projection. Perfect for those new to luxury perfumes.<br/><br/>
+                <strong className="text-champagne">Extrait de Parfum (40% concentration)</strong> - The highest concentration available. Richer, longer-lasting, and more complex. A single application lasts all day with incredible depth and evolution on the skin.
               </AccordionContent>
             </AccordionItem>
 
@@ -316,14 +318,31 @@ export default function Home() {
 
             <AccordionItem value="item-5" className="bg-white/5 backdrop-blur-sm border border-champagne/20 rounded-lg px-6">
               <AccordionTrigger className="text-left text-white hover:text-champagne py-4">
-                Do you offer free shipping?
+                What sizes and prices do you offer?
               </AccordionTrigger>
               <AccordionContent className="text-white/80 pb-4">
-                Yes! Orders over $100 qualify for free shipping nationwide. Since each bottle is $119, any single fragrance purchase includes complimentary delivery.
+                Each fragrance is available in multiple formats:<br/><br/>
+                <strong className="text-champagne">Spray Bottles:</strong><br/>
+                • 100mL Eau de Parfum - $99.99<br/>
+                • 100mL Extrait de Parfum - $119.99<br/>
+                • 50mL Eau de Parfum - $49.99<br/>
+                • 50mL Extrait de Parfum - $69.99<br/><br/>
+                <strong className="text-champagne">Pure Oil Roll-ons:</strong><br/>
+                • 10mL Roll-on - $19.99<br/>
+                • 30mL Roll-on - $34.99
               </AccordionContent>
             </AccordionItem>
 
             <AccordionItem value="item-6" className="bg-white/5 backdrop-blur-sm border border-champagne/20 rounded-lg px-6">
+              <AccordionTrigger className="text-left text-white hover:text-champagne py-4">
+                Do you offer free shipping?
+              </AccordionTrigger>
+              <AccordionContent className="text-white/80 pb-4">
+                Yes! Orders over $100 qualify for free shipping nationwide.
+              </AccordionContent>
+            </AccordionItem>
+
+            <AccordionItem value="item-7" className="bg-white/5 backdrop-blur-sm border border-champagne/20 rounded-lg px-6">
               <AccordionTrigger className="text-left text-white hover:text-champagne py-4">
                 What is your promo code?
               </AccordionTrigger>
@@ -332,7 +351,7 @@ export default function Home() {
               </AccordionContent>
             </AccordionItem>
 
-            <AccordionItem value="item-7" className="bg-white/5 backdrop-blur-sm border border-champagne/20 rounded-lg px-6">
+            <AccordionItem value="item-8" className="bg-white/5 backdrop-blur-sm border border-champagne/20 rounded-lg px-6">
               <AccordionTrigger className="text-left text-white hover:text-champagne py-4">
                 What is your return policy?
               </AccordionTrigger>
@@ -341,7 +360,7 @@ export default function Home() {
               </AccordionContent>
             </AccordionItem>
 
-            <AccordionItem value="item-8" className="bg-white/5 backdrop-blur-sm border border-champagne/20 rounded-lg px-6">
+            <AccordionItem value="item-9" className="bg-white/5 backdrop-blur-sm border border-champagne/20 rounded-lg px-6">
               <AccordionTrigger className="text-left text-white hover:text-champagne py-4">
                 Are all 8 fragrances available now?
               </AccordionTrigger>
@@ -350,15 +369,12 @@ export default function Home() {
               </AccordionContent>
             </AccordionItem>
 
-            <AccordionItem value="item-9" className="bg-white/5 backdrop-blur-sm border border-champagne/20 rounded-lg px-6">
+            <AccordionItem value="item-10" className="bg-white/5 backdrop-blur-sm border border-champagne/20 rounded-lg px-6">
               <AccordionTrigger className="text-left text-white hover:text-champagne py-4">
                 How do I contact customer service?
               </AccordionTrigger>
               <AccordionContent className="text-white/80 pb-4">
-                For questions, concerns, or support:<br/>
-                Email: info@rvltnparfums.com<br/>
-                Phone: 1-800-RVLTN-99<br/>
-                We respond within 24-48 hours
+                For questions, concerns, or support, please email us at <a href="mailto:info@rvltnparfums.com" className="text-champagne hover:underline">info@rvltnparfums.com</a>. We respond within 24-48 hours.
               </AccordionContent>
             </AccordionItem>
           </Accordion>
