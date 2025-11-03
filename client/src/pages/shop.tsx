@@ -509,11 +509,11 @@ export default function Shop() {
 
       {/* Product Image Disclaimer */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-12">
-        <div className="bg-amber-50 border border-amber-200 rounded-lg p-6 text-center">
-          <p className="text-sm text-amber-900 font-medium mb-2">
+        <div className="bg-luxury-black/50 border border-champagne/30 rounded-lg p-6 text-center backdrop-blur-sm">
+          <p className="text-sm text-champagne font-medium mb-2">
             ⚠️ Product Image Disclaimer
           </p>
-          <p className="text-xs text-amber-800 leading-relaxed max-w-3xl mx-auto">
+          <p className="text-xs text-white/80 leading-relaxed max-w-3xl mx-auto">
             *Product images shown are AI-generated concept renderings for illustration purposes only. Actual bottle designs, colors, shapes, and packaging will vary from images shown. Each fragrance is handcrafted and bottled individually. Final product appearance is subject to change.
           </p>
         </div>
@@ -576,7 +576,7 @@ function ProductCard({ product, variants, onAddToCart, onViewDetails }: {
   };
   
   return (
-    <Card className="overflow-hidden hover:shadow-xl transition-all duration-300 hover:-translate-y-1">
+    <Card className="overflow-hidden hover:shadow-xl transition-all duration-300 hover:-translate-y-1 bg-gradient-to-br from-charcoal to-luxury-black border-champagne/30">
       <CardContent className="p-0">
         <div className="relative h-80 bg-gradient-to-br from-luxury-black via-charcoal to-luxury-black flex items-center justify-center">
           <img 
@@ -598,16 +598,16 @@ function ProductCard({ product, variants, onAddToCart, onViewDetails }: {
         
         <div className="p-6">
           <div className="mb-3">
-            <h3 className="text-xl font-bold text-amber-600">{product.name}</h3>
-            <p className="text-xs text-amber-600/70 font-medium">{product.verseReference.replace('Revelation', 'REV').replace('–', '-')}</p>
+            <h3 className="text-xl font-bold text-champagne">{product.name}</h3>
+            <p className="text-xs text-white/70 font-medium">{product.verseReference.replace('Revelation', 'REV').replace('–', '-')}</p>
           </div>
 
-          <p className="text-sm text-amber-600/80 mb-2 italic">"{product.bibleVerse}"</p>
-          <p className="text-sm text-amber-600/80 mb-4">{product.description}</p>
+          <p className="text-sm text-white/80 mb-2 italic">"{product.bibleVerse}"</p>
+          <p className="text-sm text-white/80 mb-4">{product.description}</p>
 
           {/* Variant Selection */}
           <div className="mb-4">
-            <label className="text-sm font-medium text-gray-700 mb-2 block">Select Size & Concentration:</label>
+            <label className="text-sm font-medium text-white mb-2 block">Select Size & Concentration:</label>
             <Select value={selectedVariantId} onValueChange={setSelectedVariantId}>
               <SelectTrigger className="w-full" data-testid={`select-variant-${product.id}`}>
                 <SelectValue />
@@ -624,12 +624,12 @@ function ProductCard({ product, variants, onAddToCart, onViewDetails }: {
 
           {/* Sales Counter for selected variant */}
           {selectedVariant && (
-            <div className="mb-4 p-3 bg-champagne/10 rounded-lg">
+            <div className="mb-4 p-3 bg-champagne/10 rounded-lg border border-champagne/20">
               <div className="flex justify-between text-sm mb-1">
-                <span className="font-medium">{selectedVariant.soldCount} claimed</span>
-                <span className="text-gray-600">{selectedVariant.remainingInventory} remaining</span>
+                <span className="font-medium text-white">{selectedVariant.soldCount} claimed</span>
+                <span className="text-white/70">{selectedVariant.remainingInventory} remaining</span>
               </div>
-              <div className="w-full bg-gray-200 rounded-full h-2">
+              <div className="w-full bg-white/10 rounded-full h-2">
                 <div
                   className="bg-champagne h-2 rounded-full transition-all"
                   style={{ width: `${(selectedVariant.soldCount / selectedVariant.totalInventory) * 100}%` }}
@@ -640,11 +640,11 @@ function ProductCard({ product, variants, onAddToCart, onViewDetails }: {
 
           <div className="flex items-center justify-between mb-4">
             <div>
-              <p className="text-2xl font-bold text-luxury-black">
+              <p className="text-2xl font-bold text-champagne">
                 ${selectedVariant?.price || "—"}
               </p>
               {selectedVariant && (
-                <p className="text-xs text-gray-500">{selectedVariant.size} • {selectedVariant.concentration}</p>
+                <p className="text-xs text-white/60">{selectedVariant.size} • {selectedVariant.concentration}</p>
               )}
             </div>
             <Select value={quantity.toString()} onValueChange={(val) => setQuantity(parseInt(val))}>
