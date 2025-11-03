@@ -609,12 +609,12 @@ function ProductCard({ product, variants, onAddToCart, onViewDetails }: {
           <div className="mb-4">
             <label className="text-sm font-medium text-white mb-2 block">Select Size & Concentration:</label>
             <Select value={selectedVariantId} onValueChange={setSelectedVariantId}>
-              <SelectTrigger className="w-full" data-testid={`select-variant-${product.id}`}>
+              <SelectTrigger className="w-full bg-luxury-black/50 border-champagne/30 text-white hover:bg-luxury-black/70" data-testid={`select-variant-${product.id}`}>
                 <SelectValue />
               </SelectTrigger>
-              <SelectContent>
+              <SelectContent className="bg-luxury-black border-champagne/30">
                 {variants.map(variant => (
-                  <SelectItem key={variant.id} value={variant.id}>
+                  <SelectItem key={variant.id} value={variant.id} className="text-white hover:bg-champagne/20 focus:bg-champagne/20">
                     {getVariantDisplay(variant)}
                   </SelectItem>
                 ))}
@@ -648,12 +648,12 @@ function ProductCard({ product, variants, onAddToCart, onViewDetails }: {
               )}
             </div>
             <Select value={quantity.toString()} onValueChange={(val) => setQuantity(parseInt(val))}>
-              <SelectTrigger className="w-20" data-testid={`select-quantity-${product.id}`}>
+              <SelectTrigger className="w-20 bg-luxury-black/50 border-champagne/30 text-white hover:bg-luxury-black/70" data-testid={`select-quantity-${product.id}`}>
                 <SelectValue />
               </SelectTrigger>
-              <SelectContent>
+              <SelectContent className="bg-luxury-black border-champagne/30">
                 {[1, 2, 3, 4, 5].map(n => (
-                  <SelectItem key={n} value={n.toString()}>{n}</SelectItem>
+                  <SelectItem key={n} value={n.toString()} className="text-white hover:bg-champagne/20 focus:bg-champagne/20">{n}</SelectItem>
                 ))}
               </SelectContent>
             </Select>
@@ -672,6 +672,7 @@ function ProductCard({ product, variants, onAddToCart, onViewDetails }: {
               variant="outline"
               size="icon"
               onClick={() => onViewDetails(product)}
+              className="bg-luxury-black/50 border-champagne/30 text-champagne hover:bg-champagne/20"
               data-testid={`button-view-details-${product.id}`}
             >
               <Info className="w-4 h-4" />
