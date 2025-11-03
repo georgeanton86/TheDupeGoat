@@ -1,0 +1,66 @@
+[
+  {
+    "name": "EQUUS ALBUS",
+    "family": "Fruity Smoky Woods (Aventus Inspired)",
+    "top": ["Bergamot Grapefruit", "Rainforest Hibiscus", "Birch Tree & Fig"],
+    "heart": ["Creed Aventus Accord", "Alpine Cheer", "Bergamot Tobacco"],
+    "base": ["Cedar & Aged Oak", "Salted Amber", "Smoked Cardamom", "Aurora Dawn"],
+    "description": "Bright pineapple-citrus opening with a green woody heart and a smoky amber-musk base."
+  },
+  {
+    "name": "PAX OBSCURA",
+    "family": "Blue Woody Amber (Bleu de Chanel / Y Inspired)",
+    "top": ["Bergamot Grapefruit", "Storm Watch", "Egomaniacal Green"],
+    "heart": ["Mountain Spring", "Rainforest Hibiscus", "Noir de Noir"],
+    "base": ["Cedar & Aged Oak", "Salted Amber", "Ruby Red", "Aurora Dawn"],
+    "description": "Cool citrus and aquatic top, aromatic heart, and smooth amber-musk drydown."
+  },
+  {
+    "name": "FAMES",
+    "family": "Amber Sweet Airy (BR540 Inspired)",
+    "top": ["Sea Salt & Orchid", "Birch Tree & Fig", "Cashmere Plum"],
+    "heart": ["Ruby Red", "Cedar & Aged Oak", "French Vanilla"],
+    "base": ["Salted Amber", "Aurora Dawn"],
+    "description": "Sweet, airy amber with crystalline warmth and an addictive modern trail."
+  },
+  {
+    "name": "MORTEM",
+    "family": "Dark Oud Rose Resin (Noir de Noir Inspired)",
+    "top": ["Smoked Cardamom", "Midsummer Night"],
+    "heart": ["Noir de Noir", "Suede & Sumac Leaves", "Cedar & Aged Oak"],
+    "base": ["Barnwood", "Salted Amber", "Boot Strap & Whiskey"],
+    "description": "Dense rose-oud body with a leathery incense middle and smoky amber finish."
+  },
+  {
+    "name": "VOX CAELI",
+    "family": "Neroli Marine Citrus (Neroli Portofino / Acqua di Giò Inspired)",
+    "top": ["Neroli Portofino", "Bergamot Grapefruit", "Fresh Juniper & Sea"],
+    "heart": ["White Tea & Ginger", "Sea Salt & Orchid", "Rainforest Hibiscus", "Mountain Spring"],
+    "base": ["Cedar & Aged Oak", "Salted Amber"],
+    "description": "Sparkling neroli-citrus top, marine-floral heart, and sheer amberwood base."
+  },
+  {
+    "name": "MORTEM TREMOR",
+    "family": "Tobacco Vanilla Smoke (Tobacco Vanille Inspired)",
+    "top": ["Smoked Cardamom", "Boot Strap & Whiskey"],
+    "heart": ["Tobacco Leaves & Hemp Twist", "French Vanilla", "Barnwood"],
+    "base": ["Cedar & Aged Oak", "Salted Amber", "Aurora Dawn"],
+    "description": "Tobacco-vanilla smoke with boozy sweetness and a smooth amber-musk trail."
+  },
+  {
+    "name": "SABBATUM",
+    "family": "Pear Musk Fresh Comfort (Jo Malone Inspired)",
+    "top": ["English Pear & Freesia", "Baja Cactus Blossom"],
+    "heart": ["White Tea & Ginger", "Sea Salt & Orchid"],
+    "base": ["Cedar & Aged Oak", "Salted Amber", "Aurora Dawn"],
+    "description": "Soft pear-floral lift, tranquil clean tea heart, and musky amber serenity."
+  },
+  {
+    "name": "LUX AETERNA",
+    "family": "Fresh Green Vetiver (Sauvage Inspired)",
+    "top": ["Bergamot Grapefruit", "Fresh Juniper & Sea", "Alpine Cheer"],
+    "heart": ["Egomaniacal Green", "Birch Tree & Fig", "Rainforest Hibiscus"],
+    "base": ["Cedar & Aged Oak", "Barnwood", "Salted Amber", "Aurora Dawn"],
+    "description": "Crisp citrus-ozone opening with a green woody heart and glowing amber-musk finish."
+  }
+]
