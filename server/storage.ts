@@ -47,7 +47,7 @@ export class MemStorage implements IStorage {
       {
         name: "EQUUS ALBUS",
         description: "Bright pineapple-citrus opening with a green woody heart and a smoky amber-musk base.",
-        notes: "Fruity Smoky Woods (Aventus Inspired)",
+        notes: "Fruity Smoky Woods",
         topNotes: "Bergamot Grapefruit, Rainforest Hibiscus, Birch Tree & Fig",
         middleNotes: "Creed Aventus Accord, Alpine Cheer, Bergamot Tobacco",
         baseNotes: "Cedar & Aged Oak, Salted Amber, Smoked Cardamom, Aurora Dawn",
@@ -58,7 +58,7 @@ export class MemStorage implements IStorage {
       {
         name: "PAX OBSCURA",
         description: "Cool citrus and aquatic top, aromatic heart, and smooth amber-musk drydown.",
-        notes: "Blue Woody Amber (Bleu de Chanel / Y Inspired)",
+        notes: "Blue Woody Amber",
         topNotes: "Bergamot Grapefruit, Storm Watch, Egomaniacal Green",
         middleNotes: "Mountain Spring, Rainforest Hibiscus, Noir de Noir",
         baseNotes: "Cedar & Aged Oak, Salted Amber, Ruby Red, Aurora Dawn",
@@ -69,7 +69,7 @@ export class MemStorage implements IStorage {
       {
         name: "FAMES",
         description: "Sweet, airy amber with crystalline warmth and an addictive modern trail.",
-        notes: "Amber Sweet Airy (BR540 Inspired)",
+        notes: "Amber Sweet Airy",
         topNotes: "Sea Salt & Orchid, Birch Tree & Fig, Cashmere Plum",
         middleNotes: "Ruby Red, Cedar & Aged Oak, French Vanilla",
         baseNotes: "Salted Amber, Aurora Dawn",
@@ -80,7 +80,7 @@ export class MemStorage implements IStorage {
       {
         name: "MORTEM",
         description: "Dense rose-oud body with a leathery incense middle and smoky amber finish.",
-        notes: "Dark Oud Rose Resin (Noir de Noir Inspired)",
+        notes: "Dark Oud Rose Resin",
         topNotes: "Smoked Cardamom, Midsummer Night",
         middleNotes: "Noir de Noir, Suede & Sumac Leaves, Cedar & Aged Oak",
         baseNotes: "Barnwood, Salted Amber, Boot Strap & Whiskey",
@@ -91,7 +91,7 @@ export class MemStorage implements IStorage {
       {
         name: "VOX CAELI",
         description: "Sparkling neroli-citrus top, marine-floral heart, and sheer amberwood base.",
-        notes: "Neroli Marine Citrus (Neroli Portofino / Acqua di Giò Inspired)",
+        notes: "Neroli Marine Citrus",
         topNotes: "Neroli Portofino, Bergamot Grapefruit, Fresh Juniper & Sea",
         middleNotes: "White Tea & Ginger, Sea Salt & Orchid, Rainforest Hibiscus, Mountain Spring",
         baseNotes: "Cedar & Aged Oak, Salted Amber",
@@ -102,7 +102,7 @@ export class MemStorage implements IStorage {
       {
         name: "TERRA TREMOR",
         description: "Tobacco-vanilla smoke with boozy sweetness and a smooth amber-musk trail.",
-        notes: "Tobacco Vanilla Smoke (Tobacco Vanille Inspired)",
+        notes: "Tobacco Vanilla Smoke",
         topNotes: "Smoked Cardamom, Boot Strap & Whiskey",
         middleNotes: "Tobacco Leaves & Hemp Twist, French Vanilla, Barnwood",
         baseNotes: "Cedar & Aged Oak, Salted Amber, Aurora Dawn",
@@ -113,7 +113,7 @@ export class MemStorage implements IStorage {
       {
         name: "SABBATUM",
         description: "Soft pear-floral lift, tranquil clean tea heart, and musky amber serenity.",
-        notes: "Pear Musk Fresh Comfort (Jo Malone Inspired)",
+        notes: "Pear Musk Fresh Comfort",
         topNotes: "English Pear & Freesia, Baja Cactus Blossom",
         middleNotes: "White Tea & Ginger, Sea Salt & Orchid",
         baseNotes: "Cedar & Aged Oak, Salted Amber, Aurora Dawn",
@@ -124,7 +124,7 @@ export class MemStorage implements IStorage {
       {
         name: "LUX AETERNA",
         description: "Crisp citrus-ozone opening with a green woody heart and glowing amber-musk finish.",
-        notes: "Fresh Green Vetiver (Sauvage Inspired)",
+        notes: "Fresh Green Vetiver",
         topNotes: "Bergamot Grapefruit, Fresh Juniper & Sea, Alpine Cheer",
         middleNotes: "Egomaniacal Green, Birch Tree & Fig, Rainforest Hibiscus",
         baseNotes: "Cedar & Aged Oak, Barnwood, Salted Amber, Aurora Dawn",
