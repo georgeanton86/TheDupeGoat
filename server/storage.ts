@@ -51,7 +51,7 @@ export class MemStorage implements IStorage {
         topNotes: "Bergamot Grapefruit, Rainforest Hibiscus, Birch Tree & Fig",
         middleNotes: "Smoky Pineapple Accord, Alpine Cheer, Bergamot Tobacco",
         baseNotes: "Cedar & Aged Oak, Salted Amber, Smoked Cardamom, Aurora Dawn",
-        imageUrl: "/assets/generated_images/Badass_Equus_Albus_bottle_bde8545f.png",
+        imageUrl: "/assets/file_00000000a04071f5b21d7e763cb4b1fc_1764980262870.png",
         bibleVerse: "I looked, and behold, a white horse! And its rider had a bow, and a crown was given to him",
         verseReference: "Revelation 6:1–2",
       },
