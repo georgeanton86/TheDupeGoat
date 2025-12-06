@@ -73,7 +73,7 @@ export class MemStorage implements IStorage {
         topNotes: "Sea Salt & Orchid, Birch Tree & Fig, Cashmere Plum",
         middleNotes: "Ruby Red, Cedar & Aged Oak, French Vanilla",
         baseNotes: "Salted Amber, Aurora Dawn",
-        imageUrl: "/assets/generated_images/Fames_luxury_bottle_fd04fa9c.png",
+        imageUrl: "/assets/file_00000000bfb0720cb4f9047931f5738d_1764984215951.png",
         bibleVerse: "I looked, and behold, a black horse! And its rider had a pair of scales in his hand",
         verseReference: "Revelation 6:5–6",
       },
