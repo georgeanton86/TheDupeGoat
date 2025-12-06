@@ -84,7 +84,7 @@ export class MemStorage implements IStorage {
         topNotes: "Smoked Cardamom, Midsummer Night",
         middleNotes: "Dark Rose Oud, Suede & Sumac Leaves, Cedar & Aged Oak",
         baseNotes: "Barnwood, Salted Amber, Boot Strap & Whiskey",
-        imageUrl: "/assets/generated_images/Mortem_luxury_bottle_f077a9fa.png",
+        imageUrl: "/assets/file_000000007fcc720cb4eb90ab90afb7c3_1764984190338.png",
         bibleVerse: "I looked, and behold, a pale horse! And its rider's name was Death",
         verseReference: "Revelation 6:7–8",
       },
