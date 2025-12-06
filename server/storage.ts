@@ -62,7 +62,7 @@ export class MemStorage implements IStorage {
         topNotes: "Bergamot Grapefruit, Storm Watch, Egomaniacal Green",
         middleNotes: "Mountain Spring, Rainforest Hibiscus, Dark Rose Oud",
         baseNotes: "Cedar & Aged Oak, Salted Amber, Ruby Red, Aurora Dawn",
-        imageUrl: "/assets/generated_images/Pax_Obscura_luxury_bottle_c6928f90.png",
+        imageUrl: "/assets/file_00000000a484720ca189ff9971c50b75_1764982101085.png",
         bibleVerse: "Out came another horse, bright red. Its rider was permitted to take peace from the earth",
         verseReference: "Revelation 6:3–4",
       },
