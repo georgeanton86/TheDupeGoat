@@ -95,7 +95,7 @@ export class MemStorage implements IStorage {
         topNotes: "Italian Neroli, Bergamot Grapefruit, Fresh Juniper & Sea",
         middleNotes: "White Tea & Ginger, Sea Salt & Orchid, Rainforest Hibiscus, Mountain Spring",
         baseNotes: "Cedar & Aged Oak, Salted Amber",
-        imageUrl: "/assets/generated_images/Vox_Caeli_luxury_bottle_6b8efdf7.png",
+        imageUrl: "/assets/file_00000000909471fd97064b4e9d17083f_1764984976100.png",
         bibleVerse: "I saw under the altar the souls of those who had been slain for the word of God",
         verseReference: "Revelation 6:9–11",
       },
