@@ -22,7 +22,7 @@ export default function Policy() {
                 <div>
                   <h3 className="font-semibold text-luxury-black mb-2 text-lg">OVERVIEW</h3>
                   <p className="leading-relaxed">
-                    Due to health, safety, and hygiene regulations governing cosmetic and fragrance products, RVLTN Parfums operates under a strict <strong>NO RETURN, NO REFUND</strong> policy for all purchases.
+                    Due to health, safety, and hygiene regulations governing cosmetic and fragrance products, Chicago Exclusif Parfums, including its RVLTN collection, operates under a strict <strong>NO RETURN, NO REFUND</strong> policy for purchases.
                   </p>
                 </div>
                 
@@ -111,8 +111,6 @@ export default function Policy() {
                   </p>
                   <ul className="mt-2 space-y-1">
                     <li>Email: info@rvltnparfums.com</li>
-                    <li>Phone: 1-800-RVLTN-99</li>
-                    <li>Address: RVLTN Parfums, 123 Luxury Lane, New York, NY 10001</li>
                   </ul>
                 </div>
               </div>

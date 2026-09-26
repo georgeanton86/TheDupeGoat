@@ -3,6 +3,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Link } from "wouter";
 import type { Product } from "@shared/schema";
+import { ArrowUpRight } from "lucide-react";
 import equusAlbusImage from "@assets/generated_images/Badass_Equus_Albus_bottle_bde8545f.png";
 import paxObscuraImage from "@assets/generated_images/Pax_Obscura_luxury_bottle_c6928f90.png";
 import famesImage from "@assets/generated_images/Fames_luxury_bottle_fd04fa9c.png";
@@ -12,125 +13,65 @@ import terraTremorImage from "@assets/generated_images/Terra_Tremor_luxury_bottl
 import sabbatumImage from "@assets/generated_images/Sabbatum_luxury_bottle_b96d831e.png";
 import luxAeternaImage from "@assets/generated_images/Lux_Aeterna_luxury_bottle_d2b6357e.png";
 
+const chicagoBottle: Record<string, string> = {
+  "PLAYER ONE": "/chicago/player-one.jpg",
+  "PLAY AGAIN?": "/chicago/play-again.jpg",
+  "HALF LIFE": "/chicago/half-life.jpg",
+};
+const rvltnBottle: Record<string, string> = {
+  "EQUUS ALBUS": equusAlbusImage, "PAX OBSCURA": paxObscuraImage, FAMES: famesImage,
+  MORTEM: mortemImage, "VOX CAELI": voxCaeliImage, "TERRA TREMOR": terraTremorImage,
+  SABBATUM: sabbatumImage, "LUX AETERNA": luxAeternaImage,
+};
+
 export default function ProductGallery() {
-  const { data: products, isLoading } = useQuery<Product[]>({
-    queryKey: ["/api/products"],
-  });
+  const { data: products, isLoading, isError, refetch } = useQuery<Product[]>({ queryKey: ["/api/products"] });
+  const active = products?.filter((product) => product.isActive) ?? [];
+  const gamers = active.filter((product) => Boolean(chicagoBottle[product.name.toUpperCase()]));
+  const seals = active.filter((product) => !chicagoBottle[product.name.toUpperCase()]);
 
-  if (isLoading) {
-    return (
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
-        <div className="text-center mb-16">
-          <h2 className="text-4xl font-serif font-bold text-luxury-black mb-4">Our Collections</h2>
-          <div className="animate-pulse grid md:grid-cols-2 gap-8">
-            <div className="h-96 bg-gray-200 rounded-2xl"></div>
-            <div className="h-96 bg-gray-200 rounded-2xl"></div>
-          </div>
-        </div>
-      </div>
-    );
-  }
-
-  // Helper function to select the correct bottle image based on product name
-  const getBottleImage = (productName: string) => {
-    switch (productName) {
-      case "EQUUS ALBUS": return equusAlbusImage;
-      case "PAX OBSCURA": return paxObscuraImage;
-      case "FAMES": return famesImage;
-      case "MORTEM": return mortemImage;
-      case "VOX CAELI": return voxCaeliImage;
-      case "TERRA TREMOR": return terraTremorImage;
-      case "SABBATUM": return sabbatumImage;
-      case "LUX AETERNA": return luxAeternaImage;
-      default: return equusAlbusImage;
-    }
-  };
+  if (isLoading) return <section className="mx-auto max-w-7xl px-5 py-20 sm:px-8" aria-label="Loading collections"><div className="h-8 w-56 animate-pulse bg-[#d8b76a]/15" /><div className="mt-8 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">{[0,1,2].map((n) => <div key={n} className="h-80 animate-pulse bg-white/5" />)}</div></section>;
+  if (isError) return <section className="mx-auto max-w-7xl px-5 py-20 text-center text-[#f3ead8]"><p>Collections could not be loaded just now.</p><Button onClick={() => refetch()} variant="outline" className="mt-4 border-[#d8b76a]/50">Try again</Button></section>;
 
   return (
-    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
-      <div className="text-center mb-16">
-        <h2 className="text-4xl font-serif font-bold text-amber-600 mb-4">Our Collections</h2>
-        <p className="text-amber-600/80 max-w-2xl mx-auto">
-          Discover our exclusive fragrances - from sold-out successes to upcoming pre-orders
-        </p>
+    <section className="mx-auto max-w-7xl px-5 py-20 sm:px-8">
+      <div className="mb-12 flex flex-col justify-between gap-5 border-b border-[#d8b76a]/25 pb-8 md:flex-row md:items-end">
+        <div><p className="text-[10px] font-semibold uppercase tracking-[0.3em] text-[#d8b76a]">Two worlds, one house</p><h2 className="mt-3 font-serif text-4xl text-[#f3ead8] sm:text-5xl">Find your own atmosphere.</h2></div>
+        <Link href="/shop" className="inline-flex items-center gap-2 text-sm text-[#d8b76a] hover:text-[#f3ead8]">Explore every scent <ArrowUpRight className="h-4 w-4" /></Link>
       </div>
 
-      <div className="grid md:grid-cols-2 gap-12">
-        {products?.map((product: any) => {
-          const isPreOrder = new Date(product.releaseDate) > new Date();
-          
-          return (
-            <div key={product.id} className="group">
-              <div className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-luxury-black via-charcoal to-luxury-black flex items-center justify-center p-8">
-                <img 
-                  src={getBottleImage(product.name)}
-                  alt={`${product.name} - RVLTN Parfums`}
-                  className="w-full h-80 object-contain group-hover:scale-105 transition-transform duration-500"
-                />
-                
-                {/* Status Badge */}
-                <Badge className={`absolute top-4 right-4 ${
-                  isPreOrder 
-                    ? "bg-champagne text-luxury-black" 
-                    : "bg-champagne text-luxury-black"
-                }`}>
-                  {isPreOrder ? "PRE-ORDER" : "AVAILABLE"}
-                </Badge>
-              </div>
-              
-              <div className="mt-6 text-center">
-                <h3 className="text-2xl font-serif font-bold text-amber-600 mb-1">
-                  {product.name}
-                </h3>
-                <p className="text-sm text-amber-600/70 font-medium mb-3">
-                  {product.verseReference.replace('Revelation', 'REV').replace('–', '-')}
-                </p>
-                <p className="text-amber-600/80 mb-4 text-sm">
-                  {product.description}
-                </p>
-                
-                <div className="mb-4">
-                  <span className="text-2xl font-bold text-amber-600">
-                    From $28
-                  </span>
-                  <div className="text-xs text-amber-600/70 mt-1">
-                    Multiple sizes & concentrations available
-                  </div>
-                </div>
-
-                {isPreOrder ? (
-                  <div className="space-y-3">
-                    <Link href="/shop">
-                      <Button className="w-full bg-champagne text-luxury-black hover:bg-yellow-500">
-                        🌟 Pre-Order Now
-                      </Button>
-                    </Link>
-                    <p className="text-xs text-gray-600">
-                      Release Date: TBA
-                    </p>
-                  </div>
-                ) : (
-                  <Link href="/shop">
-                    <Button className="w-full bg-luxury-black text-white hover:bg-charcoal">
-                      Shop Now
-                    </Button>
-                  </Link>
-                )}
-              </div>
+      {gamers.length > 0 && <div className="mb-16">
+        <div className="mb-6 flex flex-wrap items-end justify-between gap-3">
+          <div><p className="text-[10px] uppercase tracking-[0.25em] text-[#d8b76a]">Chicago Exclusif Parfums</p><h3 className="mt-2 font-serif text-3xl text-[#f3ead8]">The Gaming Collection</h3></div>
+          <Badge className="border border-[#cf3e68]/50 bg-[#cf3e68]/10 text-[#ff8ba8]">Bottle previews · not for sale</Badge>
+        </div>
+        <div className="grid gap-5 md:grid-cols-3">
+          {gamers.map((product, index) => <article key={product.id} className="group overflow-hidden border border-white/10 bg-[#171a16] transition-transform duration-500 hover:-translate-y-1" style={{ animationDelay: `${index * 90}ms` }}>
+            <div className="relative flex h-[310px] items-center justify-center overflow-hidden bg-[#232722] p-5">
+              <div className="absolute inset-0 opacity-40" style={{ background: "radial-gradient(ellipse at 50% 55%, rgba(61,113,121,.4), transparent 65%)" }} />
+              <img src={chicagoBottle[product.name.toUpperCase()]} alt={`${product.name} real bottle photo`} loading="lazy" className="relative h-full w-full object-contain transition-transform duration-500 group-hover:scale-[1.04]" />
+              <span className="absolute left-4 top-4 border border-[#cf3e68]/55 bg-[#171a16]/85 px-3 py-1 text-[9px] font-semibold uppercase tracking-[0.2em] text-[#ff91ad]">Preview only</span>
             </div>
-          );
-        })}
-      </div>
-      
-      {/* Product Disclaimer */}
-      <div className="mt-16 text-center bg-amber-50 border border-amber-200 rounded-lg p-6 max-w-3xl mx-auto">
-        <p className="text-sm text-amber-900 font-medium mb-2">
-          ⚠️ Product Image Disclaimer
-        </p>
-        <p className="text-xs text-amber-800 leading-relaxed">
-          *Product images shown are AI-generated concept renderings for illustration purposes only. Actual bottle designs, colors, shapes, and packaging will vary from images shown. Each fragrance is handcrafted and bottled individually. Final product appearance is subject to change.
-        </p>
-      </div>
-    </div>
+            <div className="p-5"><h4 className="font-serif text-2xl text-[#f3ead8]">{product.name}</h4><p className="mt-2 line-clamp-2 text-sm leading-6 text-[#f3ead8]/60">{product.description}</p>
+              <Link href="/shop" className="mt-5 inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.16em] text-[#d8b76a]">See collection details <ArrowUpRight className="h-4 w-4" /></Link>
+            </div>
+          </article>)}
+        </div>
+      </div>}
+
+      {seals.length > 0 && <div>
+        <div className="mb-6 flex flex-wrap items-end justify-between gap-3">
+          <div><p className="text-[10px] uppercase tracking-[0.25em] text-[#d8b76a]">An independent collection</p><h3 className="mt-2 font-serif text-3xl text-[#f3ead8]">RVLTN · The Seven Seals</h3></div>
+          <p className="max-w-md text-sm leading-6 text-[#f3ead8]/55">A spiritual fragrance collection inspired by Revelation. Shop available sizes and concentrations.</p>
+        </div>
+        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+          {seals.map((product) => <article key={product.id} className="group border border-[#d8b76a]/15 bg-[#171a16] p-4 transition-colors hover:border-[#d8b76a]/50">
+            <div className="flex h-56 items-center justify-center bg-[#20231f] p-4"><img src={rvltnBottle[product.name.toUpperCase()] || product.imageUrl} alt={`${product.name} RVLTN bottle`} loading="lazy" className="h-full w-full object-contain transition-transform duration-500 group-hover:scale-[1.04]" /></div>
+            <p className="mt-4 text-[9px] uppercase tracking-[0.2em] text-[#d8b76a]">Seven Seals collection</p><h4 className="mt-1 font-serif text-xl text-[#f3ead8]">{product.name}</h4>
+          </article>)}
+        </div>
+      </div>}
+      {active.length === 0 && <div className="border border-[#d8b76a]/20 px-6 py-12 text-center text-[#f3ead8]/70">Our collections are being refreshed. Please check back soon.</div>}
+    </section>
   );
 }

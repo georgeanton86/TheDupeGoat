@@ -134,7 +134,7 @@ export class MemStorage implements IStorage {
       }
     ];
 
-    // Create each fragrance product
+    // Create the original RVLTN fragrances and their purchasable variants.
     fragrances.forEach((fragrance, index) => {
       const productId = randomUUID();
       const product: Product = {
@@ -190,6 +190,50 @@ export class MemStorage implements IStorage {
         this.productVariants.set(variantId, variant);
       });
     });
+
+    // Chicago Exclusif's photographed bottles are previews until pricing,
+    // fulfillment options and inventory are confirmed. No variants means
+    // these products cannot enter the existing checkout.
+    const chicagoPreviews = [
+      {
+        name: "PLAYER ONE",
+        description: "Fresh meets dark. A gaming-inspired fragrance from Chicago Exclusif Parfums.",
+        notes: "Fresh meets dark",
+        imageUrl: "/chicago/player-one.jpg",
+      },
+      {
+        name: "PLAY AGAIN?",
+        description: "Same game, different level. A gaming-inspired fragrance from Chicago Exclusif Parfums.",
+        notes: "Same game, different level",
+        imageUrl: "/chicago/play-again.jpg",
+      },
+      {
+        name: "HALF LIFE",
+        description: "A fragrance after dark from Chicago Exclusif Parfums.",
+        notes: "A fragrance after dark",
+        imageUrl: "/chicago/half-life.jpg",
+      },
+    ];
+
+    for (const preview of chicagoPreviews) {
+      const id = randomUUID();
+      this.products.set(id, {
+        id,
+        name: preview.name,
+        description: preview.description,
+        notes: preview.notes,
+        topNotes: "To be confirmed",
+        middleNotes: "To be confirmed",
+        baseNotes: "To be confirmed",
+        type: "Fragrance preview",
+        imageUrl: preview.imageUrl,
+        bibleVerse: "",
+        verseReference: "",
+        isActive: true,
+        releaseDate: new Date(),
+        createdAt: new Date(),
+      });
+    }
   }
 
   async getUser(id: string): Promise<User | undefined> {

@@ -1,6 +1,10 @@
 # Overview
 
-This is a luxury perfume e-commerce application called "RVLTN PARFUMS" that focuses on selling "The Seven Seals Collection" - exclusive, limited-edition apocalyptic fragrances inspired by Revelation 6-8. The application features 8 fragrances (all unisex), with Latin names, Revelation verses, premium brand experience with dark gradient backgrounds and brass/amber text, shopping cart with promo codes, and a strict no-returns policy.
+This is a perfume storefront for Chicago Exclusif Parfums, the parent fragrance house. RVLTN Parfums remains a distinct collection under that house, selling eight Seven Seals fragrances inspired by Revelation. Three Chicago Exclusif gaming fragrances (Player One, Play Again?, Half Life) are shown with real bottle photos as previews only; they have no prices or variants and cannot be purchased yet. The existing RVLTN shopping cart, promo codes, and checkout remain available.
+
+## Visual Direction
+
+The user wants Chicago Exclusif to feel bold and cinematic, with a Chicago-at-night noir atmosphere reminiscent of Gotham's mood rather than its copyrighted characters or marks. Ground the design in recognizable Chicago architecture, skyline and street-level energy; use dramatic lighting, shadow, refined gold, and restrained electric accents for the gaming fragrances. Keep the actual photographed bottles recognizable. RVLTN stays a distinct collection within the same house.
 
 ## Product Catalog - The Seven Seals Collection (8 Fragrances)
 

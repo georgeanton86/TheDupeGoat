@@ -2,9 +2,8 @@ import { Link, useLocation } from "wouter";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { Badge } from "@/components/ui/badge";
-import { ShoppingCart } from "lucide-react";
+import { Menu, ShoppingBag } from "lucide-react";
 import { useState } from "react";
-import brandLogo from "@assets/file_00000000c5c4622f8f60554b7297e0f4_1760480858957.png";
 
 interface HeaderProps {
   cartCount?: number;
@@ -14,126 +13,63 @@ interface HeaderProps {
 export default function Header({ cartCount = 0, onCartClick }: HeaderProps = {}) {
   const [location] = useLocation();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-
-  const scrollToSection = (sectionId: string) => {
+  const scrollToSection = (id: string) => {
     setMobileMenuOpen(false);
     if (location !== "/") {
-      window.location.href = `/#${sectionId}`;
+      window.location.href = `/#${id}`;
       return;
     }
-    
-    const element = document.getElementById(sectionId);
-    if (element) {
-      element.scrollIntoView({ behavior: 'smooth' });
-    }
+    document.getElementById(id)?.scrollIntoView({ behavior: "smooth" });
   };
-
-  const closeMobileMenu = () => {
-    setMobileMenuOpen(false);
-  };
+  const navClass = "text-xs font-semibold uppercase tracking-[0.16em] text-[#f3ead8]/75 transition-colors hover:text-[#d8b76a]";
 
   return (
-    <header className="fixed top-0 left-0 right-0 z-50 bg-luxury-black/95 backdrop-blur-sm border-b border-champagne/20">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex items-center justify-between h-20">
-          <Link href="/" className="flex items-center gap-3" data-testid="link-home">
-            <img src={brandLogo} alt="RVLTN PARFUMS" className="h-14 w-14 object-contain" />
-            <div className="flex flex-col">
-              <h1 className="text-2xl font-serif font-bold text-champagne tracking-wide">RVLTN</h1>
-              <span className="text-xs font-light text-champagne/70 tracking-widest">PARFUMS</span>
+    <header className="fixed inset-x-0 top-0 z-50 border-b border-[#d8b76a]/20 bg-[#111310]/95 text-[#f3ead8] backdrop-blur-xl">
+      <div className="mx-auto flex h-[76px] max-w-7xl items-center justify-between px-5 sm:px-8">
+        <Link href="/" className="group flex items-center gap-3" aria-label="Chicago Exclusif Parfums home">
+          <span className="flex h-10 w-10 items-center justify-center border border-[#d8b76a]/70 text-[10px] font-semibold tracking-[0.18em] text-[#d8b76a] transition-transform group-hover:rotate-[-6deg]">CE</span>
+          <span className="leading-none">
+            <span className="block font-serif text-[17px] tracking-[0.04em] sm:text-[19px]">CHICAGO EXCLUSIF</span>
+            <span className="mt-1 block text-[9px] tracking-[0.34em] text-[#d8b76a]">PARFUMS · CHICAGO</span>
+          </span>
+        </Link>
+
+        <nav className="hidden items-center gap-8 md:flex" aria-label="Main navigation">
+          <Link href="/shop" className={navClass}>Collections</Link>
+          <button onClick={() => scrollToSection("about")} className={navClass}>Our House</button>
+          <Link href="/policy" className={navClass}>Policies</Link>
+          {onCartClick ? (
+            <Button onClick={onCartClick} size="sm" aria-label={`Open cart, ${cartCount} items`} className="relative bg-[#d8b76a] text-[#151713] hover:bg-[#e7cc8e]">
+              <ShoppingBag className="mr-2 h-4 w-4" /> Bag
+              {cartCount > 0 && <Badge className="absolute -right-2 -top-2 border-[#111310] bg-[#cf3e68] px-1.5 text-white">{cartCount}</Badge>}
+            </Button>
+          ) : (
+            <Link href="/shop" className="relative inline-flex items-center gap-2 bg-[#d8b76a] px-4 py-2 text-sm font-semibold text-[#151713] hover:bg-[#e7cc8e]">
+              <ShoppingBag className="h-4 w-4" /> Shop
+              {cartCount > 0 && <Badge className="absolute -right-2 -top-2 border-[#111310] bg-[#cf3e68] px-1.5 text-white">{cartCount}</Badge>}
+            </Link>
+          )}
+        </nav>
+
+        <Sheet open={mobileMenuOpen} onOpenChange={setMobileMenuOpen}>
+          <SheetTrigger asChild>
+            <Button variant="outline" size="icon" className="border-[#d8b76a]/30 bg-transparent text-[#f3ead8] md:hidden" aria-label="Open navigation">
+              <Menu className="h-5 w-5" />
+            </Button>
+          </SheetTrigger>
+          <SheetContent className="border-[#d8b76a]/20 bg-[#111310] text-[#f3ead8]">
+            <div className="mb-9 mt-8 border-b border-[#d8b76a]/20 pb-5">
+              <p className="font-serif text-xl">Chicago Exclusif</p>
+              <p className="mt-1 text-[10px] tracking-[0.3em] text-[#d8b76a]">PARFUMS</p>
             </div>
-          </Link>
-          
-          <nav className="hidden md:flex items-center space-x-8">
-            <Link 
-              href="/shop" 
-              className="text-sm font-semibold text-white hover:text-champagne transition-colors uppercase tracking-wide"
-              data-testid="link-shop"
-            >
-              Collection
-            </Link>
-            <button 
-              onClick={() => scrollToSection('about')} 
-              className="text-sm font-semibold text-white hover:text-champagne transition-colors uppercase tracking-wide"
-              data-testid="button-nav-about"
-            >
-              Our Story
-            </button>
-            <Link 
-              href="/policy" 
-              className="text-sm font-semibold text-white hover:text-champagne transition-colors uppercase tracking-wide"
-              data-testid="link-policy"
-            >
-              Policy
-            </Link>
-            {onCartClick ? (
-              <Button 
-                size="sm" 
-                className="ml-4 bg-champagne text-luxury-black hover:bg-champagne/90 font-semibold relative"
-                onClick={onCartClick}
-                data-testid="button-cart-header"
-              >
-                <ShoppingCart className="w-5 h-5" />
-                {cartCount > 0 && (
-                  <Badge className="absolute -top-2 -right-2 bg-red-600 text-white border-2 border-luxury-black px-1.5 min-w-[20px] h-5">
-                    {cartCount}
-                  </Badge>
-                )}
-              </Button>
-            ) : (
-              <Link href="/shop" data-testid="link-cart">
-                <Button size="sm" className="ml-4 bg-champagne text-luxury-black hover:bg-champagne/90 font-semibold relative">
-                  <ShoppingCart className="w-5 h-5" />
-                  {cartCount > 0 && (
-                    <Badge className="absolute -top-2 -right-2 bg-red-600 text-white border-2 border-luxury-black px-1.5 min-w-[20px] h-5">
-                      {cartCount}
-                    </Badge>
-                  )}
-                </Button>
-              </Link>
-            )}
-          </nav>
-          
-          {/* Mobile Menu */}
-          <Sheet open={mobileMenuOpen} onOpenChange={setMobileMenuOpen}>
-            <SheetTrigger asChild>
-              <Button variant="ghost" size="icon" className="md:hidden" data-testid="button-mobile-menu">
-                <i className="fas fa-bars text-champagne"></i>
-              </Button>
-            </SheetTrigger>
-            <SheetContent className="bg-luxury-black border-champagne/20">
-              <div className="flex items-center gap-3 mb-8">
-                <img src={brandLogo} alt="RVLTN PARFUMS" className="h-12 w-12 object-contain" />
-                <div className="flex flex-col">
-                  <h2 className="text-xl font-serif font-bold text-champagne">RVLTN</h2>
-                  <span className="text-xs font-light text-champagne/70 tracking-widest">PARFUMS</span>
-                </div>
-              </div>
-              <nav className="flex flex-col space-y-4">
-                <Link 
-                  href="/shop"
-                  onClick={closeMobileMenu}
-                  className="text-sm font-semibold text-white hover:text-champagne transition-colors uppercase tracking-wide"
-                >
-                  Collection
-                </Link>
-                <button 
-                  onClick={() => scrollToSection('about')} 
-                  className="text-sm font-semibold text-white hover:text-champagne transition-colors text-left uppercase tracking-wide"
-                >
-                  Our Story
-                </button>
-                <Link 
-                  href="/policy"
-                  onClick={closeMobileMenu}
-                  className="text-sm font-semibold text-white hover:text-champagne transition-colors uppercase tracking-wide"
-                >
-                  Policy
-                </Link>
-              </nav>
-            </SheetContent>
-          </Sheet>
-        </div>
+            <nav className="flex flex-col gap-6">
+              <Link href="/shop" onClick={() => setMobileMenuOpen(false)} className={navClass}>Explore collections</Link>
+              <button onClick={() => scrollToSection("about")} className={`${navClass} text-left`}>Our house</button>
+              <Link href="/policy" onClick={() => setMobileMenuOpen(false)} className={navClass}>Policies</Link>
+              {onCartClick && <button onClick={() => { setMobileMenuOpen(false); onCartClick(); }} className={`${navClass} text-left`}>Shopping bag ({cartCount})</button>}
+            </nav>
+          </SheetContent>
+        </Sheet>
       </div>
     </header>
   );

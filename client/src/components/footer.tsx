@@ -1,94 +1,45 @@
 import { Link, useLocation } from "wouter";
+import { ArrowUpRight } from "lucide-react";
 
 export default function Footer() {
-  const [location, setLocation] = useLocation();
-
-  const scrollToAbout = (e: React.MouseEvent<HTMLAnchorElement>) => {
-    e.preventDefault();
+  const [location] = useLocation();
+  const scrollTo = (id: string) => {
     if (location !== "/") {
-      window.location.href = "/#about";
+      window.location.href = `/#${id}`;
       return;
     }
-    const element = document.getElementById("about");
-    if (element) {
-      element.scrollIntoView({ behavior: "smooth" });
-    }
+    document.getElementById(id)?.scrollIntoView({ behavior: "smooth" });
   };
-
-  const scrollToFAQ = (e: React.MouseEvent<HTMLAnchorElement>) => {
-    e.preventDefault();
-    if (location !== "/") {
-      window.location.href = "/#faq";
-      return;
-    }
-    const element = document.getElementById("faq");
-    if (element) {
-      element.scrollIntoView({ behavior: "smooth" });
-    }
-  };
-
   return (
-    <footer className="bg-luxury-black text-white py-16">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="grid md:grid-cols-4 gap-12 mb-12">
-          <div className="md:col-span-2">
-            <h4 className="text-2xl font-serif font-bold mb-4">RVLTN PARFUMS</h4>
-            <p className="text-gray-300 leading-relaxed mb-6">
-              Revolutionizing luxury fragrance through artisan craftsmanship and uncompromising exclusivity.
-            </p>
-            <div className="flex space-x-4">
-              <a 
-                href="#" 
-                className="w-10 h-10 bg-white/10 rounded-full flex items-center justify-center hover:bg-champagne transition-colors"
-                data-testid="link-instagram"
-              >
-                <i className="fab fa-instagram"></i>
-              </a>
-              <a 
-                href="#" 
-                className="w-10 h-10 bg-white/10 rounded-full flex items-center justify-center hover:bg-champagne transition-colors"
-                data-testid="link-twitter"
-              >
-                <i className="fab fa-twitter"></i>
-              </a>
-              <a 
-                href="#" 
-                className="w-10 h-10 bg-white/10 rounded-full flex items-center justify-center hover:bg-champagne transition-colors"
-                data-testid="link-facebook"
-              >
-                <i className="fab fa-facebook"></i>
-              </a>
-            </div>
-          </div>
-          
-          <div>
-            <h5 className="font-semibold mb-4">Quick Links</h5>
-            <ul className="space-y-2 text-gray-300">
-              <li><Link href="/" className="hover:text-champagne transition-colors">Home</Link></li>
-              <li><a href="/#about" onClick={scrollToAbout} className="hover:text-champagne transition-colors cursor-pointer">Our Story</a></li>
-              <li><Link href="/shop" className="hover:text-champagne transition-colors">Shop</Link></li>
-              <li><a href="mailto:info@rvltnparfums.com" className="hover:text-champagne transition-colors">Contact</a></li>
-            </ul>
-          </div>
-          
-          <div>
-            <h5 className="font-semibold mb-4">Support</h5>
-            <ul className="space-y-2 text-gray-300">
-              <li><a href="/#faq" onClick={scrollToFAQ} className="hover:text-champagne transition-colors cursor-pointer" data-testid="link-faq-support">FAQ</a></li>
-              <li><Link href="/policy" className="hover:text-champagne transition-colors cursor-pointer" data-testid="link-policy-support">Return Policy</Link></li>
-              <li><a href="mailto:info@rvltnparfums.com" className="hover:text-champagne transition-colors">Contact Us</a></li>
-              <li><Link href="/shop" className="hover:text-champagne transition-colors cursor-pointer">Shop Collection</Link></li>
-            </ul>
-          </div>
+    <footer className="border-t border-[#d8b76a]/20 bg-[#111310] text-[#f3ead8]">
+      <div className="mx-auto grid max-w-7xl gap-12 px-5 py-14 sm:px-8 md:grid-cols-[1.4fr_1fr_1fr]">
+        <div>
+          <p className="font-serif text-2xl tracking-wide">Chicago Exclusif</p>
+          <p className="mt-1 text-[10px] tracking-[0.32em] text-[#d8b76a]">PARFUMS · AN ORIGINAL CHICAGO HOUSE</p>
+          <p className="mt-5 max-w-sm text-sm leading-6 text-[#f3ead8]/65">Two distinct worlds, one independent fragrance house: the spirited Chicago originals and RVLTN’s Seven Seals collection.</p>
+          <a href="mailto:info@rvltnparfums.com" className="mt-5 inline-flex items-center gap-2 text-sm text-[#d8b76a] hover:text-[#f3ead8]">Contact the house <ArrowUpRight className="h-4 w-4" /></a>
         </div>
-        
-        <div className="border-t border-white/10 pt-8 flex flex-col md:flex-row justify-between items-center">
-          <p className="text-gray-400 text-sm">© 2024 RVLTN Parfums. All rights reserved.</p>
-          <div className="flex space-x-6 mt-4 md:mt-0">
-            <Link href="/policy" className="text-gray-400 hover:text-champagne text-sm transition-colors cursor-pointer" data-testid="link-policy-bottom">Terms & Conditions</Link>
-            <a href="/#faq" onClick={scrollToFAQ} className="text-gray-400 hover:text-champagne text-sm transition-colors cursor-pointer" data-testid="link-faq-bottom">FAQ</a>
-            <a href="mailto:info@rvltnparfums.com" className="text-gray-400 hover:text-champagne text-sm transition-colors">Contact</a>
-          </div>
+        <div>
+          <h2 className="text-xs font-semibold uppercase tracking-[0.2em] text-[#d8b76a]">Explore</h2>
+          <ul className="mt-5 space-y-3 text-sm text-[#f3ead8]/70">
+            <li><Link href="/" className="hover:text-[#d8b76a]">Home</Link></li>
+            <li><Link href="/shop" className="hover:text-[#d8b76a]">All collections</Link></li>
+            <li><button onClick={() => scrollTo("about")} className="hover:text-[#d8b76a]">Our house</button></li>
+            <li><button onClick={() => scrollTo("faq")} className="hover:text-[#d8b76a]">Frequently asked questions</button></li>
+          </ul>
+        </div>
+        <div>
+          <h2 className="text-xs font-semibold uppercase tracking-[0.2em] text-[#d8b76a]">Customer care</h2>
+          <ul className="mt-5 space-y-3 text-sm text-[#f3ead8]/70">
+            <li><Link href="/policy" className="hover:text-[#d8b76a]">Terms &amp; return policy</Link></li>
+            <li><a href="mailto:info@rvltnparfums.com" className="hover:text-[#d8b76a]">Email support</a></li>
+          </ul>
+        </div>
+      </div>
+      <div className="border-t border-white/10">
+        <div className="mx-auto flex max-w-7xl flex-col gap-3 px-5 py-5 text-xs text-[#f3ead8]/45 sm:px-8 md:flex-row md:items-center md:justify-between">
+          <p>© {new Date().getFullYear()} Chicago Exclusif Parfums. All rights reserved.</p>
+          <p>Chicago, Illinois</p>
         </div>
       </div>
     </footer>

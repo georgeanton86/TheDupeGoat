@@ -17,7 +17,7 @@ export default function FAQ() {
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-12">
             <h1 className="text-4xl font-serif font-bold text-champagne mb-4">Frequently Asked Questions</h1>
-            <p className="text-lg text-white/80">Everything you need to know about RVLTN Parfums</p>
+            <p className="text-lg text-white/80">Everything you need to know about Chicago Exclusif Parfums and RVLTN</p>
           </div>
           
           <Card className="bg-white/5 backdrop-blur-sm border-champagne/20">
@@ -64,7 +64,7 @@ export default function FAQ() {
                     Do you offer free shipping?
                   </AccordionTrigger>
                   <AccordionContent className="text-white/80">
-                    Yes! Orders over $100 qualify for free shipping nationwide. Since each bottle is $119, any single fragrance purchase includes complimentary delivery.
+                    Yes! Orders over $100 qualify for free shipping nationwide. Prices vary by size and concentration; see the shop for current options.
                   </AccordionContent>
                 </AccordionItem>
 
@@ -112,8 +112,6 @@ export default function FAQ() {
                     For questions, concerns, or support:
                     <ul className="mt-2 space-y-1">
                       <li>Email: info@rvltnparfums.com</li>
-                      <li>Phone: 1-800-RVLTN-99</li>
-                      <li>We respond within 24-48 hours</li>
                     </ul>
                   </AccordionContent>
                 </AccordionItem>
@@ -123,7 +121,7 @@ export default function FAQ() {
                     Are all 8 fragrances available now?
                   </AccordionTrigger>
                   <AccordionContent className="text-white/80">
-                    Yes! All 8 fragrances in The Seven Seals Collection are available for immediate purchase. Due to our small batch production, availability is limited - each batch contains no more than 100 bottles.
+                    The eight RVLTN Seven Seals fragrances have purchase options in the shop. Player One, Play Again?, and Half Life are Chicago Exclusif bottle previews and are not yet for sale.
                   </AccordionContent>
                 </AccordionItem>
 
