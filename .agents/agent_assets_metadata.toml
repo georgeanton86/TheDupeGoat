@@ -1,0 +1,24 @@
+uploads = []
+generated = []
+
+[[outputs]]
+id = "I9tZ0qB__Untke_3NZ4gX"
+uri = "file://attached_assets/generated_audio/rvltn-parfums-score.mp3"
+type = "audio"
+title = "luxury fragrance film score"
+description = "Generated music: Original instrumental luxury fragrance commercial score: restrained atmospheric piano notes, warm sustained strings, subtle cinematic pulse and a soft elegant crescendo. Polished, in…"
+logical_id = "bfababfa-ae7d-41d8-958c-cd83385f77ee"
+
+[[outputs]]
+id = "cjah2ws-wGz5NK6Oh41P9"
+uri = "file://attached_assets/generated_videos/RVLTN_Parfums_animated_promo.mp4"
+type = "video"
+title = "RVLTN Parfums — Animated Promo"
+description = "12-second widescreen 720p video featuring Equus Albus, the Seven Seals Collection, and original instrumental music."
+logical_id = "e4795286-426f-44ec-9b3d-05c6f0fb68cc"
+content_hash = "sha256:f87480f9db381bdf23db6049c7a7a210602c1ef7763d02b063f8cee0ea20955a"
+size = 5971105
+mtime_ms = 1790443617580
+storage_uri = "gcs://replit-rams-assets-spock/rams/assets/repl:a0b66204-d128-4455-bac5-81b2f9545d58/e4795286-426f-44ec-9b3d-05c6f0fb68cc/1dd6a9ae-6690-4851-9853-8c2109b71870"
+storage_version_token = "1790443636021078"
+content_type = "video/mp4"
