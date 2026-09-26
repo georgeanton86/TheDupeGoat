@@ -1,5 +1,5 @@
 import { sql } from "drizzle-orm";
-import { pgTable, text, varchar, integer, decimal, timestamp, boolean } from "drizzle-orm/pg-core";
+import { pgTable, text, varchar, integer, decimal, timestamp, boolean, uuid, jsonb } from "drizzle-orm/pg-core";
 import { createInsertSchema } from "drizzle-zod";
 import { z } from "zod";
 
@@ -50,6 +50,20 @@ export const orders = pgTable("orders", {
   status: text("status").notNull().default("pending"),
   policyAcknowledged: boolean("policy_acknowledged").notNull().default(false),
   createdAt: timestamp("created_at").default(sql`CURRENT_TIMESTAMP`),
+});
+
+// Paid orders are durable and uniquely keyed by the Stripe payment intent.
+// The cart and delivery address are captured at the time of payment.
+export const paymentOrders = pgTable("payment_orders", {
+  id: uuid("id").primaryKey().defaultRandom(),
+  paymentIntentId: text("payment_intent_id").notNull().unique(),
+  amountCents: integer("amount_cents").notNull(),
+  currency: text("currency").notNull(),
+  customerEmail: text("customer_email").notNull(),
+  customerName: text("customer_name").notNull(),
+  items: jsonb("items").notNull(),
+  shipping: jsonb("shipping").notNull(),
+  createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
 });
 
 export const insertUserSchema = createInsertSchema(users).pick({

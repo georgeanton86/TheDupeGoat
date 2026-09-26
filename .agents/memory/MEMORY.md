@@ -1,0 +1,1 @@
+- [Stripe connector credentials](stripe-connector-credentials.md) — the connected Stripe proxy may not expose SDK credentials; do not assume its settings contain a secret key.

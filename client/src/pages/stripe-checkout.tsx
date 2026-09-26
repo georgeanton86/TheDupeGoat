@@ -15,59 +15,49 @@ import Footer from "@/components/footer";
 import { Loader2, CheckCircle } from "lucide-react";
 import type { Product, ProductVariant } from "@shared/schema";
 
-if (!import.meta.env.VITE_STRIPE_LIVE_PUBLIC_KEY) {
-  throw new Error('Missing required Stripe key: VITE_STRIPE_LIVE_PUBLIC_KEY');
-}
-const stripePromise = loadStripe(import.meta.env.VITE_STRIPE_LIVE_PUBLIC_KEY);
-
 interface CartItem {
   variant: ProductVariant;
   product: Product;
   quantity: number;
 }
 
-function CheckoutForm({ total, cartItems, promoCode }: { total: number; cartItems: CartItem[]; promoCode: string | null }) {
+function CheckoutForm({ total, clientSecret, onSuccess }: {
+  total: number; clientSecret: string; onSuccess: (result: any) => void;
+}) {
   const stripe = useStripe();
   const elements = useElements();
   const { toast } = useToast();
-  const [, setLocation] = useLocation();
   const [isProcessing, setIsProcessing] = useState(false);
-  const [customerEmail, setCustomerEmail] = useState("");
-  const [customerName, setCustomerName] = useState("");
-  const [policyAcknowledged, setPolicyAcknowledged] = useState(false);
+  const [paidIntentId, setPaidIntentId] = useState<string | null>(null);
+
+  const confirmOrder = async (paymentIntentId: string) => {
+    const response = await apiRequest("POST", "/api/complete-stripe-payment", {
+      paymentIntentId, clientSecret,
+    });
+    const result = await response.json();
+    if (!result.success) throw new Error(result.message || "Could not confirm order");
+    onSuccess(result);
+  };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-
-    if (!customerEmail || !customerName) {
-      toast({
-        title: "Missing Information",
-        description: "Please provide your name and email",
-        variant: "destructive",
-      });
-      return;
-    }
-
-    if (!policyAcknowledged) {
-      toast({
-        title: "Policy Required",
-        description: "Please acknowledge our no-returns policy",
-        variant: "destructive",
-      });
-      return;
-    }
 
     if (!stripe || !elements) {
       return;
     }
 
     setIsProcessing(true);
+    let paymentCaptured = Boolean(paidIntentId);
 
     try {
+      if (paidIntentId) {
+        await confirmOrder(paidIntentId);
+        return;
+      }
       const { error, paymentIntent } = await stripe.confirmPayment({
         elements,
         confirmParams: {
-          return_url: window.location.origin + "/shop?payment=success",
+          return_url: window.location.origin + "/checkout",
         },
         redirect: 'if_required',
       });
@@ -83,48 +73,20 @@ function CheckoutForm({ total, cartItems, promoCode }: { total: number; cartItem
       }
 
       if (paymentIntent && paymentIntent.status === 'succeeded') {
-        // Complete the order on the backend
-        const response = await apiRequest("POST", "/api/complete-stripe-payment", {
-          paymentIntentId: paymentIntent.id,
-          items: cartItems.map(item => ({
-            variantId: item.variant.id,
-            quantity: item.quantity
-          })),
-          customerEmail,
-          customerName,
-          policyAcknowledged,
-          promoCode
-        });
-
-        const result = await response.json();
-
-        if (result.success) {
-          // Clear cart data
-          localStorage.removeItem('checkoutCart');
-          
-          // Store success data for confirmation page
-          localStorage.setItem('orderSuccess', JSON.stringify({
-            orderIds: result.orderIds,
-            total: result.total,
-            customerEmail,
-            customerName
-          }));
-
-          toast({
-            title: "Payment Successful!",
-            description: "Your order has been confirmed",
-          });
-
-          setLocation('/shop?payment=success');
-        } else {
-          throw new Error(result.message || 'Failed to complete order');
-        }
+        paymentCaptured = true;
+        setPaidIntentId(paymentIntent.id);
+        await confirmOrder(paymentIntent.id);
+      } else {
+        toast({ title: "Payment pending", description: "Please wait for payment confirmation." });
+        setIsProcessing(false);
       }
     } catch (err: any) {
       console.error('Payment error:', err);
       toast({
         title: "Order Error",
-        description: err.message || "Something went wrong. Please contact support.",
+        description: paymentCaptured
+          ? "Your payment succeeded, but we could not confirm the order. Retry confirmation; do not pay again."
+          : err.message || "Something went wrong. Please contact support.",
         variant: "destructive",
       });
       setIsProcessing(false);
@@ -133,71 +95,7 @@ function CheckoutForm({ total, cartItems, promoCode }: { total: number; cartItem
 
   return (
     <form onSubmit={handleSubmit} className="space-y-6">
-      {/* Order Summary */}
-      <Card className="bg-gray-50">
-        <CardContent className="pt-6">
-          <h4 className="font-semibold mb-3">Order Summary</h4>
-          
-          {cartItems.map((item) => (
-            <div key={item.variant.id} className="flex justify-between items-center mb-2">
-              <span className="text-sm">
-                {item.product.name} ({item.variant.size} {item.variant.concentration}) x {item.quantity}
-              </span>
-              <span className="font-semibold text-sm">
-                ${(parseFloat(item.variant.price) * item.quantity).toFixed(2)}
-              </span>
-            </div>
-          ))}
-
-          <hr className="my-3" />
-          
-          <div className="flex justify-between items-center font-bold text-lg">
-            <span>Total</span>
-            <span>${total.toFixed(2)}</span>
-          </div>
-        </CardContent>
-      </Card>
-
-      <div className="space-y-4">
-        <div>
-          <Label htmlFor="name">Full Name</Label>
-          <Input
-            id="name"
-            type="text"
-            value={customerName}
-            onChange={(e) => setCustomerName(e.target.value)}
-            placeholder="John Doe"
-            required
-            data-testid="input-customer-name"
-          />
-        </div>
-        <div>
-          <Label htmlFor="email">Email</Label>
-          <Input
-            id="email"
-            type="email"
-            value={customerEmail}
-            onChange={(e) => setCustomerEmail(e.target.value)}
-            placeholder="john@example.com"
-            required
-            data-testid="input-customer-email"
-          />
-        </div>
-      </div>
-
       <PaymentElement />
-
-      <div className="flex items-start space-x-2 bg-gray-50 p-4 rounded-lg">
-        <Checkbox
-          id="policy"
-          checked={policyAcknowledged}
-          onCheckedChange={(checked) => setPolicyAcknowledged(checked as boolean)}
-          data-testid="checkbox-policy"
-        />
-        <label htmlFor="policy" className="text-sm leading-tight cursor-pointer">
-          I acknowledge and accept the <a href="/policy" target="_blank" className="text-blue-600 hover:underline">no-returns policy</a>. All sales are final.
-        </label>
-      </div>
 
       <Button
         type="submit"
@@ -212,7 +110,7 @@ function CheckoutForm({ total, cartItems, promoCode }: { total: number; cartItem
             Processing Payment...
           </>
         ) : (
-          `Pay $${total.toFixed(2)}`
+          paidIntentId ? "Retry order confirmation" : `Pay $${total.toFixed(2)}`
         )}
       </Button>
     </form>
@@ -221,6 +119,7 @@ function CheckoutForm({ total, cartItems, promoCode }: { total: number; cartItem
 
 export default function StripeCheckout() {
   const [clientSecret, setClientSecret] = useState("");
+  const [stripePromise, setStripePromise] = useState<ReturnType<typeof loadStripe> | null>(null);
   const [total, setTotal] = useState(0);
   const [cartItems, setCartItems] = useState<CartItem[]>([]);
   const [promoCode, setPromoCode] = useState<string | null>(null);
@@ -228,6 +127,22 @@ export default function StripeCheckout() {
   const [showSuccess, setShowSuccess] = useState(false);
   const [orderData, setOrderData] = useState<any>(null);
   const [isLoadingCart, setIsLoadingCart] = useState(true);
+  const [isPreparing, setIsPreparing] = useState(false);
+  const [error, setError] = useState("");
+  const [customerEmail, setCustomerEmail] = useState("");
+  const [customerName, setCustomerName] = useState("");
+  const [policyAcknowledged, setPolicyAcknowledged] = useState(false);
+  const [address, setAddress] = useState({
+    line1: "", line2: "", city: "", state: "", postal_code: "", country: "US",
+  });
+
+  const finishOrder = (data: any) => {
+    localStorage.removeItem("checkoutCart");
+    sessionStorage.setItem("checkoutConfirmation", JSON.stringify(data));
+    window.history.replaceState({}, "", "/checkout?order=success");
+    setOrderData(data);
+    setShowSuccess(true);
+  };
 
   const { data: products } = useQuery<Product[]>({
     queryKey: ["/api/products"],
@@ -238,16 +153,31 @@ export default function StripeCheckout() {
   });
 
   useEffect(() => {
-    // Check for success state from URL
     const params = new URLSearchParams(window.location.search);
-    if (params.get('payment') === 'success') {
-      const successData = localStorage.getItem('orderSuccess');
-      if (successData) {
-        setShowSuccess(true);
-        setOrderData(JSON.parse(successData));
-        localStorage.removeItem('orderSuccess');
-        localStorage.removeItem('checkoutCart');
+    if (params.get("order") === "success") {
+      try {
+        const saved = sessionStorage.getItem("checkoutConfirmation");
+        if (saved) {
+          setOrderData(JSON.parse(saved));
+          setShowSuccess(true);
+          setIsLoadingCart(false);
+          return;
+        }
+      } catch {
+        sessionStorage.removeItem("checkoutConfirmation");
       }
+    }
+    const paymentIntentId = params.get("payment_intent");
+    const returnedSecret = params.get("payment_intent_client_secret");
+    if (paymentIntentId && returnedSecret) {
+      apiRequest("POST", "/api/complete-stripe-payment", {
+        paymentIntentId, clientSecret: returnedSecret,
+      }).then(res => res.json()).then(data => {
+        if (!data.success) throw new Error(data.message || "Payment could not be confirmed");
+        finishOrder(data);
+      }).catch(() => {
+        setError("We couldn't confirm your payment yet. Please reload this page to retry. Do not pay again.");
+      });
       setIsLoadingCart(false);
       return;
     }
@@ -290,29 +220,38 @@ export default function StripeCheckout() {
       setCartItems(items);
       setPromoCode(cartData.promoCode);
       setIsLoadingCart(false);
-
-      // Create payment intent
-      apiRequest("POST", "/api/create-payment-intent", { 
-        items: items.map(item => ({
-          variantId: item.variant.id,
-          quantity: item.quantity
-        })),
-        promoCode: cartData.promoCode
-      })
-        .then((res) => res.json())
-        .then((data) => {
-          setClientSecret(data.clientSecret);
-          setTotal(data.total);
-        })
-        .catch((error) => {
-          console.error('Payment intent error:', error);
-          setLocation('/shop');
-        });
     } catch (error) {
       console.error('Cart parsing error:', error);
       setLocation('/shop');
     }
   }, [setLocation, products, variants]);
+
+  const startPayment = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!policyAcknowledged) {
+      setError("Please accept the no-returns policy before paying.");
+      return;
+    }
+    setIsPreparing(true);
+    setError("");
+    try {
+      const response = await apiRequest("POST", "/api/create-payment-intent", {
+        items: cartItems.map(item => ({ variantId: item.variant.id, quantity: item.quantity })),
+        promoCode, customerEmail, customerName, policyAcknowledged, address,
+      });
+      const data = await response.json();
+      const configResponse = await fetch("/api/stripe/config");
+      if (!configResponse.ok) throw new Error("Payments are unavailable");
+      const config = await configResponse.json();
+      setStripePromise(loadStripe(config.publishableKey));
+      setClientSecret(data.clientSecret);
+      setTotal(data.total);
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Could not prepare checkout");
+    } finally {
+      setIsPreparing(false);
+    }
+  };
 
   if (showSuccess && orderData) {
     return (
@@ -329,7 +268,8 @@ export default function StripeCheckout() {
               <div className="bg-gray-50 p-4 rounded-lg space-y-2">
                 <p className="text-sm"><strong>Order Total:</strong> ${orderData.total}</p>
                 <p className="text-sm"><strong>Email:</strong> {orderData.customerEmail}</p>
-                <p className="text-sm text-gray-600">A confirmation email has been sent to your inbox.</p>
+                <p className="text-sm"><strong>Order ID:</strong> {orderData.orderId}</p>
+                <p className="text-sm text-gray-600">Keep this order ID for your records.</p>
               </div>
               <div className="bg-blue-50 border border-blue-200 p-4 rounded-lg">
                 <p className="text-sm text-blue-900">
@@ -351,7 +291,7 @@ export default function StripeCheckout() {
     );
   }
 
-  if (isLoadingCart || !clientSecret) {
+  if (isLoadingCart || new URLSearchParams(window.location.search).has("payment_intent") && !error && !showSuccess) {
     return (
       <div className="min-h-screen bg-white">
         <Header />
@@ -376,9 +316,43 @@ export default function StripeCheckout() {
             <CardDescription>Complete your purchase securely with Stripe</CardDescription>
           </CardHeader>
           <CardContent>
-            <Elements stripe={stripePromise} options={{ clientSecret }}>
-              <CheckoutForm total={total} cartItems={cartItems} promoCode={promoCode} />
-            </Elements>
+            {error && <p role="alert" className="mb-4 text-red-700">{error}</p>}
+            {!clientSecret && !new URLSearchParams(window.location.search).has("payment_intent") && (
+              <form onSubmit={startPayment} className="space-y-4">
+                <div className="space-y-2 pb-4 border-b">
+                  <h3 className="font-semibold">Order summary</h3>
+                  {cartItems.map(item => <div key={item.variant.id} className="flex justify-between text-sm">
+                    <span>{item.product.name} × {item.quantity}</span>
+                    <span>${(Number(item.variant.price) * item.quantity).toFixed(2)}</span>
+                  </div>)}
+                  <p className="text-sm text-gray-600">Shipping and discount are included in the final payment total.</p>
+                </div>
+                <div><Label htmlFor="name">Full name</Label><Input id="name" required value={customerName} onChange={e => setCustomerName(e.target.value)} /></div>
+                <div><Label htmlFor="email">Email</Label><Input id="email" type="email" required value={customerEmail} onChange={e => setCustomerEmail(e.target.value)} /></div>
+                <h3 className="font-semibold pt-2">Delivery address (US)</h3>
+                {([
+                  ["line1", "Street address"], ["line2", "Apartment or suite (optional)"],
+                  ["city", "City"], ["state", "State"], ["postal_code", "ZIP code"],
+                ] as const).map(([key, label]) => (
+                  <div key={key}><Label htmlFor={key}>{label}</Label>
+                    <Input id={key} required={key !== "line2"} value={address[key]}
+                      onChange={e => setAddress(previous => ({ ...previous, [key]: e.target.value }))} />
+                  </div>
+                ))}
+                <div className="flex items-start gap-2">
+                  <Checkbox id="policy" checked={policyAcknowledged} onCheckedChange={checked => setPolicyAcknowledged(checked === true)} />
+                  <label htmlFor="policy" className="text-sm">I accept the <a href="/policy" target="_blank" rel="noopener noreferrer" className="underline">no-returns policy</a>. All sales are final.</label>
+                </div>
+                <Button type="submit" disabled={isPreparing || !policyAcknowledged} className="w-full">
+                  {isPreparing ? "Preparing payment..." : "Continue to payment"}
+                </Button>
+              </form>
+            )}
+            {clientSecret && stripePromise && (
+              <Elements stripe={stripePromise} options={{ clientSecret }}>
+                <CheckoutForm total={total} clientSecret={clientSecret} onSuccess={finishOrder} />
+              </Elements>
+            )}
           </CardContent>
         </Card>
       </div>

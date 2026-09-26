@@ -1,16 +1,30 @@
 import type { Express } from "express";
 import { createServer, type Server } from "http";
 import { storage } from "./storage";
-import { insertOrderSchema } from "@shared/schema";
 import { z } from "zod";
-import Stripe from "stripe";
+import { getStripeClient, getStripePublishableKey } from "./stripeClient";
+import { getPaidQuantities, priceCart, recordPaidOrder } from "./payments";
 
-// Initialize Stripe with LIVE keys
-if (!process.env.STRIPE_LIVE_SECRET_KEY) {
-  throw new Error('Missing required Stripe secret: STRIPE_LIVE_SECRET_KEY');
-}
-const stripe = new Stripe(process.env.STRIPE_LIVE_SECRET_KEY, {
-  apiVersion: "2025-07-30.basil",
+const checkoutSchema = z.object({
+  items: z.array(z.object({
+    variantId: z.string().min(1),
+    quantity: z.number().int().min(1).max(100),
+  })).min(1).max(30).refine(
+    items => new Set(items.map(item => item.variantId)).size === items.length,
+    "Duplicate items are not allowed",
+  ),
+  promoCode: z.string().max(40).optional().nullable(),
+  customerEmail: z.string().email().max(254),
+  customerName: z.string().trim().min(1).max(100),
+  policyAcknowledged: z.literal(true),
+  address: z.object({
+    line1: z.string().trim().min(1).max(200),
+    line2: z.string().trim().max(200).optional(),
+    city: z.string().trim().min(1).max(100),
+    state: z.string().trim().min(1).max(100),
+    postal_code: z.string().trim().min(1).max(30),
+    country: z.literal("US"),
+  }),
 });
 
 export async function registerRoutes(app: Express): Promise<Server> {
@@ -56,7 +70,12 @@ export async function registerRoutes(app: Express): Promise<Server> {
   app.get("/api/product-variants", async (req, res) => {
     try {
       const allVariants = await storage.getAllProductVariants();
-      res.json(allVariants);
+      const paid = await getPaidQuantities();
+      res.json(allVariants.map(v => ({
+        ...v,
+        remainingInventory: Math.max(0, v.remainingInventory - (paid.get(v.id) ?? 0)),
+        soldCount: v.soldCount + (paid.get(v.id) ?? 0),
+      })));
     } catch (error: any) {
       res.status(500).json({ message: "Error fetching product variants: " + error.message });
     }
@@ -66,7 +85,12 @@ export async function registerRoutes(app: Express): Promise<Server> {
   app.get("/api/product-variants/:productId", async (req, res) => {
     try {
       const variants = await storage.getProductVariants(req.params.productId);
-      res.json(variants);
+      const paid = await getPaidQuantities();
+      res.json(variants.map(v => ({
+        ...v,
+        remainingInventory: Math.max(0, v.remainingInventory - (paid.get(v.id) ?? 0)),
+        soldCount: v.soldCount + (paid.get(v.id) ?? 0),
+      })));
     } catch (error: any) {
       res.status(500).json({ message: "Error fetching product variants: " + error.message });
     }
@@ -79,257 +103,74 @@ export async function registerRoutes(app: Express): Promise<Server> {
       if (!variant) {
         return res.status(404).json({ message: "Product variant not found" });
       }
-      res.json(variant);
+      const paid = await getPaidQuantities();
+      res.json({
+        ...variant,
+        remainingInventory: Math.max(0, variant.remainingInventory - (paid.get(variant.id) ?? 0)),
+        soldCount: variant.soldCount + (paid.get(variant.id) ?? 0),
+      });
     } catch (error: any) {
       res.status(500).json({ message: "Error fetching product variant: " + error.message });
     }
   });
 
-  // Stripe payment intent creation - SECURE: calculates server total from cart using variant IDs
+  app.get("/api/stripe/config", async (_req, res) => {
+    try {
+      res.json({ publishableKey: await getStripePublishableKey() });
+    } catch (error) {
+      console.error("Stripe configuration error:", error);
+      res.status(503).json({ message: "Payments are unavailable" });
+    }
+  });
+
   app.post("/api/create-payment-intent", async (req, res) => {
     try {
-      const { items, promoCode } = req.body;
-
-      if (!items || items.length === 0) {
-        return res.status(400).json({ error: "No items in cart" });
-      }
-
-      // CRITICAL: Validate quantities are positive integers
-      for (const item of items) {
-        if (!item.quantity || !Number.isInteger(item.quantity) || item.quantity <= 0 || item.quantity > 100) {
-          return res.status(400).json({ error: "Invalid quantities" });
-        }
-      }
-
-      // SERVER-SIDE RECALCULATION - NEVER TRUST CLIENT PRICES
-      let serverSubtotal = 0;
-      for (const item of items) {
-        const variant = await storage.getProductVariant(item.variantId);
-        if (!variant) {
-          return res.status(404).json({ error: `Product variant ${item.variantId} not found` });
-        }
-        serverSubtotal += parseFloat(variant.price) * item.quantity;
-      }
-
-      // Validate promo code
-      let serverDiscount = 0;
-      if (promoCode && promoCode.toUpperCase() === "WELCOME10") {
-        serverDiscount = serverSubtotal * 0.1;
-      }
-
-      // Calculate shipping
-      const serverShipping = serverSubtotal >= 100 ? 0 : 8.99;
-      const serverTotal = serverSubtotal - serverDiscount + serverShipping;
-
-      if (serverTotal <= 0) {
-        return res.status(400).json({ error: "Invalid total" });
-      }
-
-      // Create Stripe Payment Intent
+      const parsed = checkoutSchema.safeParse(req.body);
+      if (!parsed.success) return res.status(400).json({ message: "Invalid checkout details", details: parsed.error.flatten() });
+      const { items, promoCode, customerEmail, customerName, address } = parsed.data;
+      const amount = await priceCart(items, promoCode ?? undefined);
+      const stripe = await getStripeClient();
       const paymentIntent = await stripe.paymentIntents.create({
-        amount: Math.round(serverTotal * 100), // Convert to cents
+        amount,
         currency: "usd",
+        automatic_payment_methods: { enabled: true },
+        receipt_email: customerEmail,
+        shipping: { name: customerName, address },
         metadata: {
           items: JSON.stringify(items),
-          promoCode: promoCode || "",
-          subtotal: serverSubtotal.toFixed(2),
-          discount: serverDiscount.toFixed(2),
-          shipping: serverShipping.toFixed(2),
+          promoCode: promoCode?.toUpperCase() === "WELCOME10" ? "WELCOME10" : "",
+          policyAcknowledged: "true",
         },
       });
-
-      res.json({ 
-        clientSecret: paymentIntent.client_secret,
-        total: serverTotal
-      });
-    } catch (error: any) {
+      res.json({ clientSecret: paymentIntent.client_secret, total: amount / 100 });
+    } catch (error) {
       console.error("Failed to create payment intent:", error);
-      res.status(500).json({ error: "Failed to create payment intent: " + error.message });
+      res.status(error instanceof Error && /inventory|available/i.test(error.message) ? 400 : 503)
+        .json({ message: error instanceof Error && /inventory|available/i.test(error.message) ? error.message : "Could not start payment" });
     }
   });
 
-  // Stripe webhook handler for payment completion
-  app.post("/api/webhook/stripe", async (req, res) => {
-    try {
-      // In production, verify webhook signature
-      const event = req.body;
-      
-      if (event.type === 'payment_intent.succeeded') {
-        const paymentIntent = event.data.object;
-        
-        // Extract metadata
-        const items = JSON.parse(paymentIntent.metadata.items || '[]');
-        const promoCode = paymentIntent.metadata.promoCode || '';
-        
-        // Process order (inventory deduction, etc.)
-        console.log('Payment succeeded:', paymentIntent.id);
-        console.log('Items:', items);
-      }
-      
-      res.json({ received: true });
-    } catch (error: any) {
-      console.error('Webhook error:', error);
-      res.status(400).json({ error: error.message });
-    }
-  });
-
-  // Complete Stripe payment and create order
+  // The client secret proves possession of this specific payment; never accept
+  // order totals, cart contents or customer identity from the confirmation call.
   app.post("/api/complete-stripe-payment", async (req, res) => {
     try {
-      const { 
-        paymentIntentId,
-        items, 
-        customerEmail, 
-        customerName, 
-        policyAcknowledged,
-        promoCode
-      } = req.body;
-      
-      if (!policyAcknowledged) {
-        return res.status(400).json({ message: "Policy acknowledgment required" });
-      }
-
-      if (!items || items.length === 0) {
-        return res.status(400).json({ message: "No items in cart" });
-      }
-
-      // CRITICAL: Validate all quantities are positive integers
-      for (const item of items) {
-        if (!item.quantity || !Number.isInteger(item.quantity) || item.quantity <= 0) {
-          return res.status(400).json({ 
-            message: "Invalid quantity. All quantities must be positive integers." 
-          });
-        }
-        if (item.quantity > 100) {
-          return res.status(400).json({ 
-            message: "Quantity exceeds maximum allowed per item (100)." 
-          });
-        }
-      }
-
-      // SERVER-SIDE RECALCULATION - NEVER TRUST CLIENT PRICES
-      let serverSubtotal = 0;
-      const validatedItems = [];
-
-      // Verify all product variants exist, have sufficient inventory, and calculate actual prices
-      for (const item of items) {
-        const variant = await storage.getProductVariant(item.variantId);
-        if (!variant) {
-          return res.status(404).json({ message: `Product variant ${item.variantId} not found` });
-        }
-
-        if (variant.remainingInventory < item.quantity) {
-          return res.status(400).json({ 
-            message: `Insufficient inventory. Only ${variant.remainingInventory} remaining.` 
-          });
-        }
-
-        // Calculate line item total from SERVER database, not client
-        const lineTotal = parseFloat(variant.price) * item.quantity;
-        serverSubtotal += lineTotal;
-
-        validatedItems.push({
-          variantId: item.variantId,
-          quantity: item.quantity,
-          unitPrice: variant.price,
-          lineTotal: lineTotal.toFixed(2),
-          variant
-        });
-      }
-
-      // Validate and apply promo code on SERVER
-      let serverDiscount = 0;
-      let validPromoCode = null;
-      if (promoCode && promoCode.toUpperCase() === "WELCOME10") {
-        serverDiscount = serverSubtotal * 0.1;
-        validPromoCode = "WELCOME10";
-      }
-
-      // Calculate shipping on SERVER
-      const serverShipping = serverSubtotal >= 100 ? 0 : 8.99;
-      
-      // Calculate final total on SERVER
-      const serverTotal = serverSubtotal - serverDiscount + serverShipping;
-
-      // CRITICAL: Reject orders with invalid totals
-      if (serverTotal <= 0) {
-        return res.status(400).json({ 
-          message: "Invalid order total. Total must be greater than $0." 
-        });
-      }
-
-      // CRITICAL SECURITY: Verify payment intent was actually paid using Stripe API
-      try {
-        const paymentIntent = await stripe.paymentIntents.retrieve(paymentIntentId);
-        
-        if (paymentIntent.status !== 'succeeded') {
-          return res.status(400).json({ 
-            message: "Payment not completed. Please try again." 
-          });
-        }
-
-        // Verify amount matches our calculated total (allow 1 cent tolerance for rounding)
-        const paidAmount = paymentIntent.amount / 100; // Convert from cents
-        const capturedCurrency = paymentIntent.currency.toUpperCase();
-        
-        if (capturedCurrency !== 'USD') {
-          return res.status(400).json({ 
-            message: "Invalid payment currency. Only USD is accepted." 
-          });
-        }
-        
-        if (Math.abs(paidAmount - serverTotal) > 0.01) { // Allow 1 cent rounding
-          return res.status(400).json({ 
-            message: `Payment amount mismatch. Expected $${serverTotal.toFixed(2)}, received $${paidAmount.toFixed(2)}` 
-          });
-        }
-      } catch (stripeError) {
-        console.error("Stripe verification error:", stripeError);
-        return res.status(500).json({ 
-          message: "Failed to verify payment. Please contact support." 
-        });
-      }
-
-      // Create order records and update inventory for each item
-      const orderIds: string[] = [];
-      
-      for (const validatedItem of validatedItems) {
-        // Create order record for this item with SERVER-calculated price
-        const order = await storage.createOrder({
-          variantId: validatedItem.variantId,
-          customerEmail,
-          customerName,
-          paypalOrderId: paymentIntentId,
-          amount: validatedItem.lineTotal,
-          policyAcknowledged,
-        });
-        
-        // Update order status to completed
-        await storage.updateOrderStatus(order.id, "completed");
-        
-        // Decrease inventory
-        await storage.updateProductVariantInventory(
-          validatedItem.variantId, 
-          validatedItem.variant.remainingInventory - validatedItem.quantity
-        );
-
-        // Increase sold count
-        await storage.updateProductVariantSoldCount(
-          validatedItem.variantId,
-          validatedItem.variant.soldCount + validatedItem.quantity
-        );
-        
-        orderIds.push(order.id);
-      }
-
-      res.json({ 
-        success: true, 
-        orderIds,
-        total: serverTotal.toFixed(2),
-        promoCode: validPromoCode 
-      });
-    } catch (error: any) {
-      res.status(500).json({ message: "Error completing payment: " + error.message });
+      const { paymentIntentId, clientSecret } = z.object({
+        paymentIntentId: z.string().regex(/^pi_[a-zA-Z0-9]+$/),
+        clientSecret: z.string().min(10),
+      }).parse(req.body);
+      const stripe = await getStripeClient();
+      const intent = await stripe.paymentIntents.retrieve(paymentIntentId);
+      if (!intent.client_secret || intent.client_secret !== clientSecret)
+        return res.status(403).json({ message: "Invalid payment confirmation" });
+      if (intent.status !== "succeeded")
+        return res.status(409).json({ message: "Payment is not complete yet" });
+      const order = await recordPaidOrder(intent);
+      res.json({ success: true, orderId: order.id, total: (order.amount_cents / 100).toFixed(2),
+        customerEmail: order.customer_email, customerName: order.customer_name });
+    } catch (error) {
+      if (error instanceof z.ZodError) return res.status(400).json({ message: "Invalid payment confirmation" });
+      console.error("Payment confirmation failed:", error);
+      res.status(503).json({ message: "Payment status could not be confirmed. Please retry; do not pay again." });
     }
   });
 
@@ -343,8 +184,9 @@ export async function registerRoutes(app: Express): Promise<Server> {
         return res.status(404).json({ message: "Product variant not found" });
       }
 
-      res.json({ 
-        remaining: variant.remainingInventory,
+      const paid = await getPaidQuantities();
+      res.json({
+        remaining: Math.max(0, variant.remainingInventory - (paid.get(variant.id) ?? 0)),
         total: variant.totalInventory 
       });
     } catch (error: any) {

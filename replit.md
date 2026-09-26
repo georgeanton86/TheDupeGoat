@@ -1,6 +1,6 @@
 # Overview
 
-This is a luxury perfume e-commerce application called "RVLTN PARFUMS" that focuses on selling "The Seven Seals Collection" - exclusive, limited-edition apocalyptic fragrances inspired by Revelation 6-8. The application features 8 fragrances (all unisex) at $119 each for 100mL Extrait de Parfum bottles, with Latin names, Revelation verses, premium brand experience with dark gradient backgrounds and brass/amber text, realistic sales counters, shopping cart with promo codes, and a strict no-returns policy. It's built as a full-stack application with production-grade secure payment processing.
+This is a luxury perfume e-commerce application called "RVLTN PARFUMS" that focuses on selling "The Seven Seals Collection" - exclusive, limited-edition apocalyptic fragrances inspired by Revelation 6-8. The application features 8 fragrances (all unisex), with Latin names, Revelation verses, premium brand experience with dark gradient backgrounds and brass/amber text, shopping cart with promo codes, and a strict no-returns policy.
 
 ## Product Catalog - The Seven Seals Collection (8 Fragrances)
 
@@ -34,28 +34,19 @@ Preferred communication style: Simple, everyday language.
 - **Runtime**: Node.js with Express.js framework
 - **Language**: TypeScript with ES modules
 - **API Design**: RESTful endpoints for product management and payment processing
-- **Data Storage**: In-memory storage implementation with interface for future database integration
+- **Data Storage**: In-memory product catalog and PostgreSQL payment orders
 - **Session Management**: Express sessions with PostgreSQL session store (connect-pg-simple)
 
 ## Payment Processing
-- **Provider**: PayPal integration (@paypal/paypal-server-sdk) for secure cart-based checkout
-- **Implementation**: Custom CartPayPalButton component with PayPal SDK v6
-- **Security**: Production-grade security with comprehensive server-side validation:
-  - Server-side price recalculation from database (no client price trust)
-  - Zod validation for quantities (positive integers, max 100)
-  - PayPal SDK verification of order status and captures
-  - Currency validation (USD only)
-  - Amount reconciliation (±1¢ tolerance)
-  - Idempotency protection against replay attacks
-  - Promo code validation (WELCOME10 for 10% off)
-  - Free shipping calculation (orders ≥$100)
-- **Components**: 
-  - CartPayPalButton: Secure cart checkout with item-level validation
-  - PayPalButton (legacy): Amount-based button (DO NOT MODIFY - incompatible with cart flow)
+- **Active provider**: Stripe Payment Element. Development requires test-mode keys; production requires live-mode keys.
+- The server validates cart, customer, policy acknowledgement, and US delivery address before creating a PaymentIntent. Prices, WELCOME10 discount, and shipping are calculated on the server.
+- Stripe's managed, signature-verified webhook records paid orders in PostgreSQL. Browser confirmation also retrieves the PaymentIntent from Stripe and records the same order idempotently; a unique payment ID prevents duplicates.
+- Paid quantities are deducted from displayed inventory, which starts from the in-memory catalog. Pending payments do not reserve stock, so simultaneous checkouts can still oversell.
+- Checkout confirmation survives refresh in the same browser session. The app does not send confirmation email or calculate sales tax.
 
 ## Database Design
 - **ORM**: Drizzle ORM configured for PostgreSQL with type-safe schema definitions
-- **Schema**: Three main entities - users, products, and orders with proper relationships
+- **Schema**: Users, products, variants, legacy orders, and Stripe payment orders
 - **Migration Strategy**: Drizzle Kit for database migrations and schema management
 - **Connection**: Neon Database serverless PostgreSQL integration
 

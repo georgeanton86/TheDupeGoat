@@ -2,8 +2,31 @@ import express, { type Request, Response, NextFunction } from "express";
 import path from "path";
 import { registerRoutes } from "./routes";
 import { setupVite, serveStatic, log } from "./vite";
+import { runMigrations } from "stripe-replit-sync";
+import { getStripeClient, getStripeSync } from "./stripeClient";
+import { recordPaidOrder } from "./payments";
 
 const app = express();
+app.post("/api/stripe/webhook", express.raw({ type: "application/json" }), async (req, res) => {
+  const signature = req.headers["stripe-signature"];
+  if (!signature || typeof signature !== "string" || !Buffer.isBuffer(req.body))
+    return res.status(400).json({ message: "Invalid webhook" });
+  try {
+    // StripeSync verifies the raw payload and signature before we inspect it.
+    const sync = await getStripeSync();
+    await sync.processWebhook(req.body, signature);
+    const event = JSON.parse(req.body.toString("utf8"));
+    if (event.type === "payment_intent.succeeded") {
+      const stripe = await getStripeClient();
+      const intent = await stripe.paymentIntents.retrieve(event.data.object.id);
+      await recordPaidOrder(intent);
+    }
+    res.json({ received: true });
+  } catch (error) {
+    console.error("Stripe webhook failed:", error);
+    res.status(400).json({ message: "Webhook could not be processed" });
+  }
+});
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
@@ -25,7 +48,10 @@ app.use((req, res, next) => {
     const duration = Date.now() - start;
     if (reqPath.startsWith("/api")) {
       let logLine = `${req.method} ${reqPath} ${res.statusCode} in ${duration}ms`;
-      if (capturedJsonResponse) {
+      if (capturedJsonResponse && ![
+        "/api/stripe/config", "/api/create-payment-intent",
+        "/api/complete-stripe-payment",
+      ].includes(reqPath)) {
         logLine += ` :: ${JSON.stringify(capturedJsonResponse)}`;
       }
 
@@ -41,6 +67,13 @@ app.use((req, res, next) => {
 });
 
 (async () => {
+  if (!process.env.DATABASE_URL) throw new Error("DATABASE_URL is required");
+  await runMigrations({ databaseUrl: process.env.DATABASE_URL });
+  const sync = await getStripeSync();
+  const domain = process.env.REPLIT_DOMAINS?.split(",")[0];
+  if (!domain) throw new Error("REPLIT_DOMAINS is required for Stripe webhooks");
+  await sync.findOrCreateManagedWebhook(`https://${domain}/api/stripe/webhook`);
+  sync.syncBackfill({ object: "all" }).catch(error => console.error("Stripe sync backfill failed:", error));
   const server = await registerRoutes(app);
 
   app.use((err: any, _req: Request, res: Response, _next: NextFunction) => {
