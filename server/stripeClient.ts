@@ -1,17 +1,22 @@
 import Stripe from "stripe";
 import { StripeSync } from "stripe-replit-sync";
 
-// The connected Stripe account uses the workspace's environment-scoped keys.
-// Never use the live keys in development.
+// Publishing installs live keys under the standard Stripe variable names.
+// Older projects may still have the legacy *_LIVE_* production pair.
 function credentials() {
   const production = process.env.NODE_ENV === "production";
-  const secretKey = production ? process.env.STRIPE_LIVE_SECRET_KEY : process.env.STRIPE_SECRET_KEY;
-  const publishableKey = production ? process.env.VITE_STRIPE_LIVE_PUBLIC_KEY : process.env.VITE_STRIPE_PUBLIC_KEY;
-  if (!secretKey || !publishableKey) throw new Error("Stripe keys are not configured for this environment");
-  if (!secretKey.startsWith(production ? "sk_live_" : "sk_test_") ||
-      !publishableKey.startsWith(production ? "pk_live_" : "pk_test_"))
-    throw new Error("Stripe keys must match the current environment's payment mode");
-  return { secretKey, publishableKey };
+  const pairs = production
+    ? [
+        [process.env.STRIPE_SECRET_KEY, process.env.VITE_STRIPE_PUBLIC_KEY],
+        [process.env.STRIPE_LIVE_SECRET_KEY, process.env.VITE_STRIPE_LIVE_PUBLIC_KEY],
+      ]
+    : [[process.env.STRIPE_SECRET_KEY, process.env.VITE_STRIPE_PUBLIC_KEY]];
+  const secretPrefix = production ? "sk_live_" : "sk_test_";
+  const publicPrefix = production ? "pk_live_" : "pk_test_";
+  const pair = pairs.find(([secret, publicKey]) =>
+    secret?.startsWith(secretPrefix) && publicKey?.startsWith(publicPrefix));
+  if (!pair) throw new Error(`Stripe ${production ? "live" : "test"} keys are not configured as a matching pair`);
+  return { secretKey: pair[0]!, publishableKey: pair[1]! };
 }
 
 export async function getStripeClient() {

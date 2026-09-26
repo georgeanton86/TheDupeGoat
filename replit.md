@@ -38,7 +38,7 @@ Preferred communication style: Simple, everyday language.
 - **Session Management**: Express sessions with PostgreSQL session store (connect-pg-simple)
 
 ## Payment Processing
-- **Active provider**: Stripe Payment Element. Development requires test-mode keys; production requires live-mode keys.
+- **Active provider**: Stripe Payment Element. Development requires test-mode keys; production requires live-mode keys. Replit's publish flow installs the live Stripe account and provides production `STRIPE_SECRET_KEY` / `VITE_STRIPE_PUBLIC_KEY`; the legacy `STRIPE_LIVE_SECRET_KEY` / `VITE_STRIPE_LIVE_PUBLIC_KEY` pair is also supported.
 - The server validates cart, customer, policy acknowledgement, and US delivery address before creating a PaymentIntent. Prices, WELCOME10 discount, and shipping are calculated on the server.
 - Stripe's managed, signature-verified webhook records paid orders in PostgreSQL. Browser confirmation also retrieves the PaymentIntent from Stripe and records the same order idempotently; a unique payment ID prevents duplicates.
 - Paid quantities are deducted from displayed inventory, which starts from the in-memory catalog. Pending payments do not reserve stock, so simultaneous checkouts can still oversell.
@@ -61,8 +61,8 @@ Preferred communication style: Simple, everyday language.
 ## Payment Services
 - **PayPal**: Complete payment processing platform with PayPal Server SDK (@paypal/paypal-server-sdk)
 - **Environment**: PAYPAL_CLIENT_ID and PAYPAL_CLIENT_SECRET for OAuth authentication
-- **Stripe**: Primary payment processor configured with LIVE keys for accepting real payments
-- **Environment**: STRIPE_LIVE_SECRET_KEY and VITE_STRIPE_LIVE_PUBLIC_KEY for production payment processing
+- **Stripe**: Primary payment processor; live account connection is completed separately in the Publish pane
+- **Environment**: Test-mode STRIPE_SECRET_KEY and VITE_STRIPE_PUBLIC_KEY in development; live-mode pair supplied by publishing in production, with legacy live-key names supported
 
 ## Database Services
 - **Neon Database**: Serverless PostgreSQL database with connection pooling (@neondatabase/serverless)
