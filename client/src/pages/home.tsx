@@ -8,48 +8,49 @@ import { Link } from "wouter";
 
 export default function Home() {
   return (
-    <div className="min-h-screen bg-[#171a16] text-[#f3ead8]">
+    <div className="min-h-screen bg-[#151a20] text-[#f3ead8]">
       <Header />
       <main>
-        <section className="relative flex min-h-[760px] items-end overflow-hidden bg-[#111310] pt-24 sm:min-h-[820px]">
+        <section className="noir-grain relative flex min-h-[760px] items-end overflow-hidden bg-[#11161c] pt-24 sm:min-h-[820px]">
           <div className="absolute inset-0">
-            <img src="/chicago/collection.jpg" alt="Three Chicago Exclusif gaming fragrance bottles" className="h-full w-full object-cover object-center opacity-45" />
-            <div className="absolute inset-0 bg-gradient-to-r from-[#111310] via-[#111310]/85 to-[#111310]/30" />
-            <div className="absolute inset-0 bg-gradient-to-t from-[#111310] via-transparent to-[#111310]/25" />
+            <img src="/chicago/chicago-noir-skyline.jpg" alt="Chicago skyline and river at night, seen through rain and city lights" className="h-full w-full object-cover object-[58%_center] opacity-75" />
+            <div className="absolute inset-0 bg-gradient-to-r from-[#11161c] via-[#11161c]/80 to-[#11161c]/15" />
+            <div className="absolute inset-0 bg-gradient-to-t from-[#11161c] via-transparent to-[#11161c]/35" />
+            <div className="absolute inset-0 bg-[#16212a]/25 mix-blend-color" />
           </div>
           <div className="relative mx-auto grid w-full max-w-7xl gap-12 px-5 pb-16 pt-24 sm:px-8 md:grid-cols-[1.05fr_.95fr] md:items-end md:pb-24">
-            <div className="max-w-2xl animate-[fade-in_.7s_ease-out_both]">
-              <p className="mb-6 flex items-center gap-3 text-[10px] font-semibold uppercase tracking-[0.32em] text-[#e1c57e]"><span className="h-px w-9 bg-[#d8b76a]" /> An original Chicago fragrance house</p>
-              <h1 className="font-serif text-5xl leading-[0.98] tracking-[-0.03em] sm:text-7xl lg:text-[88px]">Chicago<br /><span className="text-[#d8b76a]">Exclusif</span><br />Parfums.</h1>
-              <p className="mt-7 max-w-lg text-base leading-7 text-[#f3ead8]/75 sm:text-lg">A house of contrasting worlds. Playful, pixel-bright Chicago originals and the contemplative spirit of RVLTN’s Seven Seals.</p>
+            <div className="max-w-2xl reveal-up">
+              <p className="mb-6 flex items-center gap-3 font-mono text-[10px] font-medium uppercase tracking-[0.24em] text-[#d4ad70]"><span className="h-px w-9 bg-[#d4ad70]" /> Independent fragrance house · Chicago, Illinois</p>
+              <h1 className="font-serif text-5xl leading-[0.91] tracking-[-0.045em] sm:text-7xl lg:text-[96px]">Made of<br /><span className="text-[#d4ad70]">Chicago</span><br />after dark.</h1>
+              <p className="mt-7 max-w-lg text-base leading-7 text-[#f3ead8]/75 sm:text-lg">A city of hard edges and bright ideas. Discover original gaming scents from Chicago Exclusif—and the distinct Seven Seals collection from RVLTN Parfums.</p>
               <div className="mt-9 flex flex-wrap gap-3">
-                <Link href="/shop" className="inline-flex items-center gap-3 bg-[#d8b76a] px-6 py-3.5 text-xs font-bold uppercase tracking-[0.16em] text-[#151713] transition-colors hover:bg-[#e7cc8e]">Explore both collections <ArrowUpRight className="h-4 w-4" /></Link>
-                <button onClick={() => document.getElementById("collections")?.scrollIntoView({ behavior: "smooth" })} className="inline-flex items-center gap-3 border border-white/25 px-6 py-3.5 text-xs font-semibold uppercase tracking-[0.16em] text-[#f3ead8] transition-colors hover:border-[#d8b76a] hover:text-[#d8b76a]">Discover the house <ArrowDown className="h-4 w-4" /></button>
+                <Link href="/shop" className="inline-flex items-center gap-3 bg-[#d4ad70] px-6 py-3.5 text-xs font-bold uppercase tracking-[0.16em] text-[#151a20] transition-colors hover:bg-[#e3c28e]">Enter the shop <ArrowUpRight className="h-4 w-4" /></Link>
+                <button onClick={() => document.getElementById("collections")?.scrollIntoView({ behavior: "smooth" })} className="inline-flex items-center gap-3 border border-white/30 px-6 py-3.5 text-xs font-semibold uppercase tracking-[0.16em] text-[#f3ead8] transition-colors hover:border-[#d4ad70] hover:text-[#d4ad70]">Explore the house <ArrowDown className="h-4 w-4" /></button>
               </div>
             </div>
             <div className="hidden md:block">
               <div className="ml-auto max-w-[350px] border-l border-[#d8b76a]/60 pl-6 pb-2">
-                <p className="text-[10px] uppercase tracking-[0.25em] text-[#d8b76a]">Chicago originals · 01 / 03</p>
-                <p className="mt-3 font-serif text-2xl">A new kind of game.</p>
-                <p className="mt-2 text-sm leading-6 text-[#f3ead8]/65">Meet Player One, Play Again? and Half Life — real bottle previews from our gaming-inspired collection.</p>
+                <p className="font-mono text-[10px] uppercase tracking-[0.25em] text-[#d4ad70]">41° 52′ 55″ N · 01 / 03</p>
+                <p className="mt-3 font-serif text-2xl">The city never plays it safe.</p>
+                <p className="mt-2 text-sm leading-6 text-[#f3ead8]/65">Player One. Play Again? Half Life. Three real-bottle previews from our gaming-inspired Chicago originals.</p>
               </div>
             </div>
           </div>
-          <div className="absolute bottom-5 right-6 hidden text-[9px] uppercase tracking-[0.24em] text-white/45 lg:block">Made in the spirit of Chicago</div>
+          <div className="absolute bottom-5 right-6 hidden font-mono text-[9px] uppercase tracking-[0.24em] text-white/55 lg:block">The river remembers every light</div>
         </section>
 
-        <section className="border-y border-[#d8b76a]/15 bg-[#d8b76a] text-[#171a16]">
+        <section className="border-y border-[#d4ad70]/30 bg-[#d4ad70] text-[#151a20]">
           <div className="mx-auto flex max-w-7xl flex-col gap-2 px-5 py-4 sm:px-8 md:flex-row md:items-center md:justify-between">
             <p className="text-xs font-semibold uppercase tracking-[0.17em]">Three gaming collection bottle previews</p>
             <p className="text-xs">Shown for collection discovery only. Not currently offered for sale.</p>
           </div>
         </section>
 
-        <section id="collections" className="scroll-mt-20 bg-[#171a16]">
+        <section id="collections" className="scroll-mt-20 bg-[#151a20]">
           <ProductGallery />
         </section>
 
-        <section id="about" className="relative overflow-hidden border-y border-[#d8b76a]/20 bg-[#20241f]">
+        <section id="about" className="relative overflow-hidden border-y border-[#d4ad70]/20 bg-[#1c232a]">
           <div className="absolute -right-24 -top-24 h-96 w-96 rounded-full border border-[#d8b76a]/10" />
           <div className="absolute -right-12 -top-12 h-72 w-72 rounded-full border border-[#d8b76a]/10" />
           <div className="relative mx-auto grid max-w-7xl gap-12 px-5 py-20 sm:px-8 md:grid-cols-[.8fr_1.2fr] md:py-28">
@@ -72,7 +73,7 @@ export default function Home() {
           </div>
         </section>
 
-        <section id="faq" className="scroll-mt-20 bg-[#20241f]">
+        <section id="faq" className="scroll-mt-20 bg-[#1c232a]">
           <div className="mx-auto max-w-4xl px-5 py-20 sm:px-8">
             <p className="text-center text-[10px] uppercase tracking-[0.28em] text-[#d8b76a]">A few useful details</p>
             <h2 className="mt-3 text-center font-serif text-4xl">Questions, answered.</h2>

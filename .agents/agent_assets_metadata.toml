@@ -44,3 +44,17 @@ mtime_ms = 1790444248904
 storage_uri = "gcs://replit-rams-assets-spock/rams/assets/repl:a0b66204-d128-4455-bac5-81b2f9545d58/072c7cf0-304f-4d5d-ae29-eeedb0fa5e64/be06c947-c20a-452f-a4df-7e22fb3dd71f"
 storage_version_token = "1790444373272954"
 content_type = "video/mp4"
+
+[[outputs]]
+id = "59yeDMB3Ef_1FzZ-aGoiH"
+uri = "file://attached_assets/generated_videos/Chicago_Exclusif_After_Dark_promo.mp4"
+type = "video"
+title = "Chicago Exclusif — After Dark promo"
+description = "Updated 16-second promo with Chicago-at-night skyline, the real bottle photos, and the original soundtrack."
+logical_id = "ee9cd576-b5fb-47bf-a87a-c0f0dcd9c71a"
+content_hash = "sha256:59e427db1ece083ccc1ca8dd7fa8390ffdea78dd4038060140688c3262421e73"
+size = 1279674
+mtime_ms = 1790453501747
+storage_uri = "gcs://replit-rams-assets-spock/rams/assets/repl:a0b66204-d128-4455-bac5-81b2f9545d58/ee9cd576-b5fb-47bf-a87a-c0f0dcd9c71a/2134dee4-aebb-41a0-b13b-20be50c11937"
+storage_version_token = "1790453522206876"
+content_type = "video/mp4"

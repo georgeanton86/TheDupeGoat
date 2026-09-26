@@ -129,16 +129,18 @@ export default function Shop() {
   }
 
   return (
-    <div className="min-h-screen bg-[#171a16] text-[#f3ead8]">
+    <div className="min-h-screen bg-[#151a20] text-[#f3ead8]">
       <Header cartCount={totalItems} onCartClick={() => setIsCartOpen(true)} />
       
       {/* Hero Banner */}
-      <div className="border-b border-[#d8b76a]/20 bg-[#111310] pb-12 pt-32">
+      <div className="noir-grain relative isolate overflow-hidden border-b border-[#d4ad70]/25 bg-[#11161c] pb-14 pt-32">
+        <div className="absolute inset-0 -z-10 bg-[url('/chicago/chicago-noir-skyline.jpg')] bg-cover bg-[center_43%] opacity-45" />
+        <div className="absolute inset-0 -z-10 bg-gradient-to-r from-[#11161c] via-[#11161c]/85 to-[#11161c]/35" />
         <div className="mx-auto max-w-7xl px-5 sm:px-8">
           <div className="mb-8 max-w-3xl">
-            <p className="text-[10px] font-semibold uppercase tracking-[0.3em] text-[#d8b76a]">Chicago Exclusif Parfums</p>
-            <h1 className="mt-3 font-serif text-5xl sm:text-6xl">Two collections.<br /><span className="text-[#d8b76a]">One Chicago house.</span></h1>
-            <p className="mt-5 max-w-2xl text-base leading-7 text-white/65">Explore the Chicago gaming fragrance previews and shop RVLTN Parfums’ distinct Seven Seals collection.</p>
+            <p className="font-mono text-[10px] font-semibold uppercase tracking-[0.28em] text-[#d4ad70]">Chicago Exclusif Parfums · The house</p>
+            <h1 className="mt-3 font-serif text-5xl leading-[.98] sm:text-7xl">Two worlds.<br /><span className="text-[#d4ad70]">Chicago after dark.</span></h1>
+            <p className="mt-5 max-w-2xl text-base leading-7 text-white/75">Explore actual-bottle previews from Chicago Exclusif and shop RVLTN Parfums’ distinct Seven Seals collection.</p>
             <div className="mt-6 flex flex-wrap items-center gap-x-6 gap-y-3 text-xs">
               <div className="flex items-center gap-2 text-white">
                 <Truck className="w-5 h-5" />
@@ -153,10 +155,10 @@ export default function Shop() {
         </div>
       </div>
       
-      <div className="mx-auto max-w-7xl px-5 py-12 sm:px-8">
+      <div className="mx-auto max-w-[1440px] px-5 py-14 sm:px-8">
         {chicagoProducts.length > 0 && <section className="mb-16">
-          <div className="mb-7 flex flex-col justify-between gap-3 border-b border-[#cf3e68]/30 pb-5 sm:flex-row sm:items-end">
-            <div><p className="text-[10px] uppercase tracking-[0.25em] text-[#d8b76a]">Chicago Exclusif originals</p><h2 className="mt-2 font-serif text-3xl sm:text-4xl">The Gaming Collection</h2></div>
+          <div className="mb-7 flex flex-col justify-between gap-3 border-b border-[#dc7895]/35 pb-5 sm:flex-row sm:items-end">
+            <div><p className="font-mono text-[10px] uppercase tracking-[0.25em] text-[#dc7895]">Chicago Exclusif originals</p><h2 className="mt-2 font-serif text-3xl sm:text-4xl">The Gaming Collection</h2></div>
             <p className="max-w-sm text-sm leading-6 text-white/60">Actual bottle photographs. These are collection previews only, not for sale.</p>
           </div>
           <div className="grid gap-5 md:grid-cols-2 xl:grid-cols-3">
@@ -165,7 +167,7 @@ export default function Shop() {
         </section>}
         <section>
           <div className="mb-7 flex flex-col justify-between gap-3 border-b border-[#d8b76a]/30 pb-5 sm:flex-row sm:items-end">
-            <div><p className="text-[10px] uppercase tracking-[0.25em] text-[#d8b76a]">A distinct collection from RVLTN Parfums</p><h2 className="mt-2 font-serif text-3xl sm:text-4xl">The Seven Seals</h2></div>
+            <div><p className="font-mono text-[10px] uppercase tracking-[0.25em] text-[#d4ad70]">A distinct collection from RVLTN Parfums</p><h2 className="mt-2 font-serif text-3xl sm:text-4xl">The Seven Seals</h2></div>
             <p className="max-w-sm text-sm leading-6 text-white/60">Eight spiritual fragrances inspired by Revelation. Available in select sizes and concentrations.</p>
           </div>
         <div className="grid lg:grid-cols-3 gap-8">
@@ -595,21 +597,22 @@ function ProductCard({ product, variants, onAddToCart, onViewDetails }: {
   };
   
   return (
-    <Card className={`overflow-hidden border transition-all duration-300 hover:-translate-y-1 ${isChicagoPreview ? "border-[#cf3e68]/30 bg-[#171a16] hover:border-[#cf3e68]/70" : "border-[#d8b76a]/20 bg-[#171a16] hover:border-[#d8b76a]/60"}`}>
+    <Card className={`overflow-hidden rounded-none border transition-all duration-500 hover:-translate-y-1 ${isChicagoPreview ? "border-[#dc7895]/25 bg-[#192027] hover:border-[#dc7895]/65" : "border-[#d4ad70]/20 bg-[#192027] hover:border-[#d4ad70]/55"}`}>
       <CardContent className="p-0">
-        <div className="relative flex h-80 items-center justify-center overflow-hidden bg-[#232722] p-5">
+        <div className={`noir-grain relative flex h-80 items-center justify-center overflow-hidden p-5 ${isChicagoPreview ? "bg-[#202a32]" : "bg-[#242a2d]"}`}>
+          <div className={`absolute inset-0 opacity-[0.16] ${isChicagoPreview ? "bg-[url('/chicago/chicago-noir-skyline.jpg')] bg-cover bg-center" : "bg-[radial-gradient(ellipse_at_50%_65%,rgba(177,139,78,.42),transparent_67%)]"}`} />
           <img 
             src={getBottleImage()} 
             alt={`${product.name} fragrance bottle`}
-            className={`h-full w-full object-contain ${isChicagoPreview ? "transition-transform duration-500 hover:scale-[1.04]" : ""}`}
+            className={`relative h-full w-full object-contain transition-transform duration-500 group-hover:scale-[1.035] ${isChicagoPreview ? "" : ""}`}
             data-testid={`img-product-${product.id}`}
           />
           {isChicagoPreview ? (
-            <Badge className="absolute left-3 top-3 border border-[#cf3e68]/50 bg-[#171a16]/90 text-[#ff91ad]">Preview only · not for sale</Badge>
+            <Badge className="absolute left-3 top-3 rounded-none border border-[#dc7895]/50 bg-[#171a20]/90 font-mono text-[9px] uppercase tracking-wide text-[#f1a0b5]">Preview only · not for sale</Badge>
           ) : selectedVariant && (
             <Badge 
               variant={isLowStock ? "destructive" : "secondary"} 
-              className={`absolute top-3 right-3 text-xs border-0 ${isLowStock ? 'bg-red-600 text-white' : 'bg-champagne text-luxury-black'}`}
+              className={`absolute top-3 right-3 rounded-none text-xs border-0 ${isLowStock ? 'bg-[#a94849] text-white' : 'bg-[#d4ad70] text-[#151a20]'}`}
             >
               {selectedVariant.remainingInventory} left
             </Badge>
@@ -618,7 +621,7 @@ function ProductCard({ product, variants, onAddToCart, onViewDetails }: {
         
         <div className="p-6">
           <div className="mb-3">
-            <p className={`text-[9px] font-semibold uppercase tracking-[0.2em] ${isChicagoPreview ? "text-[#ed6689]" : "text-[#d8b76a]"}`}>{isChicagoPreview ? "Chicago Exclusif · Gaming" : "RVLTN · The Seven Seals"}</p>
+            <p className={`font-mono text-[9px] font-semibold uppercase tracking-[0.2em] ${isChicagoPreview ? "text-[#dc7895]" : "text-[#d4ad70]"}`}>{isChicagoPreview ? "Chicago Exclusif · Gaming" : "RVLTN · The Seven Seals"}</p>
             <h3 className="mt-1 font-serif text-2xl text-[#f3ead8]">{product.name}</h3>
             {!isChicagoPreview && product.verseReference?.trim() && <p className="mt-1 text-xs font-medium text-white/50">{product.verseReference.replace('Revelation', 'REV').replace('–', '-')}</p>}
           </div>
@@ -629,7 +632,7 @@ function ProductCard({ product, variants, onAddToCart, onViewDetails }: {
           {isChicagoPreview ? (
             <div className="border-t border-[#cf3e68]/20 pt-4">
               <p className="text-sm leading-6 text-white/60">A real-bottle collection preview. This fragrance is not currently offered for sale.</p>
-              <Button onClick={() => onViewDetails(product)} variant="outline" className="mt-4 w-full border-[#cf3e68]/50 bg-transparent text-[#ff91ad] hover:bg-[#cf3e68]/10" aria-label={`View ${product.name} collection preview`} data-testid={`button-view-details-${product.id}`}>
+              <Button onClick={() => onViewDetails(product)} variant="outline" className="mt-4 w-full rounded-none border-[#dc7895]/50 bg-transparent text-[#f1a0b5] hover:bg-[#dc7895]/10" aria-label={`View ${product.name} collection preview`} data-testid={`button-view-details-${product.id}`}>
                 View collection preview <Info className="ml-2 h-4 w-4" />
               </Button>
             </div>
@@ -639,7 +642,7 @@ function ProductCard({ product, variants, onAddToCart, onViewDetails }: {
           <div className="mb-4">
             <label className="text-sm font-medium text-white mb-2 block">Select Size & Concentration:</label>
             <Select value={selectedVariantId} onValueChange={setSelectedVariantId}>
-              <SelectTrigger className="w-full bg-luxury-black/50 border-champagne/30 text-white hover:bg-luxury-black/70" data-testid={`select-variant-${product.id}`}>
+              <SelectTrigger className="w-full rounded-none border-[#d4ad70]/30 bg-[#12181e] text-white hover:bg-[#1d262d]" data-testid={`select-variant-${product.id}`}>
                 <SelectValue placeholder="Choose an option" />
               </SelectTrigger>
               <SelectContent className="bg-luxury-black border-champagne/30">
@@ -654,14 +657,14 @@ function ProductCard({ product, variants, onAddToCart, onViewDetails }: {
 
           {/* Sales Counter for selected variant */}
           {selectedVariant && (
-            <div className="mb-4 p-3 bg-champagne/10 rounded-lg border border-champagne/20">
+            <div className="mb-4 border border-[#d4ad70]/20 bg-[#d4ad70]/[0.07] p-3">
               <div className="flex justify-between text-sm mb-1">
                 <span className="font-medium text-white">{selectedVariant.soldCount} claimed</span>
                 <span className="text-white/70">{selectedVariant.remainingInventory} remaining</span>
               </div>
               <div className="w-full bg-white/10 rounded-full h-2">
                 <div
-                  className="bg-champagne h-2 rounded-full transition-all"
+                  className="h-2 bg-[#d4ad70] transition-all"
                   style={{ width: `${(selectedVariant.soldCount / selectedVariant.totalInventory) * 100}%` }}
                 />
               </div>
@@ -670,7 +673,7 @@ function ProductCard({ product, variants, onAddToCart, onViewDetails }: {
 
           <div className="flex items-center justify-between mb-4">
             <div>
-              <p className="text-2xl font-bold text-[#d8b76a]">
+               <p className="text-2xl font-bold text-[#d4ad70]">
                 {selectedVariant ? `$${selectedVariant.price}` : "Unavailable"}
               </p>
               {selectedVariant && (
@@ -678,7 +681,7 @@ function ProductCard({ product, variants, onAddToCart, onViewDetails }: {
               )}
             </div>
             <Select value={quantity.toString()} onValueChange={(val) => setQuantity(parseInt(val))}>
-              <SelectTrigger className="w-20 bg-luxury-black/50 border-champagne/30 text-white hover:bg-luxury-black/70" data-testid={`select-quantity-${product.id}`}>
+              <SelectTrigger className="w-20 rounded-none border-[#d4ad70]/30 bg-[#12181e] text-white hover:bg-[#1d262d]" data-testid={`select-quantity-${product.id}`}>
                 <SelectValue />
               </SelectTrigger>
               <SelectContent className="bg-luxury-black border-champagne/30">
@@ -693,7 +696,7 @@ function ProductCard({ product, variants, onAddToCart, onViewDetails }: {
             <Button
               onClick={handleAddToCart}
               disabled={!selectedVariant || selectedVariant.remainingInventory === 0}
-              className="flex-1 bg-[#d8b76a] text-[#171a16] hover:bg-[#e7cc8e]"
+              className="flex-1 rounded-none bg-[#d4ad70] text-[#151a20] hover:bg-[#e3c28e]"
               data-testid={`button-add-to-cart-${product.id}`}
             >
               {selectedVariant && selectedVariant.remainingInventory > 0 ? "Add to Cart" : "Out of Stock"}
@@ -702,7 +705,7 @@ function ProductCard({ product, variants, onAddToCart, onViewDetails }: {
               variant="outline"
               size="icon"
               onClick={() => onViewDetails(product)}
-              className="bg-luxury-black/50 border-champagne/30 text-champagne hover:bg-champagne/20"
+              className="rounded-none border-[#d4ad70]/30 bg-[#12181e] text-[#d4ad70] hover:bg-[#d4ad70]/10"
               data-testid={`button-view-details-${product.id}`}
             >
               <Info className="w-4 h-4" />

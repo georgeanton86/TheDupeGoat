@@ -4,21 +4,22 @@ import { Card, CardContent } from "@/components/ui/card";
 
 export default function Policy() {
   return (
-    <div className="min-h-screen bg-white">
+    <div className="min-h-screen bg-[#151a20] text-[#f3ead8]">
       <Header />
       
-      <section className="pt-16 py-20 bg-white">
+      <section className="bg-[#151a20] pb-20 pt-36">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-12">
-            <h1 className="text-4xl font-serif font-bold text-luxury-black mb-4">Terms & Conditions</h1>
-            <p className="text-lg text-gray-600">Important information regarding your purchase</p>
+            <p className="mb-4 font-mono text-[10px] uppercase tracking-[0.25em] text-[#d4ad70]">Chicago Exclusif Parfums · The house</p>
+            <h1 className="mb-4 font-serif text-4xl font-bold text-[#f3ead8]">Terms & Conditions</h1>
+            <p className="text-lg text-[#f3ead8]/65">Important information regarding your purchase</p>
           </div>
           
-          <Card className="bg-gray-50 border-l-4 border-champagne">
+          <Card className="rounded-none border border-[#d4ad70]/30 border-l-4 border-l-[#d4ad70] bg-[#1c232a] text-[#f3ead8]">
             <CardContent className="p-8">
-              <h2 className="text-2xl font-serif font-bold text-luxury-black mb-6">NO RETURN, NO REFUND POLICY</h2>
+              <h2 className="mb-6 font-serif text-2xl font-bold text-[#d4ad70]">NO RETURN, NO REFUND POLICY</h2>
               
-              <div className="space-y-6 text-gray-700">
+              <div className="space-y-6 text-[#f3ead8]/75 [&_h3]:text-[#f3ead8]">
                 <div>
                   <h3 className="font-semibold text-luxury-black mb-2 text-lg">OVERVIEW</h3>
                   <p className="leading-relaxed">
@@ -115,8 +116,8 @@ export default function Policy() {
                 </div>
               </div>
               
-              <div className="mt-8 pt-6 border-t border-gray-200">
-                <p className="text-xs text-gray-500">
+               <div className="mt-8 border-t border-[#d4ad70]/20 pt-6">
+                 <p className="text-xs text-[#f3ead8]/50">
                   <i className="fas fa-info-circle mr-1"></i>
                   <strong>Effective Date</strong>: December 1, 2024 | <strong>Last Updated</strong>: December 1, 2024
                 </p>
