@@ -1,5 +1,6 @@
 import { type User, type InsertUser, type Product, type InsertProduct, type ProductVariant, type InsertProductVariant, type Order, type InsertOrder } from "@shared/schema";
 import { randomUUID } from "crypto";
+import { chicagoOffers } from "@shared/chicago";
 
 export interface IStorage {
   getUser(id: string): Promise<User | undefined>;
@@ -191,46 +192,34 @@ export class MemStorage implements IStorage {
       });
     });
 
-    // Chicago Exclusif's photographed bottles are previews until pricing,
-    // fulfillment options and inventory are confirmed. No variants means
-    // these products cannot enter the existing checkout.
-    const chicagoPreviews = [
-      {
-        name: "PLAYER ONE",
-        description: "Fresh meets dark. A gaming-inspired fragrance from Chicago Exclusif Parfums.",
-        notes: "Fresh meets dark",
-        imageUrl: "/chicago/player-one.jpg",
-      },
-      {
-        name: "PLAY AGAIN?",
-        description: "Same game, different level. A gaming-inspired fragrance from Chicago Exclusif Parfums.",
-        notes: "Same game, different level",
-        imageUrl: "/chicago/play-again.jpg",
-      },
-      {
-        name: "HALF LIFE",
-        description: "A fragrance after dark from Chicago Exclusif Parfums.",
-        notes: "A fragrance after dark",
-        imageUrl: "/chicago/half-life.jpg",
-      },
-    ];
-
-    for (const preview of chicagoPreviews) {
-      const id = randomUUID();
-      this.products.set(id, {
-        id,
-        name: preview.name,
-        description: preview.description,
-        notes: preview.notes,
-        topNotes: "To be confirmed",
-        middleNotes: "To be confirmed",
-        baseNotes: "To be confirmed",
-        type: "Fragrance preview",
-        imageUrl: preview.imageUrl,
+    for (const offer of chicagoOffers) {
+      this.products.set(offer.productId, {
+        id: offer.productId,
+        name: offer.name,
+        description: "A gaming-inspired Chicago Exclusif fragrance, offered as a 30 mL decant.",
+        notes: "Gaming collection",
+        topNotes: "",
+        middleNotes: "",
+        baseNotes: "",
+        type: "Fragrance decant",
+        imageUrl: offer.imageUrl,
         bibleVerse: "",
         verseReference: "",
         isActive: true,
         releaseDate: new Date(),
+        createdAt: new Date(),
+      });
+      this.productVariants.set(offer.variantId, {
+        id: offer.variantId,
+        productId: offer.productId,
+        sku: offer.sku,
+        size: "30 mL",
+        concentration: "Fragrance decant",
+        price: "59.99",
+        totalInventory: 25,
+        remainingInventory: 25,
+        soldCount: 0,
+        isActive: true,
         createdAt: new Date(),
       });
     }

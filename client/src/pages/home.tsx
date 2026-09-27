@@ -32,7 +32,7 @@ export default function Home() {
               <div className="ml-auto max-w-[350px] border-l border-[#d8b76a]/60 pl-6 pb-2">
                 <p className="font-mono text-[10px] uppercase tracking-[0.25em] text-[#d4ad70]">41° 52′ 55″ N · 01 / 03</p>
                 <p className="mt-3 font-serif text-2xl">The city never plays it safe.</p>
-                <p className="mt-2 text-sm leading-6 text-[#f3ead8]/65">Player One. Play Again? Half Life. Three real-bottle previews from our gaming-inspired Chicago originals.</p>
+                <p className="mt-2 text-sm leading-6 text-[#f3ead8]/65">Player One. Play Again? Half Life. Three 30 mL gaming-inspired fragrance decants, offered individually or as a set.</p>
               </div>
             </div>
           </div>
@@ -41,8 +41,8 @@ export default function Home() {
 
         <section className="border-y border-[#d4ad70]/30 bg-[#d4ad70] text-[#151a20]">
           <div className="mx-auto flex max-w-7xl flex-col gap-2 px-5 py-4 sm:px-8 md:flex-row md:items-center md:justify-between">
-            <p className="text-xs font-semibold uppercase tracking-[0.17em]">Three gaming collection bottle previews</p>
-            <p className="text-xs">Shown for collection discovery only. Not currently offered for sale.</p>
+            <p className="text-xs font-semibold uppercase tracking-[0.17em]">The Gaming Collection · 30 mL decants</p>
+            <p className="text-xs">Reference bottle photos; fragrances ship in different decant bottles.</p>
           </div>
         </section>
 
@@ -58,10 +58,10 @@ export default function Home() {
             <div className="max-w-2xl">
               <p className="text-lg leading-8 text-[#f3ead8]/80">Chicago Exclusif Parfums is the parent house. Its point of view is broad by design: fragrance can be playful and unexpected, or richly symbolic and spiritual.</p>
               <div className="mt-9 grid gap-5 sm:grid-cols-2">
-                <div className="border-t border-[#cf3e68]/50 pt-5"><Gamepad2 className="h-5 w-5 text-[#ed6689]" /><h3 className="mt-4 font-serif text-2xl">Chicago originals</h3><p className="mt-2 text-sm leading-6 text-[#f3ead8]/60">The gaming collection brings arcade color and a knowing sense of play to the fragrance shelf. Current bottle photos are previews, not purchase listings.</p></div>
+                <div className="border-t border-[#cf3e68]/50 pt-5"><Gamepad2 className="h-5 w-5 text-[#ed6689]" /><h3 className="mt-4 font-serif text-2xl">Chicago originals</h3><p className="mt-2 text-sm leading-6 text-[#f3ead8]/60">The gaming collection brings arcade color to the fragrance shelf. Available as 30 mL decants; bottle images are illustrative, not the packaging you receive.</p></div>
                 <div className="border-t border-[#d8b76a]/50 pt-5"><Landmark className="h-5 w-5 text-[#d8b76a]" /><h3 className="mt-4 font-serif text-2xl">RVLTN Parfums</h3><p className="mt-2 text-sm leading-6 text-[#f3ead8]/60">A distinct collection within the house: The Seven Seals, a spiritual fragrance series inspired by Revelation, with its own identity and purchasable offerings.</p></div>
               </div>
-              <Link href="/shop" className="mt-8 inline-flex items-center gap-2 text-sm font-semibold text-[#d8b76a] hover:text-[#f3ead8]">Shop Seven Seals and explore previews <ArrowUpRight className="h-4 w-4" /></Link>
+              <Link href="/shop" className="mt-8 inline-flex items-center gap-2 text-sm font-semibold text-[#d8b76a] hover:text-[#f3ead8]">Shop both collections <ArrowUpRight className="h-4 w-4" /></Link>
             </div>
           </div>
         </section>
@@ -79,9 +79,9 @@ export default function Home() {
             <h2 className="mt-3 text-center font-serif text-4xl">Questions, answered.</h2>
             <Accordion type="single" collapsible className="mt-10">
               <AccordionItem value="collections" className="border-[#f3ead8]/15"><AccordionTrigger className="text-left text-[#f3ead8] hover:text-[#d8b76a]">What is Chicago Exclusif Parfums?</AccordionTrigger><AccordionContent className="leading-6 text-[#f3ead8]/65">Chicago Exclusif Parfums is the parent fragrance house. RVLTN Parfums remains a distinct collection under the house, alongside the Chicago gaming-inspired originals.</AccordionContent></AccordionItem>
-              <AccordionItem value="preview" className="border-[#f3ead8]/15"><AccordionTrigger className="text-left text-[#f3ead8] hover:text-[#d8b76a]">Can I buy Player One, Play Again? or Half Life?</AccordionTrigger><AccordionContent className="leading-6 text-[#f3ead8]/65">Not at this time. Their actual bottle photos are shown as collection previews only; they are not available to purchase and have no listed price, variants, or availability.</AccordionContent></AccordionItem>
+              <AccordionItem value="preview" className="border-[#f3ead8]/15"><AccordionTrigger className="text-left text-[#f3ead8] hover:text-[#d8b76a]">Can I buy Player One, Play Again? or Half Life?</AccordionTrigger><AccordionContent className="leading-6 text-[#f3ead8]/65">Yes. Each is available as a 30 mL decant for $59.99, or get one of each for $150. Bottle photos are for reference; your fragrance ships in a different decant bottle.</AccordionContent></AccordionItem>
               <AccordionItem value="seven-seals" className="border-[#f3ead8]/15"><AccordionTrigger className="text-left text-[#f3ead8] hover:text-[#d8b76a]">Are RVLTN and the gaming collection the same line?</AccordionTrigger><AccordionContent className="leading-6 text-[#f3ead8]/65">No. RVLTN’s Seven Seals is a distinct spiritual fragrance collection. The gaming fragrances are Chicago Exclusif originals and are not presented as biblical or part of Seven Seals.</AccordionContent></AccordionItem>
-              <AccordionItem value="shipping" className="border-[#f3ead8]/15"><AccordionTrigger className="text-left text-[#f3ead8] hover:text-[#d8b76a]">Where can I find current purchase details?</AccordionTrigger><AccordionContent className="leading-6 text-[#f3ead8]/65">Visit the shop to see currently purchasable RVLTN products, available variants, and current pricing. The Chicago originals are clearly marked as previews.</AccordionContent></AccordionItem>
+              <AccordionItem value="shipping" className="border-[#f3ead8]/15"><AccordionTrigger className="text-left text-[#f3ead8] hover:text-[#d8b76a]">Where can I find current purchase details?</AccordionTrigger><AccordionContent className="leading-6 text-[#f3ead8]/65">Visit the shop for available variants, current prices, and inventory across both collections.</AccordionContent></AccordionItem>
               <AccordionItem value="support" className="border-[#f3ead8]/15"><AccordionTrigger className="text-left text-[#f3ead8] hover:text-[#d8b76a]">How do I get in touch?</AccordionTrigger><AccordionContent className="leading-6 text-[#f3ead8]/65">Email info@rvltnparfums.com and the team will be glad to help.</AccordionContent></AccordionItem>
             </Accordion>
             <div className="mt-10 text-center"><Link href="/shop" className="inline-flex items-center gap-2 border border-[#d8b76a]/50 px-6 py-3 text-xs font-semibold uppercase tracking-[0.16em] text-[#d8b76a] transition-colors hover:bg-[#d8b76a] hover:text-[#171a16]">Browse the shop <ArrowUpRight className="h-4 w-4" /></Link></div>

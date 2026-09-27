@@ -1,6 +1,7 @@
 import { Pool } from "pg";
 import type Stripe from "stripe";
 import { storage } from "./storage";
+import { chicagoSetDiscountCents, countChicagoSets, isChicagoVariant } from "@shared/chicago";
 
 if (!process.env.DATABASE_URL) throw new Error("DATABASE_URL is required for orders");
 const pool = new Pool({ connectionString: process.env.DATABASE_URL });
@@ -27,9 +28,11 @@ export async function priceCart(items: CartLine[], promoCode?: string) {
       throw new Error("Insufficient inventory");
     subtotalCents += Math.round(Number(variant.price) * 100) * item.quantity;
   }
-  const discountCents = promoCode?.toUpperCase() === "WELCOME10" ? Math.round(subtotalCents * 0.1) : 0;
+  const setDiscountCents = countChicagoSets(items) * chicagoSetDiscountCents;
+  const discountCents = promoCode?.toUpperCase() === "WELCOME10"
+    ? Math.round((subtotalCents - setDiscountCents) * 0.1) : 0;
   const shippingCents = subtotalCents >= 10000 ? 0 : 899;
-  return subtotalCents - discountCents + shippingCents;
+  return subtotalCents - setDiscountCents - discountCents + shippingCents;
 }
 
 export async function recordPaidOrder(intent: Stripe.PaymentIntent) {
@@ -43,7 +46,8 @@ export async function recordPaidOrder(intent: Stripe.PaymentIntent) {
   if (!items || !Array.isArray(items) || !items.length || !email || !shipping?.name ||
       !shipping.address?.line1 || !shipping.address?.city ||
       !shipping.address?.postal_code || !shipping.address?.country ||
-      intent.metadata.policyAcknowledged !== "true") {
+       intent.metadata.policyAcknowledged !== "true" ||
+       (items.some(item => isChicagoVariant(item.variantId)) && intent.metadata.decantAcknowledged !== "true")) {
     throw new Error("Payment is missing order details");
   }
   // Stripe metadata is written by our server when creating the intent.

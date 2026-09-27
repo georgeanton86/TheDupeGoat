@@ -4,6 +4,7 @@ import { storage } from "./storage";
 import { z } from "zod";
 import { getStripeClient, getStripePublishableKey } from "./stripeClient";
 import { getPaidQuantities, priceCart, recordPaidOrder } from "./payments";
+import { isChicagoVariant } from "@shared/chicago";
 
 const checkoutSchema = z.object({
   items: z.array(z.object({
@@ -17,6 +18,7 @@ const checkoutSchema = z.object({
   customerEmail: z.string().email().max(254),
   customerName: z.string().trim().min(1).max(100),
   policyAcknowledged: z.literal(true),
+  decantAcknowledged: z.boolean().optional(),
   address: z.object({
     line1: z.string().trim().min(1).max(200),
     line2: z.string().trim().max(200).optional(),
@@ -128,6 +130,8 @@ export async function registerRoutes(app: Express): Promise<Server> {
       const parsed = checkoutSchema.safeParse(req.body);
       if (!parsed.success) return res.status(400).json({ message: "Invalid checkout details", details: parsed.error.flatten() });
       const { items, promoCode, customerEmail, customerName, address } = parsed.data;
+      if (items.some(item => isChicagoVariant(item.variantId)) && parsed.data.decantAcknowledged !== true)
+        return res.status(400).json({ message: "Please acknowledge the decant bottle disclosure" });
       const amount = await priceCart(items, promoCode ?? undefined);
       const stripe = await getStripeClient();
       const paymentIntent = await stripe.paymentIntents.create({
@@ -140,6 +144,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
           items: JSON.stringify(items),
           promoCode: promoCode?.toUpperCase() === "WELCOME10" ? "WELCOME10" : "",
           policyAcknowledged: "true",
+          decantAcknowledged: parsed.data.decantAcknowledged === true ? "true" : "false",
         },
       });
       res.json({ clientSecret: paymentIntent.client_secret, total: amount / 100 });

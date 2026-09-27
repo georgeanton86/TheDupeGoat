@@ -58,3 +58,17 @@ mtime_ms = 1790453501747
 storage_uri = "gcs://replit-rams-assets-spock/rams/assets/repl:a0b66204-d128-4455-bac5-81b2f9545d58/ee9cd576-b5fb-47bf-a87a-c0f0dcd9c71a/2134dee4-aebb-41a0-b13b-20be50c11937"
 storage_version_token = "1790453522206876"
 content_type = "video/mp4"
+
+[[outputs]]
+id = "F3VP2svsnatsjlH1VY-gc"
+uri = "file://attached_assets/generated_images/chicago-gaming-collection-preview.jpg"
+type = "image"
+title = "Chicago Gaming Collection — updated product photos"
+description = "Clean studio-style presentation made from your actual bottle photos. Labels are preserved; the site still clearly explains that shipped decant bottles may differ."
+logical_id = "2ef572c0-7dfe-4e1b-b853-e0aa43d109e3"
+content_hash = "sha256:b03bab61037d2b7ddc75047f97f0bbe1fea6335b7d936e2b64f4c0d242dc8073"
+size = 236686
+mtime_ms = 1790551829756
+storage_uri = "gcs://replit-rams-assets-spock/rams/assets/repl:a0b66204-d128-4455-bac5-81b2f9545d58/2ef572c0-7dfe-4e1b-b853-e0aa43d109e3/d1a07f32-fb9e-4ae4-be3f-5bb48f280f03"
+storage_version_token = "1790551836110060"
+content_type = "image/jpeg"

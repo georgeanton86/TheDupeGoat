@@ -1,1 +1,2 @@
 - [Stripe connector credentials](stripe-connector-credentials.md) — the connected Stripe proxy may not expose SDK credentials; do not assume its settings contain a secret key.
+- [Gaming bottle imagery](gaming-bottle-imagery.md) — preserve the supplied label artwork from real photos when polishing product imagery; keep decant packaging distinct.

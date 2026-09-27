@@ -14,6 +14,7 @@ import Header from "@/components/header";
 import Footer from "@/components/footer";
 import { Loader2, CheckCircle } from "lucide-react";
 import type { Product, ProductVariant } from "@shared/schema";
+import { chicagoSetDiscountCents, countChicagoSets, decantDisclosure, isChicagoVariant } from "@shared/chicago";
 
 interface CartItem {
   variant: ProductVariant;
@@ -132,6 +133,7 @@ export default function StripeCheckout() {
   const [customerEmail, setCustomerEmail] = useState("");
   const [customerName, setCustomerName] = useState("");
   const [policyAcknowledged, setPolicyAcknowledged] = useState(false);
+  const [decantAcknowledged, setDecantAcknowledged] = useState(false);
   const [address, setAddress] = useState({
     line1: "", line2: "", city: "", state: "", postal_code: "", country: "US",
   });
@@ -151,6 +153,8 @@ export default function StripeCheckout() {
   const { data: variants } = useQuery<ProductVariant[]>({
     queryKey: ["/api/product-variants"],
   });
+  const hasChicagoDecant = cartItems.some(item => isChicagoVariant(item.variant.id));
+  const setCount = countChicagoSets(cartItems.map(item => ({ variantId: item.variant.id, quantity: item.quantity })));
 
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
@@ -232,12 +236,16 @@ export default function StripeCheckout() {
       setError("Please accept the no-returns policy before paying.");
       return;
     }
+    if (hasChicagoDecant && !decantAcknowledged) {
+      setError("Please acknowledge that the decant bottle differs from the illustration.");
+      return;
+    }
     setIsPreparing(true);
     setError("");
     try {
       const response = await apiRequest("POST", "/api/create-payment-intent", {
         items: cartItems.map(item => ({ variantId: item.variant.id, quantity: item.quantity })),
-        promoCode, customerEmail, customerName, policyAcknowledged, address,
+        promoCode, customerEmail, customerName, policyAcknowledged, decantAcknowledged, address,
       });
       const data = await response.json();
       const configResponse = await fetch("/api/stripe/config");
@@ -322,9 +330,11 @@ export default function StripeCheckout() {
                 <div className="space-y-2 pb-4 border-b">
                   <h3 className="font-semibold">Order summary</h3>
                   {cartItems.map(item => <div key={item.variant.id} className="flex justify-between text-sm">
-                    <span>{item.product.name} × {item.quantity}</span>
+                     <span>{item.product.name} ({item.variant.size} {item.variant.concentration}) × {item.quantity}</span>
                     <span>${(Number(item.variant.price) * item.quantity).toFixed(2)}</span>
                   </div>)}
+                   {setCount > 0 && <div className="flex justify-between text-sm text-green-700"><span>Gaming set savings × {setCount}</span><span>-${(setCount * chicagoSetDiscountCents / 100).toFixed(2)}</span></div>}
+                   {hasChicagoDecant && <p className="mt-3 border-l-2 border-[#dc7895] pl-3 text-sm text-gray-700">{decantDisclosure}</p>}
                   <p className="text-sm text-gray-600">Shipping and discount are included in the final payment total.</p>
                 </div>
                 <div><Label htmlFor="name">Full name</Label><Input id="name" required value={customerName} onChange={e => setCustomerName(e.target.value)} /></div>
@@ -343,6 +353,10 @@ export default function StripeCheckout() {
                   <Checkbox id="policy" checked={policyAcknowledged} onCheckedChange={checked => setPolicyAcknowledged(checked === true)} />
                   <label htmlFor="policy" className="text-sm">I accept the <a href="/policy" target="_blank" rel="noopener noreferrer" className="underline">no-returns policy</a>. All sales are final.</label>
                 </div>
+                {hasChicagoDecant && <div className="flex items-start gap-2">
+                  <Checkbox id="decant" checked={decantAcknowledged} onCheckedChange={checked => { setDecantAcknowledged(checked === true); setError(""); }} />
+                  <label htmlFor="decant" className="text-sm">I understand the pictured bottle is for reference and my fragrance will arrive in a different 30 mL decant bottle.</label>
+                </div>}
                 <Button type="submit" disabled={isPreparing || !policyAcknowledged} className="w-full">
                   {isPreparing ? "Preparing payment..." : "Continue to payment"}
                 </Button>

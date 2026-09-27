@@ -3,6 +3,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Link } from "wouter";
 import type { Product } from "@shared/schema";
+import { chicagoBottleImages, decantDisclosure } from "@shared/chicago";
 import { ArrowUpRight } from "lucide-react";
 import equusAlbusImage from "@assets/generated_images/Badass_Equus_Albus_bottle_bde8545f.png";
 import paxObscuraImage from "@assets/generated_images/Pax_Obscura_luxury_bottle_c6928f90.png";
@@ -13,11 +14,6 @@ import terraTremorImage from "@assets/generated_images/Terra_Tremor_luxury_bottl
 import sabbatumImage from "@assets/generated_images/Sabbatum_luxury_bottle_b96d831e.png";
 import luxAeternaImage from "@assets/generated_images/Lux_Aeterna_luxury_bottle_d2b6357e.png";
 
-const chicagoBottle: Record<string, string> = {
-  "PLAYER ONE": "/chicago/player-one.jpg",
-  "PLAY AGAIN?": "/chicago/play-again.jpg",
-  "HALF LIFE": "/chicago/half-life.jpg",
-};
 const rvltnBottle: Record<string, string> = {
   "EQUUS ALBUS": equusAlbusImage, "PAX OBSCURA": paxObscuraImage, FAMES: famesImage,
   MORTEM: mortemImage, "VOX CAELI": voxCaeliImage, "TERRA TREMOR": terraTremorImage,
@@ -27,8 +23,8 @@ const rvltnBottle: Record<string, string> = {
 export default function ProductGallery() {
   const { data: products, isLoading, isError, refetch } = useQuery<Product[]>({ queryKey: ["/api/products"] });
   const active = products?.filter((product) => product.isActive) ?? [];
-  const gamers = active.filter((product) => Boolean(chicagoBottle[product.name.toUpperCase()]));
-  const seals = active.filter((product) => !chicagoBottle[product.name.toUpperCase()]);
+  const gamers = active.filter((product) => Boolean(chicagoBottleImages[product.name.toUpperCase()]));
+  const seals = active.filter((product) => !chicagoBottleImages[product.name.toUpperCase()]);
 
   if (isLoading) return <section className="mx-auto max-w-7xl px-5 py-20 sm:px-8" aria-label="Loading collections"><div className="h-8 w-56 animate-pulse bg-[#d8b76a]/15" /><div className="mt-8 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">{[0,1,2].map((n) => <div key={n} className="h-80 animate-pulse bg-white/5" />)}</div></section>;
   if (isError) return <section className="mx-auto max-w-7xl px-5 py-20 text-center text-[#f3ead8]"><p>Collections could not be loaded just now.</p><Button onClick={() => refetch()} variant="outline" className="mt-4 border-[#d8b76a]/50">Try again</Button></section>;
@@ -43,18 +39,16 @@ export default function ProductGallery() {
       {gamers.length > 0 && <div className="mb-16">
           <div className="mb-6 flex flex-wrap items-end justify-between gap-3">
            <div><p className="font-mono text-[10px] uppercase tracking-[0.24em] text-[#dc7895]">Chicago Exclusif originals · 01—03</p><h3 className="mt-2 font-serif text-3xl text-[#f3ead8] sm:text-4xl">The Gaming Collection</h3></div>
-           <Badge className="rounded-none border border-[#dc7895]/40 bg-[#dc7895]/10 text-[#f1a0b5]">Actual bottle photos · previews only</Badge>
+            <Badge className="rounded-none border border-[#dc7895]/40 bg-[#dc7895]/10 text-[#f1a0b5]">30 mL decants · $59.99 each</Badge>
         </div>
         <div className="grid gap-5 md:grid-cols-3">
           {gamers.map((product, index) => <article key={product.id} className="group overflow-hidden border border-white/10 bg-[#181f26] transition-all duration-500 hover:-translate-y-1 hover:border-[#dc7895]/55" style={{ animationDelay: `${index * 90}ms` }}>
-            <div className="noir-grain relative flex h-[310px] items-center justify-center overflow-hidden bg-[#202a32] p-5">
-              <div className="absolute inset-0 bg-[url('/chicago/chicago-noir-skyline.jpg')] bg-cover bg-center opacity-[0.17]" />
-              <div className="absolute inset-0 opacity-60" style={{ background: "radial-gradient(ellipse at 50% 62%, rgba(88,130,145,.33), transparent 65%)" }} />
-              <img src={chicagoBottle[product.name.toUpperCase()]} alt={`${product.name} actual fragrance bottle photograph`} loading="lazy" className="relative h-full w-full object-contain transition-transform duration-500 group-hover:scale-[1.035]" />
-              <span className="absolute left-4 top-4 border border-[#dc7895]/55 bg-[#171a20]/90 px-3 py-1 font-mono text-[9px] font-semibold uppercase tracking-[0.15em] text-[#f1a0b5]">Not for sale</span>
+             <div className="noir-grain relative flex h-[310px] items-center justify-center overflow-hidden bg-[#1b2732] p-5">
+              <img src={chicagoBottleImages[product.name.toUpperCase()]} alt={`Reference photo of ${product.name}; shipped decant bottle differs`} loading="lazy" className="relative h-full w-full object-contain transition-transform duration-500 group-hover:scale-[1.035]" />
+              <span className="absolute left-4 top-4 border border-[#dc7895]/55 bg-[#171a20]/90 px-3 py-1 font-mono text-[9px] font-semibold uppercase tracking-[0.15em] text-[#f1a0b5]">Reference photo · decant ships</span>
             </div>
-            <div className="p-5"><p className="font-mono text-[9px] uppercase tracking-[0.2em] text-[#dc7895]">Chicago original · 0{index + 1}</p><h4 className="mt-2 font-serif text-2xl text-[#f3ead8]">{product.name}</h4><p className="mt-2 line-clamp-2 text-sm leading-6 text-[#f3ead8]/60">{product.description}</p>
-              <Link href="/shop" className="mt-5 inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.16em] text-[#d4ad70]">View collection <ArrowUpRight className="h-4 w-4" /></Link>
+             <div className="p-5"><p className="font-mono text-[9px] uppercase tracking-[0.2em] text-[#dc7895]">Chicago original · 0{index + 1}</p><h4 className="mt-2 font-serif text-2xl text-[#f3ead8]">{product.name}</h4><p className="mt-2 text-sm leading-6 text-[#f3ead8]/70">{decantDisclosure}</p>
+               <Link href="/shop" className="mt-5 inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.16em] text-[#d4ad70]">Shop 30 mL decants <ArrowUpRight className="h-4 w-4" /></Link>
             </div>
           </article>)}
         </div>

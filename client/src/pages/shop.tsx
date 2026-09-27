@@ -10,6 +10,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Input } from "@/components/ui/input";
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
 import type { Product, ProductVariant } from "@shared/schema";
+import { chicagoBottleImages, chicagoOffers, chicagoSetDiscountCents, countChicagoSets, decantDisclosure } from "@shared/chicago";
 import { ShoppingCart, Tag, Truck, Info } from "lucide-react";
 import ProductDetailModal from "@/components/product-detail-modal";
 import equusAlbusImage from "@assets/generated_images/Badass_Equus_Albus_bottle_bde8545f.png";
@@ -20,12 +21,6 @@ import voxCaeliImage from "@assets/generated_images/Vox_Caeli_luxury_bottle_6b8e
 import terraTremorImage from "@assets/generated_images/Terra_Tremor_luxury_bottle_27a4bc2e.png";
 import sabbatumImage from "@assets/generated_images/Sabbatum_luxury_bottle_b96d831e.png";
 import luxAeternaImage from "@assets/generated_images/Lux_Aeterna_luxury_bottle_d2b6357e.png";
-
-const chicagoBottleImages: Record<string, string> = {
-  "PLAYER ONE": "/chicago/player-one.jpg",
-  "PLAY AGAIN?": "/chicago/play-again.jpg",
-  "HALF LIFE": "/chicago/half-life.jpg",
-};
 
 interface CartItem {
   variant: ProductVariant;
@@ -88,10 +83,13 @@ export default function Shop() {
     }
   };
 
-  const subtotal = cart.reduce((sum, item) => sum + (parseFloat(item.variant.price) * item.quantity), 0);
-  const discount = promoApplied ? subtotal * 0.1 : 0;
+  const subtotalCents = cart.reduce((sum, item) => sum + Math.round(Number(item.variant.price) * 100) * item.quantity, 0);
+  const subtotal = subtotalCents / 100;
+  const setCount = countChicagoSets(cart.map(item => ({ variantId: item.variant.id, quantity: item.quantity })));
+  const setDiscount = (setCount * chicagoSetDiscountCents) / 100;
+  const discount = promoApplied ? Math.round((subtotalCents - setCount * chicagoSetDiscountCents) * 0.1) / 100 : 0;
   const shipping = subtotal >= 100 ? 0 : 8.99;
-  const total = subtotal - discount + shipping;
+  const total = subtotal - setDiscount - discount + shipping;
 
   const handleCheckout = () => {
     // Store cart data in localStorage for Stripe checkout page
@@ -123,6 +121,29 @@ export default function Shop() {
   const chicagoProducts = activeProducts.filter((p) => Boolean(chicagoBottleImages[p.name.toUpperCase()]));
   const rvltnProducts = activeProducts.filter((p) => !chicagoBottleImages[p.name.toUpperCase()]);
   const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
+  const setItems = chicagoOffers.map(offer => {
+    const product = chicagoProducts.find(p => p.id === offer.productId);
+    const variant = variants?.find(v => v.id === offer.variantId);
+    return product && variant && variant.remainingInventory > 0 ? { product, variant } : null;
+  });
+  const setAvailable = setItems.every(Boolean);
+  const addSetToCart = () => {
+    if (!setAvailable) return;
+    setCart(previous => {
+      const next = [...previous];
+      for (const item of setItems) {
+        if (!item) return previous;
+        const existing = next.find(line => line.variant.id === item.variant.id);
+        if (existing) {
+          next[next.indexOf(existing)] = { ...existing, quantity: existing.quantity + 1 };
+        } else {
+          next.push({ ...item, quantity: 1 });
+        }
+      }
+      return next;
+    });
+    setIsCartOpen(true);
+  };
 
   if (productsError || variantsError) {
     return <div className="min-h-screen bg-[#171a16] text-[#f3ead8]"><Header cartCount={totalItems} onCartClick={() => setIsCartOpen(true)} /><main className="mx-auto max-w-3xl px-5 py-40 text-center"><p className="text-[10px] uppercase tracking-[0.25em] text-[#d8b76a]">A brief pause</p><h1 className="mt-3 font-serif text-4xl">The shop could not load.</h1><p className="mt-4 text-sm text-white/65">Please try again. Your cart and checkout are unchanged.</p><Button onClick={() => { refetchProducts(); refetchVariants(); }} className="mt-7 bg-[#d8b76a] text-[#171a16] hover:bg-[#e7cc8e]">Retry loading</Button></main><Footer /></div>;
@@ -140,7 +161,7 @@ export default function Shop() {
           <div className="mb-8 max-w-3xl">
             <p className="font-mono text-[10px] font-semibold uppercase tracking-[0.28em] text-[#d4ad70]">Chicago Exclusif Parfums · The house</p>
             <h1 className="mt-3 font-serif text-5xl leading-[.98] sm:text-7xl">Two worlds.<br /><span className="text-[#d4ad70]">Chicago after dark.</span></h1>
-            <p className="mt-5 max-w-2xl text-base leading-7 text-white/75">Explore actual-bottle previews from Chicago Exclusif and shop RVLTN Parfums’ distinct Seven Seals collection.</p>
+            <p className="mt-5 max-w-2xl text-base leading-7 text-white/75">Shop 30 mL Chicago Exclusif fragrance decants and RVLTN Parfums’ distinct Seven Seals collection.</p>
             <div className="mt-6 flex flex-wrap items-center gap-x-6 gap-y-3 text-xs">
               <div className="flex items-center gap-2 text-white">
                 <Truck className="w-5 h-5" />
@@ -159,10 +180,14 @@ export default function Shop() {
         {chicagoProducts.length > 0 && <section className="mb-16">
           <div className="mb-7 flex flex-col justify-between gap-3 border-b border-[#dc7895]/35 pb-5 sm:flex-row sm:items-end">
             <div><p className="font-mono text-[10px] uppercase tracking-[0.25em] text-[#dc7895]">Chicago Exclusif originals</p><h2 className="mt-2 font-serif text-3xl sm:text-4xl">The Gaming Collection</h2></div>
-            <p className="max-w-sm text-sm leading-6 text-white/60">Actual bottle photographs. These are collection previews only, not for sale.</p>
+            <p className="max-w-sm text-sm leading-6 text-white/70">30 mL decants · $59.99 each · 25 available per fragrance. Other sizes sold out. Bottle photos are for reference; shipped decants look different.</p>
+          </div>
+          <div className="mb-6 flex flex-wrap items-center justify-between gap-3 border border-[#dc7895]/35 bg-[#dc7895]/10 p-4">
+            <p className="text-sm text-[#f3ead8]"><strong>The full gaming set · $150 · free shipping</strong><span className="block text-white/65">One 30 mL decant of each fragrance. $29.97 less than buying separately; applied automatically in the cart.</span></p>
+            <Button onClick={addSetToCart} disabled={!setAvailable} className="rounded-none bg-[#dc7895] text-[#151a20] hover:bg-[#ef9ab1]" data-testid="button-add-chicago-set">{setAvailable ? "Add the set — $150" : "Set sold out"}</Button>
           </div>
           <div className="grid gap-5 md:grid-cols-2 xl:grid-cols-3">
-            {chicagoProducts.map((product) => <ProductCard key={product.id} product={product} variants={[]} onAddToCart={addToCart} onViewDetails={(item) => { setSelectedProduct(item); setIsDetailModalOpen(true); }} />)}
+            {chicagoProducts.map((product) => <ProductCard key={product.id} product={product} variants={variants?.filter(v => v.productId === product.id) || []} onAddToCart={addToCart} onViewDetails={(item) => { setSelectedProduct(item); setIsDetailModalOpen(true); }} />)}
           </div>
         </section>}
         <section>
@@ -236,6 +261,7 @@ export default function Shop() {
                           </div>
                         ))}
                       </div>
+                      {cart.some(item => Boolean(chicagoBottleImages[item.product.name])) && <p className="mb-3 text-xs text-gray-600">{decantDisclosure}</p>}
 
                       {/* Promo Code */}
                       <div className="mb-4 pb-4 border-b">
@@ -267,6 +293,7 @@ export default function Shop() {
                           <span>Subtotal:</span>
                           <span>${subtotal.toFixed(2)}</span>
                         </div>
+                        {setCount > 0 && <div className="flex justify-between text-green-700"><span>Gaming set savings × {setCount}:</span><span>-${setDiscount.toFixed(2)}</span></div>}
                         {promoApplied && (
                           <div className="flex justify-between text-green-600">
                             <span>Discount (10%):</span>
@@ -350,6 +377,7 @@ export default function Shop() {
                     </div>
                   ))}
                 </div>
+                  {cart.some(item => Boolean(chicagoBottleImages[item.product.name])) && <p className="mb-3 text-xs text-gray-600">{decantDisclosure}</p>}
 
                 <div className="mb-4 pb-4 border-b">
                   <div className="flex gap-2">
@@ -378,6 +406,7 @@ export default function Shop() {
                     <span>Subtotal:</span>
                     <span>${subtotal.toFixed(2)}</span>
                   </div>
+                  {setCount > 0 && <div className="flex justify-between text-green-700"><span>Gaming set savings × {setCount}:</span><span>-${setDiscount.toFixed(2)}</span></div>}
                   {promoApplied && (
                     <div className="flex justify-between text-green-600">
                       <span>Discount (10%):</span>
@@ -471,6 +500,7 @@ export default function Shop() {
                       </div>
                     ))}
                   </div>
+                  {cart.some(item => Boolean(chicagoBottleImages[item.product.name])) && <p className="mb-3 text-xs text-gray-600">{decantDisclosure}</p>}
 
                   {/* Promo Code */}
                   <div className="mb-4 pb-4 border-b">
@@ -503,6 +533,7 @@ export default function Shop() {
                       <span>Subtotal:</span>
                       <span>${subtotal.toFixed(2)}</span>
                     </div>
+                    {setCount > 0 && <div className="flex justify-between text-green-700"><span>Gaming set savings × {setCount}:</span><span>-${setDiscount.toFixed(2)}</span></div>}
                     {promoApplied && (
                       <div className="flex justify-between text-green-600">
                         <span>Discount (10%):</span>
@@ -560,7 +591,7 @@ function ProductCard({ product, variants, onAddToCart, onViewDetails }: {
   onAddToCart: (variant: ProductVariant, product: Product, quantity: number) => void;
   onViewDetails: (product: Product) => void;
 }) {
-  const isChicagoPreview = Boolean(chicagoBottleImages[product.name.toUpperCase()]);
+  const isChicago = Boolean(chicagoBottleImages[product.name.toUpperCase()]);
   const [quantity, setQuantity] = useState(1);
   const [selectedVariantId, setSelectedVariantId] = useState(variants[0]?.id || "");
 
@@ -597,19 +628,18 @@ function ProductCard({ product, variants, onAddToCart, onViewDetails }: {
   };
   
   return (
-    <Card className={`overflow-hidden rounded-none border transition-all duration-500 hover:-translate-y-1 ${isChicagoPreview ? "border-[#dc7895]/25 bg-[#192027] hover:border-[#dc7895]/65" : "border-[#d4ad70]/20 bg-[#192027] hover:border-[#d4ad70]/55"}`}>
+    <Card className={`overflow-hidden rounded-none border transition-all duration-500 hover:-translate-y-1 ${isChicago ? "border-[#dc7895]/25 bg-[#192027] hover:border-[#dc7895]/65" : "border-[#d4ad70]/20 bg-[#192027] hover:border-[#d4ad70]/55"}`}>
       <CardContent className="p-0">
-        <div className={`noir-grain relative flex h-80 items-center justify-center overflow-hidden p-5 ${isChicagoPreview ? "bg-[#202a32]" : "bg-[#242a2d]"}`}>
-          <div className={`absolute inset-0 opacity-[0.16] ${isChicagoPreview ? "bg-[url('/chicago/chicago-noir-skyline.jpg')] bg-cover bg-center" : "bg-[radial-gradient(ellipse_at_50%_65%,rgba(177,139,78,.42),transparent_67%)]"}`} />
+        <div className={`noir-grain relative flex h-80 items-center justify-center overflow-hidden p-5 ${isChicago ? "bg-[#1b2732]" : "bg-[#242a2d]"}`}>
+          {!isChicago && <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_50%_65%,rgba(177,139,78,.42),transparent_67%)] opacity-[0.16]" />}
           <img 
             src={getBottleImage()} 
-            alt={`${product.name} fragrance bottle`}
-            className={`relative h-full w-full object-contain transition-transform duration-500 group-hover:scale-[1.035] ${isChicagoPreview ? "" : ""}`}
+            alt={isChicago ? `Reference photo of ${product.name}; shipped decant bottle differs` : `${product.name} fragrance bottle`}
+            className="relative h-full w-full object-contain transition-transform duration-500 group-hover:scale-[1.035]"
             data-testid={`img-product-${product.id}`}
           />
-          {isChicagoPreview ? (
-            <Badge className="absolute left-3 top-3 rounded-none border border-[#dc7895]/50 bg-[#171a20]/90 font-mono text-[9px] uppercase tracking-wide text-[#f1a0b5]">Preview only · not for sale</Badge>
-          ) : selectedVariant && (
+          {isChicago && <Badge className="absolute left-3 top-3 rounded-none border border-[#dc7895]/50 bg-[#171a20]/90 font-mono text-[9px] uppercase tracking-wide text-[#f1a0b5]">Reference photo · decant ships</Badge>}
+          {selectedVariant && (
             <Badge 
               variant={isLowStock ? "destructive" : "secondary"} 
               className={`absolute top-3 right-3 rounded-none text-xs border-0 ${isLowStock ? 'bg-[#a94849] text-white' : 'bg-[#d4ad70] text-[#151a20]'}`}
@@ -621,22 +651,14 @@ function ProductCard({ product, variants, onAddToCart, onViewDetails }: {
         
         <div className="p-6">
           <div className="mb-3">
-            <p className={`font-mono text-[9px] font-semibold uppercase tracking-[0.2em] ${isChicagoPreview ? "text-[#dc7895]" : "text-[#d4ad70]"}`}>{isChicagoPreview ? "Chicago Exclusif · Gaming" : "RVLTN · The Seven Seals"}</p>
+            <p className={`font-mono text-[9px] font-semibold uppercase tracking-[0.2em] ${isChicago ? "text-[#dc7895]" : "text-[#d4ad70]"}`}>{isChicago ? "Chicago Exclusif · Gaming" : "RVLTN · The Seven Seals"}</p>
             <h3 className="mt-1 font-serif text-2xl text-[#f3ead8]">{product.name}</h3>
-            {!isChicagoPreview && product.verseReference?.trim() && <p className="mt-1 text-xs font-medium text-white/50">{product.verseReference.replace('Revelation', 'REV').replace('–', '-')}</p>}
+            {!isChicago && product.verseReference?.trim() && <p className="mt-1 text-xs font-medium text-white/50">{product.verseReference.replace('Revelation', 'REV').replace('–', '-')}</p>}
           </div>
 
-          {!isChicagoPreview && product.bibleVerse?.trim() && <p className="mb-2 text-sm italic text-white/65">"{product.bibleVerse}"</p>}
+          {!isChicago && product.bibleVerse?.trim() && <p className="mb-2 text-sm italic text-white/65">"{product.bibleVerse}"</p>}
           <p className="mb-4 text-sm leading-6 text-white/65">{product.description}</p>
-
-          {isChicagoPreview ? (
-            <div className="border-t border-[#cf3e68]/20 pt-4">
-              <p className="text-sm leading-6 text-white/60">A real-bottle collection preview. This fragrance is not currently offered for sale.</p>
-              <Button onClick={() => onViewDetails(product)} variant="outline" className="mt-4 w-full rounded-none border-[#dc7895]/50 bg-transparent text-[#f1a0b5] hover:bg-[#dc7895]/10" aria-label={`View ${product.name} collection preview`} data-testid={`button-view-details-${product.id}`}>
-                View collection preview <Info className="ml-2 h-4 w-4" />
-              </Button>
-            </div>
-          ) : (
+          {isChicago && <p className="mb-4 border-l-2 border-[#dc7895] pl-3 text-xs leading-5 text-white/75">{decantDisclosure}</p>}
           <>
           {/* Variant Selection */}
           <div className="mb-4">
@@ -656,7 +678,7 @@ function ProductCard({ product, variants, onAddToCart, onViewDetails }: {
           </div>
 
           {/* Sales Counter for selected variant */}
-          {selectedVariant && (
+          {selectedVariant && !isChicago && (
             <div className="mb-4 border border-[#d4ad70]/20 bg-[#d4ad70]/[0.07] p-3">
               <div className="flex justify-between text-sm mb-1">
                 <span className="font-medium text-white">{selectedVariant.soldCount} claimed</span>
@@ -670,6 +692,7 @@ function ProductCard({ product, variants, onAddToCart, onViewDetails }: {
               </div>
             </div>
           )}
+          {selectedVariant && isChicago && <p className="mb-4 text-sm font-semibold text-[#f1a0b5]">Only {selectedVariant.remainingInventory} available from this run.</p>}
 
           <div className="flex items-center justify-between mb-4">
             <div>
@@ -712,7 +735,6 @@ function ProductCard({ product, variants, onAddToCart, onViewDetails }: {
             </Button>
           </div>
           </>
-          )}
         </div>
       </CardContent>
     </Card>

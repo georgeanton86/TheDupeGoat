@@ -121,7 +121,7 @@ export default function FAQ() {
                     Are all 8 fragrances available now?
                   </AccordionTrigger>
                   <AccordionContent className="text-white/80">
-                    The eight RVLTN Seven Seals fragrances have purchase options in the shop. Player One, Play Again?, and Half Life are Chicago Exclusif bottle previews and are not yet for sale.
+                    The eight RVLTN Seven Seals fragrances and three Chicago Exclusif fragrances have purchase options in the shop. Chicago fragrances are sold as 30 mL decants. Their bottle photos are for reference; your decant arrives in a different bottle.
                   </AccordionContent>
                 </AccordionItem>
 
