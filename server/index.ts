@@ -7,6 +7,19 @@ import { getStripeClient, getStripeSync } from "./stripeClient";
 import { recordPaidOrder } from "./payments";
 
 const app = express();
+
+async function initializeStripeIntegration() {
+  try {
+    const sync = await getStripeSync();
+    const domain = process.env.REPLIT_DOMAINS?.split(",")[0];
+    if (!domain) throw new Error("REPLIT_DOMAINS is required for Stripe webhooks");
+    await sync.findOrCreateManagedWebhook(`https://${domain}/api/stripe/webhook`);
+    void sync.syncBackfill({ object: "all" }).catch(error => console.error("Stripe sync backfill failed:", error));
+  } catch (error) {
+    console.error("Stripe webhook setup failed; storefront is online but payment notifications may be unavailable:", error);
+  }
+}
+
 app.post("/api/stripe/webhook", express.raw({ type: "application/json" }), async (req, res) => {
   const signature = req.headers["stripe-signature"];
   if (!signature || typeof signature !== "string" || !Buffer.isBuffer(req.body))
@@ -69,11 +82,6 @@ app.use((req, res, next) => {
 (async () => {
   if (!process.env.DATABASE_URL) throw new Error("DATABASE_URL is required");
   await runMigrations({ databaseUrl: process.env.DATABASE_URL });
-  const sync = await getStripeSync();
-  const domain = process.env.REPLIT_DOMAINS?.split(",")[0];
-  if (!domain) throw new Error("REPLIT_DOMAINS is required for Stripe webhooks");
-  await sync.findOrCreateManagedWebhook(`https://${domain}/api/stripe/webhook`);
-  sync.syncBackfill({ object: "all" }).catch(error => console.error("Stripe sync backfill failed:", error));
   const server = await registerRoutes(app);
 
   app.use((err: any, _req: Request, res: Response, _next: NextFunction) => {
@@ -104,5 +112,7 @@ app.use((req, res, next) => {
     reusePort: true,
   }, () => {
     log(`serving on port ${port}`);
+    // A slow Stripe webhook request must not hold the storefront closed during cold starts.
+    void initializeStripeIntegration();
   });
 })();
