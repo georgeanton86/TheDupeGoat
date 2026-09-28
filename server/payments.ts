@@ -9,6 +9,8 @@ const pool = new Pool({ connectionString: process.env.DATABASE_URL });
 export type CartLine = { variantId: string; quantity: number };
 const chicagoLock = 54182025;
 
+export class CheckoutConflict extends Error {}
+
 async function withChicagoLock<T>(action: (client: PoolClient) => Promise<T>): Promise<T> {
   const client = await pool.connect();
   try {
@@ -66,6 +68,66 @@ export async function reserveChicago(items: CartLine[], stripe: Stripe): Promise
       [JSON.stringify(decants)],
     );
     return result.rows[0].id as string;
+  });
+}
+
+// A checkout key identifies one purchase attempt, not a cart. The global
+// inventory lock also serializes two tabs using that same key.
+export async function reserveChicagoCheckout(
+  items: CartLine[], promoCode: string | undefined, stripe: Stripe, checkoutKey: string, requestHash: string,
+): Promise<{ reservationId: string; amount: number }> {
+  await reconcileExpiredReservations(stripe);
+  return withChicagoLock(async client => {
+    const existing = await client.query(
+      `SELECT id, request_hash, amount_cents, status, expires_at
+       FROM chicago_reservations WHERE checkout_key = $1`, [checkoutKey],
+    );
+    if (existing.rowCount) {
+      const row = existing.rows[0];
+      if (row.request_hash !== requestHash)
+        throw new CheckoutConflict("Checkout details changed. Start a new checkout.");
+      if (row.status !== "pending" || new Date(row.expires_at).getTime() <= Date.now())
+        throw new CheckoutConflict("This checkout has expired or completed. Start a new checkout.");
+      return { reservationId: row.id, amount: row.amount_cents };
+    }
+    const unavailable = await quantities(client, true);
+    const amount = await priceCart(items, promoCode, unavailable);
+    const decants = items.filter(item => isChicagoVariant(item.variantId));
+    const result = await client.query(
+      `INSERT INTO chicago_reservations (items, expires_at, checkout_key, request_hash, amount_cents)
+       VALUES ($1::jsonb, now() + interval '30 minutes', $2, $3, $4) RETURNING id`,
+      [JSON.stringify(decants), checkoutKey, requestHash, amount],
+    );
+    return { reservationId: result.rows[0].id as string, amount };
+  });
+}
+
+export async function getOrCreateChicagoIntent(
+  reservationId: string, stripe: Stripe, params: Stripe.PaymentIntentCreateParams,
+): Promise<Stripe.PaymentIntent> {
+  return withChicagoLock(async client => {
+    const result = await client.query(
+      `SELECT payment_intent_id, status, expires_at FROM chicago_reservations WHERE id = $1`,
+      [reservationId],
+    );
+    const row = result.rows[0];
+    if (!row || row.status !== "pending" || new Date(row.expires_at).getTime() <= Date.now())
+      throw new CheckoutConflict("This checkout has expired or completed. Start a new checkout.");
+    // Stripe's key recovers an intent if the process died after creation but
+    // before the ID could be attached to the reservation.
+    const intent = row.payment_intent_id
+      ? await stripe.paymentIntents.retrieve(row.payment_intent_id)
+      : await stripe.paymentIntents.create(params, { idempotencyKey: reservationId });
+    if (!["requires_payment_method", "requires_confirmation", "requires_action"].includes(intent.status) ||
+        !intent.client_secret)
+      throw new CheckoutConflict("This payment is already underway. Check its status before starting another.");
+    if (!row.payment_intent_id) {
+      await client.query(
+        `UPDATE chicago_reservations SET payment_intent_id = $2 WHERE id = $1 AND status = 'pending'`,
+        [reservationId, intent.id],
+      );
+    }
+    return intent;
   });
 }
 
@@ -139,9 +201,9 @@ export async function reconcileChicagoIntent(stripe: Stripe, intentId: string, c
   await withChicagoLock(client => reconcileIntentLocked(client, stripe, intentId, cancel));
 }
 
-export async function priceCart(items: CartLine[], promoCode?: string) {
+export async function priceCart(items: CartLine[], promoCode?: string, unavailable?: Map<string, number>) {
   let subtotalCents = 0;
-  const paid = await getUnavailableQuantities();
+  const paid = unavailable ?? await getUnavailableQuantities();
   for (const item of items) {
     const variant = await storage.getProductVariant(item.variantId);
     if (!variant || !variant.isActive) throw new Error("An item is no longer available");

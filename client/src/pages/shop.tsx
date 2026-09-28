@@ -94,6 +94,7 @@ export default function Shop() {
   const handleCheckout = () => {
     // Store cart data in localStorage for Stripe checkout page
     localStorage.setItem('checkoutCart', JSON.stringify({
+      checkoutKey: crypto.randomUUID(),
       cart: cart.map(item => ({
         variantId: item.variant.id,
         quantity: item.quantity

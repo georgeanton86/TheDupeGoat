@@ -1,10 +1,55 @@
 import { test } from "node:test";
 import assert from "node:assert/strict";
+import { randomUUID } from "node:crypto";
 import { Pool } from "pg";
 import type Stripe from "stripe";
 import { chicagoOffers } from "../shared/chicago";
 import { attachChicagoIntent, getUnavailableQuantities, reconcileExpiredReservations,
-  recordPaidOrder, releaseUnattachedChicago, reserveChicago } from "./payments";
+  recordPaidOrder, releaseUnattachedChicago, reserveChicago, reserveChicagoCheckout,
+  getOrCreateChicagoIntent, CheckoutConflict } from "./payments";
+
+test("concurrent retries share a hold and intent; a new purchase gets its own", async () => {
+  if (process.env.NODE_ENV === "production") throw new Error("Never run inventory tests on production");
+  const pool = new Pool({ connectionString: process.env.DATABASE_URL });
+  const item = [{ variantId: chicagoOffers[0].variantId, quantity: 1 }];
+  const key = randomUUID();
+  const otherKey = randomUUID();
+  const held: string[] = [];
+  let creations = 0;
+  const stripe = {
+    paymentIntents: {
+      create: async () => {
+        creations++;
+        await new Promise(resolve => setTimeout(resolve, 30));
+        return { id: `pi_retry_test_${key.replaceAll("-", "")}`, status: "requires_payment_method", client_secret: "test_secret" };
+      },
+      retrieve: async (id: string) => ({ id, status: "requires_payment_method", client_secret: "test_secret" }),
+    },
+  } as unknown as Stripe;
+  try {
+    const before = await getUnavailableQuantities();
+    assert.ok((before.get(item[0].variantId) ?? 0) <= 23, "Test requires two available decants");
+    const attempts = await Promise.all(Array.from({ length: 3 },
+      () => reserveChicagoCheckout(item, undefined, stripe, key, "same-request")));
+    assert.equal(new Set(attempts.map(a => a.reservationId)).size, 1);
+    held.push(attempts[0].reservationId);
+    const params = { amount: attempts[0].amount, currency: "usd" } as const;
+    const intents = await Promise.all(attempts.map(a => getOrCreateChicagoIntent(a.reservationId, stripe, params)));
+    assert.equal(new Set(intents.map(intent => intent.id)).size, 1);
+    assert.equal(creations, 1);
+    await assert.rejects(
+      reserveChicagoCheckout(item, undefined, stripe, key, "changed-request"), CheckoutConflict);
+    const another = await reserveChicagoCheckout(item, undefined, stripe, otherKey, "same-request");
+    held.push(another.reservationId);
+    assert.notEqual(another.reservationId, held[0]);
+    const after = await getUnavailableQuantities();
+    assert.equal(after.get(item[0].variantId), (before.get(item[0].variantId) ?? 0) + 2);
+  } finally {
+    await pool.query("UPDATE chicago_reservations SET status = 'released' WHERE id = ANY($1::uuid[])", [held]);
+    await pool.query("DELETE FROM chicago_reservations WHERE id = ANY($1::uuid[])", [held]);
+    await pool.end();
+  }
+});
 
 test("Chicago sets and individual purchases cannot reserve more than 25 per fragrance", async () => {
   if (process.env.NODE_ENV === "production") throw new Error("Never run inventory tests on production");

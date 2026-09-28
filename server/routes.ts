@@ -1,13 +1,15 @@
 import type { Express } from "express";
 import { createServer, type Server } from "http";
+import { createHash } from "crypto";
 import { storage } from "./storage";
 import { z } from "zod";
 import { getStripeClient, getStripePublishableKey } from "./stripeClient";
-import { attachChicagoIntent, getPaidQuantities, getUnavailableQuantities, priceCart,
-  reconcileExpiredReservations, recordPaidOrder, releaseUnattachedChicago, reserveChicago } from "./payments";
+import { CheckoutConflict, getOrCreateChicagoIntent, getPaidQuantities, getUnavailableQuantities, priceCart,
+  recordPaidOrder, reserveChicagoCheckout } from "./payments";
 import { isChicagoVariant } from "@shared/chicago";
 
 const checkoutSchema = z.object({
+  checkoutKey: z.string().uuid(),
   items: z.array(z.object({
     variantId: z.string().min(1),
     quantity: z.number().int().min(1).max(100),
@@ -130,18 +132,21 @@ export async function registerRoutes(app: Express): Promise<Server> {
   });
 
   app.post("/api/create-payment-intent", async (req, res) => {
-    let reservationId: string | undefined;
-    let intentCreated = false;
     try {
       const parsed = checkoutSchema.safeParse(req.body);
       if (!parsed.success) return res.status(400).json({ message: "Invalid checkout details", details: parsed.error.flatten() });
-      const { items, promoCode, customerEmail, customerName, address } = parsed.data;
+      const { items, promoCode, customerEmail, customerName, address, checkoutKey } = parsed.data;
       if (items.some(item => isChicagoVariant(item.variantId)) && parsed.data.decantAcknowledged !== true)
         return res.status(400).json({ message: "Please acknowledge the decant bottle disclosure" });
-      const amount = await priceCart(items, promoCode ?? undefined);
       const stripe = await getStripeClient();
-      reservationId = await reserveChicago(items, stripe);
-      const paymentIntent = await stripe.paymentIntents.create({
+      const hasDecants = items.some(item => isChicagoVariant(item.variantId));
+      const requestHash = createHash("sha256").update(JSON.stringify(parsed.data)).digest("hex");
+      const checkout = hasDecants
+        ? await reserveChicagoCheckout(items, promoCode ?? undefined, stripe, checkoutKey, requestHash)
+        : undefined;
+      const amount = checkout?.amount ?? await priceCart(items, promoCode ?? undefined);
+      const reservationId = checkout?.reservationId;
+      const params = {
         amount,
         currency: "usd",
         automatic_payment_methods: { enabled: true },
@@ -154,19 +159,16 @@ export async function registerRoutes(app: Express): Promise<Server> {
           decantAcknowledged: parsed.data.decantAcknowledged === true ? "true" : "false",
           ...(reservationId ? { chicagoReservationId: reservationId } : {}),
         },
-      }, reservationId ? { idempotencyKey: reservationId } : undefined);
-      intentCreated = true;
-      if (reservationId) await attachChicagoIntent(reservationId, paymentIntent.id);
+      } as const;
+      const paymentIntent = reservationId
+        ? await getOrCreateChicagoIntent(reservationId, stripe, params)
+        : await stripe.paymentIntents.create(params, { idempotencyKey: checkoutKey });
       res.json({ clientSecret: paymentIntent.client_secret, total: amount / 100 });
     } catch (error) {
-      // Never release after an intent is created: a callback or retry may
-      // still succeed. Expiry reconciliation will cancel it first.
-      if (reservationId && !intentCreated)
-        await releaseUnattachedChicago(reservationId).catch(releaseError =>
-          console.error("Could not release unused reservation:", releaseError));
       console.error("Failed to create payment intent:", error);
-      res.status(error instanceof Error && /inventory|available/i.test(error.message) ? 400 : 503)
-        .json({ message: error instanceof Error && /inventory|available/i.test(error.message) ? error.message : "Could not start payment" });
+      const inventoryError = error instanceof Error && /inventory/i.test(error.message);
+      res.status(error instanceof CheckoutConflict ? 409 : inventoryError ? 400 : 503)
+        .json({ message: error instanceof CheckoutConflict || inventoryError ? error.message : "Could not start payment" });
     }
   });
 

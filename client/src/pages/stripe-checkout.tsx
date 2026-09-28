@@ -124,6 +124,7 @@ export default function StripeCheckout() {
   const [total, setTotal] = useState(0);
   const [cartItems, setCartItems] = useState<CartItem[]>([]);
   const [promoCode, setPromoCode] = useState<string | null>(null);
+  const [checkoutKey, setCheckoutKey] = useState("");
   const [, setLocation] = useLocation();
   const [showSuccess, setShowSuccess] = useState(false);
   const [orderData, setOrderData] = useState<any>(null);
@@ -194,6 +195,13 @@ export default function StripeCheckout() {
 
     try {
       const cartData = JSON.parse(cartDataStr);
+      // Older saved carts may predate checkout keys. Persist one for reloads
+      // and other tabs instead of generating a new key on every request.
+      if (!cartData.checkoutKey) {
+        cartData.checkoutKey = crypto.randomUUID();
+        localStorage.setItem("checkoutCart", JSON.stringify(cartData));
+      }
+      setCheckoutKey(cartData.checkoutKey);
       
       // Wait for products and variants to load
       if (!products || !variants) {
@@ -245,7 +253,7 @@ export default function StripeCheckout() {
     try {
       const response = await apiRequest("POST", "/api/create-payment-intent", {
         items: cartItems.map(item => ({ variantId: item.variant.id, quantity: item.quantity })),
-        promoCode, customerEmail, customerName, policyAcknowledged, decantAcknowledged, address,
+        checkoutKey, promoCode, customerEmail, customerName, policyAcknowledged, decantAcknowledged, address,
       });
       const data = await response.json();
       const configResponse = await fetch("/api/stripe/config");
