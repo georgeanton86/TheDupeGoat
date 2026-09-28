@@ -1,6 +1,6 @@
 import { useStripe, Elements, PaymentElement, useElements } from '@stripe/react-stripe-js';
 import { loadStripe } from '@stripe/stripe-js';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useLocation } from 'wouter';
 import { useQuery } from "@tanstack/react-query";
 import { apiRequest } from "@/lib/queryClient";
@@ -20,6 +20,41 @@ interface CartItem {
   variant: ProductVariant;
   product: Product;
   quantity: number;
+}
+
+const checkoutDraftKey = "stripeCheckoutDraft";
+
+type DeliveryAddress = {
+  line1: string; line2: string; city: string; state: string; postal_code: string; country: string;
+};
+
+type CheckoutDraft = {
+  checkoutKey: string;
+  customerName: string;
+  customerEmail: string;
+  address: DeliveryAddress;
+  policyAcknowledged: boolean;
+  decantAcknowledged: boolean;
+};
+
+function readCheckoutDraft(checkoutKey: string): CheckoutDraft | null {
+  const saved = sessionStorage.getItem(checkoutDraftKey);
+  if (!saved) return null;
+  try {
+    const draft = JSON.parse(saved) as CheckoutDraft;
+    const address = draft?.address;
+    if (draft.checkoutKey === checkoutKey &&
+      typeof draft.customerName === "string" && typeof draft.customerEmail === "string" &&
+      typeof draft.policyAcknowledged === "boolean" && typeof draft.decantAcknowledged === "boolean" &&
+      address && ["line1", "line2", "city", "state", "postal_code", "country"]
+        .every(key => typeof address[key as keyof DeliveryAddress] === "string")) {
+      return draft;
+    }
+  } catch {
+    // Discard invalid or obsolete browser data.
+  }
+  sessionStorage.removeItem(checkoutDraftKey);
+  return null;
 }
 
 function CheckoutForm({ total, clientSecret, onSuccess }: {
@@ -138,9 +173,11 @@ export default function StripeCheckout() {
   const [address, setAddress] = useState({
     line1: "", line2: "", city: "", state: "", postal_code: "", country: "US",
   });
+  const restoredKey = useRef("");
 
   const finishOrder = (data: any) => {
     localStorage.removeItem("checkoutCart");
+    sessionStorage.removeItem(checkoutDraftKey);
     sessionStorage.setItem("checkoutConfirmation", JSON.stringify(data));
     window.history.replaceState({}, "", "/checkout?order=success");
     setOrderData(data);
@@ -163,6 +200,7 @@ export default function StripeCheckout() {
       try {
         const saved = sessionStorage.getItem("checkoutConfirmation");
         if (saved) {
+          sessionStorage.removeItem(checkoutDraftKey);
           setOrderData(JSON.parse(saved));
           setShowSuccess(true);
           setIsLoadingCart(false);
@@ -202,6 +240,17 @@ export default function StripeCheckout() {
         localStorage.setItem("checkoutCart", JSON.stringify(cartData));
       }
       setCheckoutKey(cartData.checkoutKey);
+      if (restoredKey.current !== cartData.checkoutKey) {
+        const draft = readCheckoutDraft(cartData.checkoutKey);
+        setCustomerName(draft?.customerName ?? "");
+        setCustomerEmail(draft?.customerEmail ?? "");
+        setAddress(draft?.address ?? {
+          line1: "", line2: "", city: "", state: "", postal_code: "", country: "US",
+        });
+        setPolicyAcknowledged(draft?.policyAcknowledged ?? false);
+        setDecantAcknowledged(draft?.decantAcknowledged ?? false);
+        restoredKey.current = cartData.checkoutKey;
+      }
       
       // Wait for products and variants to load
       if (!products || !variants) {
@@ -237,6 +286,14 @@ export default function StripeCheckout() {
       setLocation('/shop');
     }
   }, [setLocation, products, variants]);
+
+  useEffect(() => {
+    if (!checkoutKey || restoredKey.current !== checkoutKey || showSuccess) return;
+    const draft: CheckoutDraft = {
+      checkoutKey, customerName, customerEmail, address, policyAcknowledged, decantAcknowledged,
+    };
+    sessionStorage.setItem(checkoutDraftKey, JSON.stringify(draft));
+  }, [checkoutKey, customerName, customerEmail, address, policyAcknowledged, decantAcknowledged, showSuccess]);
 
   const startPayment = async (e: React.FormEvent) => {
     e.preventDefault();

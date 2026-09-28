@@ -1,2 +1,3 @@
 - [Stripe connector credentials](stripe-connector-credentials.md) — the connected Stripe proxy may not expose SDK credentials; do not assume its settings contain a secret key.
 - [Gaming bottle imagery](gaming-bottle-imagery.md) — preserve the supplied label artwork from real photos when polishing product imagery; keep decant packaging distinct.
+- [Checkout draft privacy](checkout-draft-privacy.md) — keep resumable buyer details tab-scoped and tied to the pending purchase; never reuse them for a new purchase by default.

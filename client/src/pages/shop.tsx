@@ -92,7 +92,9 @@ export default function Shop() {
   const total = subtotal - setDiscount - discount + shipping;
 
   const handleCheckout = () => {
-    // Store cart data in localStorage for Stripe checkout page
+    // A new purchase gets a new attempt and no previous buyer details.
+    sessionStorage.removeItem("stripeCheckoutDraft");
+    sessionStorage.removeItem("checkoutConfirmation");
     localStorage.setItem('checkoutCart', JSON.stringify({
       checkoutKey: crypto.randomUUID(),
       cart: cart.map(item => ({
