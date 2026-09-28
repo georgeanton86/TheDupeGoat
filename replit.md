@@ -45,13 +45,13 @@ Preferred communication style: Simple, everyday language.
 - **Active provider**: Stripe Payment Element. Development requires test-mode keys; production requires live-mode keys. Replit's publish flow installs the live Stripe account and provides production `STRIPE_SECRET_KEY` / `VITE_STRIPE_PUBLIC_KEY`; the legacy `STRIPE_LIVE_SECRET_KEY` / `VITE_STRIPE_LIVE_PUBLIC_KEY` pair is also supported.
 - The server validates cart, customer, policy acknowledgement, and US delivery address before creating a PaymentIntent. Prices, WELCOME10 discount, and shipping are calculated on the server.
 - Stripe's managed, signature-verified webhook records paid orders in PostgreSQL. Browser confirmation also retrieves the PaymentIntent from Stripe and records the same order idempotently; a unique payment ID prevents duplicates.
-- Paid quantities are deducted from displayed inventory, which starts from the in-memory catalog. Pending payments do not reserve stock, so simultaneous checkouts can still oversell.
+- Paid quantities are deducted from displayed inventory, which starts from the in-memory catalog. Chicago decants additionally use database-backed pending holds that count against each fragrance's limit until Stripe confirms payment or cancellation.
 - Checkout confirmation survives refresh in the same browser session. The app does not send confirmation email or calculate sales tax.
 
 ## Database Design
 - **ORM**: Drizzle ORM configured for PostgreSQL with type-safe schema definitions
 - **Schema**: Users, products, variants, legacy orders, and Stripe payment orders
-- **Migration Strategy**: Drizzle Kit for database migrations and schema management
+- **Migration Strategy**: Drizzle schema definitions describe the tables. The Chicago reservation table is created in development by the post-merge SQL migration; Replit Publish applies development schema changes to its managed production database before serving the new release. Do not add production startup DDL.
 - **Connection**: Neon Database serverless PostgreSQL integration
 
 ## Development Environment

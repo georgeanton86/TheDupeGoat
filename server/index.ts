@@ -4,7 +4,7 @@ import { registerRoutes } from "./routes";
 import { setupVite, serveStatic, log } from "./vite";
 import { runMigrations } from "stripe-replit-sync";
 import { getStripeClient, getStripeSync } from "./stripeClient";
-import { recordPaidOrder } from "./payments";
+import { reconcileChicagoIntent, reconcileExpiredReservations, recordPaidOrder } from "./payments";
 
 const app = express();
 
@@ -29,10 +29,14 @@ app.post("/api/stripe/webhook", express.raw({ type: "application/json" }), async
     const sync = await getStripeSync();
     await sync.processWebhook(req.body, signature);
     const event = JSON.parse(req.body.toString("utf8"));
-    if (event.type === "payment_intent.succeeded") {
+    if (event.type === "payment_intent.succeeded" ||
+        event.type === "payment_intent.canceled" ||
+        event.type === "payment_intent.payment_failed") {
       const stripe = await getStripeClient();
       const intent = await stripe.paymentIntents.retrieve(event.data.object.id);
-      await recordPaidOrder(intent);
+      if (intent.status === "succeeded") await recordPaidOrder(intent);
+      else if (intent.metadata.chicagoReservationId)
+        await reconcileChicagoIntent(stripe, intent.id, event.type === "payment_intent.payment_failed");
     }
     res.json({ received: true });
   } catch (error) {
@@ -114,5 +118,14 @@ app.use((req, res, next) => {
     log(`serving on port ${port}`);
     // A slow Stripe webhook request must not hold the storefront closed during cold starts.
     void initializeStripeIntegration();
+    const cleanup = async () => {
+      try {
+        await reconcileExpiredReservations(await getStripeClient());
+      } catch (error) {
+        console.error("Chicago reservation reconciliation failed:", error);
+      }
+    };
+    void cleanup();
+    setInterval(() => void cleanup(), 60_000).unref();
   });
 })();

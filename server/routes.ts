@@ -3,7 +3,8 @@ import { createServer, type Server } from "http";
 import { storage } from "./storage";
 import { z } from "zod";
 import { getStripeClient, getStripePublishableKey } from "./stripeClient";
-import { getPaidQuantities, priceCart, recordPaidOrder } from "./payments";
+import { attachChicagoIntent, getPaidQuantities, getUnavailableQuantities, priceCart,
+  reconcileExpiredReservations, recordPaidOrder, releaseUnattachedChicago, reserveChicago } from "./payments";
 import { isChicagoVariant } from "@shared/chicago";
 
 const checkoutSchema = z.object({
@@ -73,9 +74,10 @@ export async function registerRoutes(app: Express): Promise<Server> {
     try {
       const allVariants = await storage.getAllProductVariants();
       const paid = await getPaidQuantities();
+      const unavailable = await getUnavailableQuantities();
       res.json(allVariants.map(v => ({
         ...v,
-        remainingInventory: Math.max(0, v.remainingInventory - (paid.get(v.id) ?? 0)),
+        remainingInventory: Math.max(0, v.remainingInventory - (unavailable.get(v.id) ?? 0)),
         soldCount: v.soldCount + (paid.get(v.id) ?? 0),
       })));
     } catch (error: any) {
@@ -88,9 +90,10 @@ export async function registerRoutes(app: Express): Promise<Server> {
     try {
       const variants = await storage.getProductVariants(req.params.productId);
       const paid = await getPaidQuantities();
+      const unavailable = await getUnavailableQuantities();
       res.json(variants.map(v => ({
         ...v,
-        remainingInventory: Math.max(0, v.remainingInventory - (paid.get(v.id) ?? 0)),
+        remainingInventory: Math.max(0, v.remainingInventory - (unavailable.get(v.id) ?? 0)),
         soldCount: v.soldCount + (paid.get(v.id) ?? 0),
       })));
     } catch (error: any) {
@@ -106,9 +109,10 @@ export async function registerRoutes(app: Express): Promise<Server> {
         return res.status(404).json({ message: "Product variant not found" });
       }
       const paid = await getPaidQuantities();
+      const unavailable = await getUnavailableQuantities();
       res.json({
         ...variant,
-        remainingInventory: Math.max(0, variant.remainingInventory - (paid.get(variant.id) ?? 0)),
+        remainingInventory: Math.max(0, variant.remainingInventory - (unavailable.get(variant.id) ?? 0)),
         soldCount: variant.soldCount + (paid.get(variant.id) ?? 0),
       });
     } catch (error: any) {
@@ -126,6 +130,8 @@ export async function registerRoutes(app: Express): Promise<Server> {
   });
 
   app.post("/api/create-payment-intent", async (req, res) => {
+    let reservationId: string | undefined;
+    let intentCreated = false;
     try {
       const parsed = checkoutSchema.safeParse(req.body);
       if (!parsed.success) return res.status(400).json({ message: "Invalid checkout details", details: parsed.error.flatten() });
@@ -134,6 +140,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
         return res.status(400).json({ message: "Please acknowledge the decant bottle disclosure" });
       const amount = await priceCart(items, promoCode ?? undefined);
       const stripe = await getStripeClient();
+      reservationId = await reserveChicago(items, stripe);
       const paymentIntent = await stripe.paymentIntents.create({
         amount,
         currency: "usd",
@@ -145,10 +152,18 @@ export async function registerRoutes(app: Express): Promise<Server> {
           promoCode: promoCode?.toUpperCase() === "WELCOME10" ? "WELCOME10" : "",
           policyAcknowledged: "true",
           decantAcknowledged: parsed.data.decantAcknowledged === true ? "true" : "false",
+          ...(reservationId ? { chicagoReservationId: reservationId } : {}),
         },
-      });
+      }, reservationId ? { idempotencyKey: reservationId } : undefined);
+      intentCreated = true;
+      if (reservationId) await attachChicagoIntent(reservationId, paymentIntent.id);
       res.json({ clientSecret: paymentIntent.client_secret, total: amount / 100 });
     } catch (error) {
+      // Never release after an intent is created: a callback or retry may
+      // still succeed. Expiry reconciliation will cancel it first.
+      if (reservationId && !intentCreated)
+        await releaseUnattachedChicago(reservationId).catch(releaseError =>
+          console.error("Could not release unused reservation:", releaseError));
       console.error("Failed to create payment intent:", error);
       res.status(error instanceof Error && /inventory|available/i.test(error.message) ? 400 : 503)
         .json({ message: error instanceof Error && /inventory|available/i.test(error.message) ? error.message : "Could not start payment" });
@@ -189,9 +204,9 @@ export async function registerRoutes(app: Express): Promise<Server> {
         return res.status(404).json({ message: "Product variant not found" });
       }
 
-      const paid = await getPaidQuantities();
+      const unavailable = await getUnavailableQuantities();
       res.json({
-        remaining: Math.max(0, variant.remainingInventory - (paid.get(variant.id) ?? 0)),
+        remaining: Math.max(0, variant.remainingInventory - (unavailable.get(variant.id) ?? 0)),
         total: variant.totalInventory 
       });
     } catch (error: any) {

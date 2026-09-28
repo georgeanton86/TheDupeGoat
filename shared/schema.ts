@@ -66,6 +66,17 @@ export const paymentOrders = pgTable("payment_orders", {
   createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
 });
 
+// A pending reservation counts against the Chicago decant limit until Stripe
+// confirms that its payment can no longer succeed.
+export const chicagoReservations = pgTable("chicago_reservations", {
+  id: uuid("id").primaryKey().defaultRandom(),
+  paymentIntentId: text("payment_intent_id").unique(),
+  items: jsonb("items").notNull(),
+  status: text("status").notNull().default("pending"),
+  expiresAt: timestamp("expires_at", { withTimezone: true }).notNull(),
+  createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
+});
+
 export const insertUserSchema = createInsertSchema(users).pick({
   username: true,
   password: true,
