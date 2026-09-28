@@ -201,6 +201,19 @@ export async function reconcileChicagoIntent(stripe: Stripe, intentId: string, c
   await withChicagoLock(client => reconcileIntentLocked(client, stripe, intentId, cancel));
 }
 
+export async function handlePaymentIntentNotification(
+  stripe: Stripe, type: string, intentId: string,
+) {
+  if (!["payment_intent.succeeded", "payment_intent.canceled", "payment_intent.payment_failed"].includes(type))
+    return;
+  // Events can be duplicated or delivered after a later transition. Stripe's
+  // current state, not the event's embedded snapshot, decides what happens.
+  const intent = await stripe.paymentIntents.retrieve(intentId);
+  if (intent.status === "succeeded") await recordPaidOrder(intent);
+  else if (intent.metadata.chicagoReservationId)
+    await reconcileChicagoIntent(stripe, intent.id, type === "payment_intent.payment_failed");
+}
+
 export async function priceCart(items: CartLine[], promoCode?: string, unavailable?: Map<string, number>) {
   let subtotalCents = 0;
   const paid = unavailable ?? await getUnavailableQuantities();

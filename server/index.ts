@@ -4,7 +4,7 @@ import { registerRoutes } from "./routes";
 import { setupVite, serveStatic, log } from "./vite";
 import { runMigrations } from "stripe-replit-sync";
 import { getStripeClient, getStripeSync } from "./stripeClient";
-import { reconcileChicagoIntent, reconcileExpiredReservations, recordPaidOrder } from "./payments";
+import { handlePaymentIntentNotification, reconcileExpiredReservations } from "./payments";
 
 const app = express();
 
@@ -32,11 +32,7 @@ app.post("/api/stripe/webhook", express.raw({ type: "application/json" }), async
     if (event.type === "payment_intent.succeeded" ||
         event.type === "payment_intent.canceled" ||
         event.type === "payment_intent.payment_failed") {
-      const stripe = await getStripeClient();
-      const intent = await stripe.paymentIntents.retrieve(event.data.object.id);
-      if (intent.status === "succeeded") await recordPaidOrder(intent);
-      else if (intent.metadata.chicagoReservationId)
-        await reconcileChicagoIntent(stripe, intent.id, event.type === "payment_intent.payment_failed");
+      await handlePaymentIntentNotification(await getStripeClient(), event.type, event.data.object.id);
     }
     res.json({ received: true });
   } catch (error) {
