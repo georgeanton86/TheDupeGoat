@@ -183,7 +183,7 @@ export default function Shop() {
         {chicagoProducts.length > 0 && <section className="mb-16">
           <div className="mb-7 flex flex-col justify-between gap-3 border-b border-[#dc7895]/35 pb-5 sm:flex-row sm:items-end">
             <div><p className="font-mono text-[10px] uppercase tracking-[0.25em] text-[#dc7895]">Chicago Exclusif originals</p><h2 className="mt-2 font-serif text-3xl sm:text-4xl">The Gaming Collection</h2></div>
-            <p className="max-w-sm text-sm leading-6 text-white/70">30 mL decants · $59.99 each · 25 available per fragrance. Other sizes sold out. Bottle photos are for reference; shipped decants look different.</p>
+             <p className="max-w-sm text-sm leading-6 text-white/70">Limited run of 25 per fragrance · 30 mL decants · $59.99 each. Smaller sizes are not available. Bottle photos are for reference; shipped decants look different.</p>
           </div>
           <div className="mb-6 flex flex-wrap items-center justify-between gap-3 border border-[#dc7895]/35 bg-[#dc7895]/10 p-4">
             <p className="text-sm text-[#f3ead8]"><strong>The full gaming set · $150 · free shipping</strong><span className="block text-white/65">One 30 mL decant of each fragrance. $29.97 less than buying separately; applied automatically in the cart.</span></p>
@@ -598,7 +598,8 @@ function ProductCard({ product, variants, onAddToCart, onViewDetails }: {
   const [quantity, setQuantity] = useState(1);
   const [selectedVariantId, setSelectedVariantId] = useState(variants[0]?.id || "");
 
-  const selectedVariant = variants.find(v => v.id === selectedVariantId) || variants[0];
+  const chicagoDecant = isChicago ? variants.find(v => v.size.replace(/\s/g, "").toLowerCase() === "30ml") : undefined;
+  const selectedVariant = isChicago ? chicagoDecant : variants.find(v => v.id === selectedVariantId) || variants[0];
 
   const handleAddToCart = () => {
     if (selectedVariant) {
@@ -607,8 +608,8 @@ function ProductCard({ product, variants, onAddToCart, onViewDetails }: {
     }
   };
 
-  const stockPercent = selectedVariant && selectedVariant.totalInventory > 0 ? (selectedVariant.remainingInventory / selectedVariant.totalInventory) * 100 : 0;
-  const isLowStock = stockPercent < 20;
+  const isLowStock = Boolean(selectedVariant && selectedVariant.totalInventory > 0 &&
+    selectedVariant.remainingInventory / selectedVariant.totalInventory < 0.2);
   
   // Select the correct bottle image based on product name
   const getBottleImage = () => {
@@ -647,7 +648,7 @@ function ProductCard({ product, variants, onAddToCart, onViewDetails }: {
               variant={isLowStock ? "destructive" : "secondary"} 
               className={`absolute top-3 right-3 rounded-none text-xs border-0 ${isLowStock ? 'bg-[#a94849] text-white' : 'bg-[#d4ad70] text-[#151a20]'}`}
             >
-              {selectedVariant.remainingInventory} left
+              {selectedVariant.remainingInventory > 0 ? `${selectedVariant.remainingInventory} left` : "Sold out"}
             </Badge>
           )}
         </div>
@@ -663,39 +664,56 @@ function ProductCard({ product, variants, onAddToCart, onViewDetails }: {
           <p className="mb-4 text-sm leading-6 text-white/65">{product.description}</p>
           {isChicago && <p className="mb-4 border-l-2 border-[#dc7895] pl-3 text-xs leading-5 text-white/75">{decantDisclosure}</p>}
           <>
-          {/* Variant Selection */}
-          <div className="mb-4">
-            <label className="text-sm font-medium text-white mb-2 block">Select Size & Concentration:</label>
-            <Select value={selectedVariantId} onValueChange={setSelectedVariantId}>
-              <SelectTrigger className="w-full rounded-none border-[#d4ad70]/30 bg-[#12181e] text-white hover:bg-[#1d262d]" data-testid={`select-variant-${product.id}`}>
-                <SelectValue placeholder="Choose an option" />
-              </SelectTrigger>
-              <SelectContent className="bg-luxury-black border-champagne/30">
-                {variants.map(variant => (
-                  <SelectItem key={variant.id} value={variant.id} className="text-white hover:bg-champagne/20 focus:bg-champagne/20">
-                    {getVariantDisplay(variant)}
-                  </SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
-          </div>
+           {/* Only the 30 mL Chicago decant is offered; display the other sizes without creating purchasable variants. */}
+           {isChicago ? (
+             <div className="mb-4">
+               <p className="mb-2 text-sm font-medium text-white">Decant size</p>
+               <div className="grid grid-cols-4 gap-2" role="group" aria-label={`${product.name} decant sizes`}>
+                 {[5, 10, 20, 30].map(size => {
+                   const available = size === 30 && Boolean(chicagoDecant?.isActive && chicagoDecant.remainingInventory > 0);
+                   return (
+                     <button
+                       key={size}
+                       type="button"
+                       disabled={!available}
+                       aria-pressed={available}
+                       onClick={() => { if (chicagoDecant) setSelectedVariantId(chicagoDecant.id); }}
+                       className={`min-h-[66px] border px-1 py-2 text-center transition-colors ${available
+                         ? "border-[#dc7895] bg-[#dc7895]/15 text-[#f3ead8] hover:bg-[#dc7895]/25 focus-visible:outline focus-visible:outline-2 focus-visible:outline-[#f1a0b5]"
+                         : "cursor-not-allowed border-white/15 bg-white/[0.03] text-white/40"}`}
+                       data-testid={`size-${size}ml-${product.id}`}
+                     >
+                       <span className={`block text-sm font-semibold ${!available ? "line-through decoration-white/35" : ""}`}>{size} mL</span>
+                       <span className={`mt-1 block text-[10px] leading-tight ${available ? "text-[#f1a0b5]" : "text-white/45"}`}>
+                         {available ? "Available" : "Not available"}
+                       </span>
+                     </button>
+                   );
+                 })}
+               </div>
+             </div>
+           ) : (
+             <div className="mb-4">
+               <label className="text-sm font-medium text-white mb-2 block">Select Size & Concentration:</label>
+               <Select value={selectedVariantId || variants[0]?.id} onValueChange={setSelectedVariantId}>
+                 <SelectTrigger className="w-full rounded-none border-[#d4ad70]/30 bg-[#12181e] text-white hover:bg-[#1d262d]" data-testid={`select-variant-${product.id}`}>
+                   <SelectValue placeholder="Choose an option" />
+                 </SelectTrigger>
+                 <SelectContent className="bg-luxury-black border-champagne/30">
+                   {variants.map(variant => (
+                     <SelectItem key={variant.id} value={variant.id} className="text-white hover:bg-champagne/20 focus:bg-champagne/20">
+                       {getVariantDisplay(variant)}
+                     </SelectItem>
+                   ))}
+                 </SelectContent>
+               </Select>
+             </div>
+           )}
 
-          {/* Sales Counter for selected variant */}
-          {selectedVariant && !isChicago && (
-            <div className="mb-4 border border-[#d4ad70]/20 bg-[#d4ad70]/[0.07] p-3">
-              <div className="flex justify-between text-sm mb-1">
-                <span className="font-medium text-white">{selectedVariant.soldCount} claimed</span>
-                <span className="text-white/70">{selectedVariant.remainingInventory} remaining</span>
-              </div>
-              <div className="w-full bg-white/10 rounded-full h-2">
-                <div
-                  className="h-2 bg-[#d4ad70] transition-all"
-                  style={{ width: `${(selectedVariant.soldCount / selectedVariant.totalInventory) * 100}%` }}
-                />
-              </div>
-            </div>
-          )}
-          {selectedVariant && isChicago && <p className="mb-4 text-sm font-semibold text-[#f1a0b5]">Only {selectedVariant.remainingInventory} available from this run.</p>}
+           {selectedVariant && isChicago && <div className="mb-4 border border-[#dc7895]/40 bg-[#dc7895]/10 px-3 py-2 text-sm text-[#f1a0b5]">
+             <strong>{selectedVariant.remainingInventory > 0 ? `${selectedVariant.remainingInventory} of ${selectedVariant.totalInventory} left` : "Sold out"}</strong>
+             <span className="ml-2 text-[#f3ead8]/70">· Limited 30 mL run</span>
+           </div>}
 
           <div className="flex items-center justify-between mb-4">
             <div>
@@ -721,7 +739,7 @@ function ProductCard({ product, variants, onAddToCart, onViewDetails }: {
           <div className="flex gap-2">
             <Button
               onClick={handleAddToCart}
-              disabled={!selectedVariant || selectedVariant.remainingInventory === 0}
+              disabled={!selectedVariant || !selectedVariant.isActive || selectedVariant.remainingInventory === 0}
               className="flex-1 rounded-none bg-[#d4ad70] text-[#151a20] hover:bg-[#e3c28e]"
               data-testid={`button-add-to-cart-${product.id}`}
             >

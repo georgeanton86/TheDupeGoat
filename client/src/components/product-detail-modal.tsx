@@ -60,7 +60,7 @@ export default function ProductDetailModal({ product, isOpen, onClose }: Product
                 <div className="border border-[#d8b76a]/30 bg-[#d8b76a]/5 p-4">
                   <p className="text-xs font-semibold uppercase tracking-[0.18em] text-[#e5c578]">Reference bottle photo</p>
                   <p className="mt-2 text-sm leading-6 text-[#f3ead8]/70">{decantDisclosure}</p>
-                  <p className="mt-2 text-xs text-[#f3ead8]/60">Only 25 of each fragrance in this run. One of each: $150, automatically discounted in the cart.</p>
+                   <p className="mt-2 text-xs text-[#f3ead8]/60">Limited run of 25 per fragrance; current availability is shown in the shop. 5, 10, and 20 mL decants are not available. One 30 mL decant of each: $150, automatically discounted in the cart.</p>
                 </div>
               ) : (
                 <>
