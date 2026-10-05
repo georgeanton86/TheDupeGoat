@@ -2,8 +2,10 @@ import { test } from "node:test";
 import assert from "node:assert/strict";
 import { randomUUID } from "node:crypto";
 import { Pool } from "pg";
-import type Stripe from "stripe";
+import express from "express";
+import Stripe from "stripe";
 import { chicagoOffers } from "../shared/chicago";
+import { registerStripeWebhook } from "./stripeWebhook";
 import { attachChicagoIntent, getUnavailableQuantities, reconcileExpiredReservations,
   recordPaidOrder, releaseUnattachedChicago, reserveChicago, reserveChicagoCheckout,
   getOrCreateChicagoIntent, CheckoutConflict, handlePaymentIntentNotification } from "./payments";
@@ -147,6 +149,83 @@ function paidIntent(id: string, reservationId: string, items: { variantId: strin
       decantAcknowledged: "true", chicagoReservationId: reservationId },
   } as Stripe.PaymentIntent;
 }
+
+test("webhook rejects unsigned or forged HTTP events before touching orders or stock", async () => {
+  if (process.env.NODE_ENV === "production") throw new Error("Never run inventory tests on production");
+  const pool = new Pool({ connectionString: process.env.DATABASE_URL });
+  const items = [{ variantId: chicagoOffers[0].variantId, quantity: 1 }];
+  const before = (await getUnavailableQuantities()).get(items[0].variantId) ?? 0;
+  const id = (await reserveChicago(items, { paymentIntents: {} } as Stripe))!;
+  const intentId = `pi_webhook_test_${id.replaceAll("-", "")}`;
+  const intent = paidIntent(intentId, id, items);
+  const signer = new Stripe("sk_test_webhook_fixture");
+  const secret = "whsec_local_webhook_fixture";
+  let verifications = 0;
+  let retrievals = 0;
+  const app = express();
+  registerStripeWebhook(app, {
+    getSync: async () => ({
+      processWebhook: async (payload, signature) => {
+        verifications++;
+        assert.ok(Buffer.isBuffer(payload), "Signature verification must receive the raw request body");
+        signer.webhooks.constructEvent(payload, signature!, secret);
+      },
+    }),
+    getClient: async () => ({
+      paymentIntents: { retrieve: async () => { retrievals++; return intent; } },
+    }) as unknown as Stripe,
+  });
+  // JSON parsing elsewhere in the app must not consume the webhook body first.
+  app.use(express.json());
+  const server = app.listen(0, "127.0.0.1");
+  try {
+    await new Promise<void>(resolve => server.once("listening", resolve));
+    const address = server.address();
+    assert.ok(address && typeof address !== "string");
+    const url = `http://127.0.0.1:${address.port}/api/stripe/webhook`;
+    await attachChicagoIntent(id, intentId);
+    const body = JSON.stringify({
+      id: `evt_${randomUUID().replaceAll("-", "")}`,
+      type: "payment_intent.succeeded",
+      data: { object: { id: intentId } },
+    });
+    const signed = signer.webhooks.generateTestHeaderString({ payload: body, secret });
+    const send = (payload: string, signature?: string) => fetch(url, {
+      method: "POST",
+      headers: { "content-type": "application/json", ...(signature ? { "stripe-signature": signature } : {}) },
+      body: payload,
+    });
+    for (const [payload, signature] of [
+      [body, undefined],
+      [body, "t=123,v1=forged"],
+      [body.replace("payment_intent.succeeded", "payment_intent.canceled"), signed],
+    ] as const) {
+      const response = await send(payload, signature);
+      assert.equal(response.status, 400);
+      assert.equal(retrievals, 0, "Unverified events must not reach the payment handler");
+      assert.equal((await pool.query("SELECT status FROM chicago_reservations WHERE id = $1", [id])).rows[0].status, "pending");
+      assert.equal((await pool.query(
+        "SELECT count(*)::integer AS count FROM payment_orders WHERE payment_intent_id = $1", [intentId],
+      )).rows[0].count, 0);
+      assert.equal((await getUnavailableQuantities()).get(items[0].variantId), before + 1);
+    }
+    assert.equal(verifications, 2, "Missing signatures must not invoke the verifier");
+    const response = await send(body, signed);
+    assert.equal(response.status, 200);
+    assert.deepEqual(await response.json(), { received: true });
+    assert.equal(verifications, 3);
+    assert.equal(retrievals, 1);
+    assert.equal((await pool.query("SELECT status FROM chicago_reservations WHERE id = $1", [id])).rows[0].status, "committed");
+    assert.equal((await pool.query(
+      "SELECT count(*)::integer AS count FROM payment_orders WHERE payment_intent_id = $1", [intentId],
+    )).rows[0].count, 1);
+  } finally {
+    await new Promise<void>((resolve, reject) => server.close(error => error ? reject(error) : resolve()));
+    await pool.query("DELETE FROM payment_orders WHERE payment_intent_id = $1", [intentId]);
+    await pool.query("DELETE FROM chicago_reservations WHERE id = $1", [id]);
+    await pool.end();
+  }
+});
 
 test("duplicate and out-of-order notifications use captured state without releasing stock", async () => {
   if (process.env.NODE_ENV === "production") throw new Error("Never run inventory tests on production");

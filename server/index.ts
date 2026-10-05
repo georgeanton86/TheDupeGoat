@@ -4,7 +4,8 @@ import { registerRoutes } from "./routes";
 import { setupVite, serveStatic, log } from "./vite";
 import { runMigrations } from "stripe-replit-sync";
 import { getStripeClient, getStripeSync } from "./stripeClient";
-import { handlePaymentIntentNotification, reconcileExpiredReservations } from "./payments";
+import { reconcileExpiredReservations } from "./payments";
+import { registerStripeWebhook } from "./stripeWebhook";
 
 const app = express();
 
@@ -20,26 +21,7 @@ async function initializeStripeIntegration() {
   }
 }
 
-app.post("/api/stripe/webhook", express.raw({ type: "application/json" }), async (req, res) => {
-  const signature = req.headers["stripe-signature"];
-  if (!signature || typeof signature !== "string" || !Buffer.isBuffer(req.body))
-    return res.status(400).json({ message: "Invalid webhook" });
-  try {
-    // StripeSync verifies the raw payload and signature before we inspect it.
-    const sync = await getStripeSync();
-    await sync.processWebhook(req.body, signature);
-    const event = JSON.parse(req.body.toString("utf8"));
-    if (event.type === "payment_intent.succeeded" ||
-        event.type === "payment_intent.canceled" ||
-        event.type === "payment_intent.payment_failed") {
-      await handlePaymentIntentNotification(await getStripeClient(), event.type, event.data.object.id);
-    }
-    res.json({ received: true });
-  } catch (error) {
-    console.error("Stripe webhook failed:", error);
-    res.status(400).json({ message: "Webhook could not be processed" });
-  }
-});
+registerStripeWebhook(app);
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
