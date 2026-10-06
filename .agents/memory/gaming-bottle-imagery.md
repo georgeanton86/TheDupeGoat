@@ -14,3 +14,9 @@ TDG original-bottle search results can be misleading: product titles may describ
 **Why:** Multiple search refinements were necessary to find full bottles for Cactus Garden and Gucci Oud rather than sample packaging.
 
 **How to apply:** Visually inspect downloaded reference photos, not just search titles. Keep source provenance, verify the exact scent and variant, and distinguish the designer reference bottle from the TDG decant being sold. Publicly accessible photos are not automatically licensed for storefront use.
+
+Keep the existing TDG reference photos unless the user requests replacements.
+
+**Why:** After being told the photos' usage rights were unverified and asked for owned photos or permission documents, the user said, “Just use what you have.” This is a choice to retain the assets, not evidence of a license.
+
+**How to apply:** Do not describe these photos as rights-cleared or treat this instruction as permission to publish.
