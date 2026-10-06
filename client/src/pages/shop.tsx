@@ -267,15 +267,15 @@ export default function Shop() {
                   </div>
 
                   {cart.length === 0 ? (
-                    <p className="text-gray-500 text-sm">Your cart is empty</p>
+                    <p className="text-muted-foreground text-sm">Your cart is empty</p>
                   ) : (
                     <>
                       <div className="space-y-3 mb-4">
                         {cart.map(item => (
-                          <div key={item.variant.id} className="flex items-center gap-3 p-3 bg-gray-50 rounded-lg">
+                          <div key={item.variant.id} className="flex items-center gap-3 p-3 bg-background text-foreground rounded-lg">
                             <div className="flex-1">
                               <p className="font-semibold text-sm">{item.product.name}</p>
-                              <p className="text-xs text-gray-500">{item.variant.size} • {item.variant.concentration}</p>
+                              <p className="text-xs text-muted-foreground">{item.variant.size} • {item.variant.concentration}</p>
                             </div>
                             <Select
                               value={item.quantity.toString()}
@@ -299,7 +299,7 @@ export default function Shop() {
                           </div>
                         ))}
                       </div>
-                      {hasReferenceDecants && <p className="mb-3 text-xs text-gray-600">{hasTdgDecants ? "Designer bottle imagery identifies scent inspiration only. You receive a THE DUPE GOAT dupe or hybrid decant in each selected size—not the original pictured perfume." : "Gaming concept imagery is for reference only. Gaming fragrances ship in separate 30 mL decant bottles."}{hasTdgDecants && <><br />{affiliationDisclosure}</>}</p>}
+                      {hasReferenceDecants && <p className="mb-3 text-xs text-muted-foreground">{hasTdgDecants ? "Designer bottle imagery identifies scent inspiration only. You receive a THE DUPE GOAT dupe or hybrid decant in each selected size—not the original pictured perfume." : "Gaming concept imagery is for reference only. Gaming fragrances ship in separate 30 mL decant bottles."}{hasTdgDecants && <><br />{affiliationDisclosure}</>}</p>}
 
                       {/* Promo Code */}
                       <div className="mb-4 pb-4 border-b">
@@ -321,7 +321,7 @@ export default function Shop() {
                           </Button>
                         </div>
                         {promoApplied && (
-                          <p className="text-xs text-green-600 mt-1">10% discount applied.</p>
+                          <p className="text-xs text-primary mt-1">10% discount applied.</p>
                         )}
                       </div>
 
@@ -331,9 +331,9 @@ export default function Shop() {
                           <span>Subtotal:</span>
                           <span>${subtotal.toFixed(2)}</span>
                         </div>
-                        {setCount > 0 && <div className="flex justify-between text-green-700"><span>Gaming set savings × {setCount}:</span><span>-${setDiscount.toFixed(2)}</span></div>}
+                        {setCount > 0 && <div className="flex justify-between text-primary"><span>Gaming set savings × {setCount}:</span><span>-${setDiscount.toFixed(2)}</span></div>}
                         {promoApplied && (
-                          <div className="flex justify-between text-green-600">
+                          <div className="flex justify-between text-primary">
                             <span>Discount (10%):</span>
                             <span>-${discount.toFixed(2)}</span>
                           </div>
@@ -343,7 +343,7 @@ export default function Shop() {
                           <span>{shipping === 0 ? "FREE" : `$${shipping.toFixed(2)}`}</span>
                         </div>
                         {subtotalCents <= 5000 && subtotal > 0 && (
-                          <p className="text-xs text-gray-500">
+                          <p className="text-xs text-muted-foreground">
                             Add ${((5001 - subtotalCents) / 100).toFixed(2)} more for free shipping.
                           </p>
                         )}
@@ -385,15 +385,15 @@ export default function Shop() {
           
           <div className="mt-6">
             {cart.length === 0 ? (
-              <p className="text-gray-500 text-sm text-center py-8">Your cart is empty</p>
+              <p className="text-muted-foreground text-sm text-center py-8">Your cart is empty</p>
             ) : (
               <>
                 <div className="space-y-3 mb-4">
                   {cart.map(item => (
-                    <div key={item.variant.id} className="grid grid-cols-[minmax(0,1fr)_auto] items-center gap-3 p-3 bg-gray-50 rounded-lg sm:flex">
+                    <div key={item.variant.id} className="grid grid-cols-[minmax(0,1fr)_auto] items-center gap-3 p-3 bg-card text-card-foreground rounded-lg sm:flex">
                       <div className="col-span-2 min-w-0 break-words sm:flex-1">
                         <p className="font-semibold text-sm">{item.product.name}</p>
-                        <p className="text-xs text-gray-500">{item.variant.size} • {item.variant.concentration}</p>
+                        <p className="text-xs text-muted-foreground">{item.variant.size} • {item.variant.concentration}</p>
                       </div>
                       <Select
                         value={item.quantity.toString()}
@@ -417,7 +417,7 @@ export default function Shop() {
                     </div>
                   ))}
                 </div>
-                  {hasReferenceDecants && <p className="mb-3 text-xs text-gray-600">{hasTdgDecants ? "Designer bottle imagery identifies scent inspiration only. You receive a THE DUPE GOAT dupe or hybrid decant in each selected size—not the original pictured perfume." : "Gaming concept imagery is for reference only. Gaming fragrances ship in separate 30 mL decant bottles."}{hasTdgDecants && <><br />{affiliationDisclosure}</>}</p>}
+                  {hasReferenceDecants && <p className="mb-3 text-xs text-muted-foreground">{hasTdgDecants ? "Designer bottle imagery identifies scent inspiration only. You receive a THE DUPE GOAT dupe or hybrid decant in each selected size—not the original pictured perfume." : "Gaming concept imagery is for reference only. Gaming fragrances ship in separate 30 mL decant bottles."}{hasTdgDecants && <><br />{affiliationDisclosure}</>}</p>}
 
                 <div className="mb-4 pb-4 border-b">
                   <div className="flex gap-2">
@@ -437,7 +437,7 @@ export default function Shop() {
                     </Button>
                   </div>
                   {promoApplied && (
-                    <p className="text-xs text-green-600 mt-1">10% discount applied.</p>
+                    <p className="text-xs text-primary mt-1">10% discount applied.</p>
                   )}
                 </div>
 
@@ -446,9 +446,9 @@ export default function Shop() {
                     <span>Subtotal:</span>
                     <span>${subtotal.toFixed(2)}</span>
                   </div>
-                  {setCount > 0 && <div className="flex justify-between text-green-700"><span>Gaming set savings × {setCount}:</span><span>-${setDiscount.toFixed(2)}</span></div>}
+                  {setCount > 0 && <div className="flex justify-between text-primary"><span>Gaming set savings × {setCount}:</span><span>-${setDiscount.toFixed(2)}</span></div>}
                   {promoApplied && (
-                    <div className="flex justify-between text-green-600">
+                    <div className="flex justify-between text-primary">
                       <span>Discount (10%):</span>
                       <span>-${discount.toFixed(2)}</span>
                     </div>
@@ -458,7 +458,7 @@ export default function Shop() {
                     <span>{shipping === 0 ? "FREE" : `$${shipping.toFixed(2)}`}</span>
                   </div>
                   {subtotalCents <= 5000 && subtotal > 0 && (
-                    <p className="text-xs text-gray-500">
+                    <p className="text-xs text-muted-foreground">
                       Add ${((5001 - subtotalCents) / 100).toFixed(2)} more for free shipping.
                     </p>
                   )}
@@ -510,15 +510,15 @@ export default function Shop() {
             
             <div className="mt-6">
               {cart.length === 0 ? (
-                <p className="text-gray-500 text-sm text-center py-8">Your cart is empty</p>
+                <p className="text-muted-foreground text-sm text-center py-8">Your cart is empty</p>
               ) : (
                 <>
                   <div className="space-y-3 mb-4">
                     {cart.map(item => (
-                      <div key={item.variant.id} className="grid grid-cols-[minmax(0,1fr)_auto] items-center gap-3 p-3 bg-gray-50 rounded-lg sm:flex">
+                      <div key={item.variant.id} className="grid grid-cols-[minmax(0,1fr)_auto] items-center gap-3 p-3 bg-card text-card-foreground rounded-lg sm:flex">
                         <div className="col-span-2 min-w-0 break-words sm:flex-1">
                           <p className="font-semibold text-sm">{item.product.name}</p>
-                          <p className="text-xs text-gray-500">{item.variant.size} • {item.variant.concentration}</p>
+                          <p className="text-xs text-muted-foreground">{item.variant.size} • {item.variant.concentration}</p>
                         </div>
                         <Select
                           value={item.quantity.toString()}
@@ -542,7 +542,7 @@ export default function Shop() {
                       </div>
                     ))}
                   </div>
-                  {hasReferenceDecants && <p className="mb-3 text-xs text-gray-600">{hasTdgDecants ? "Designer bottle imagery identifies scent inspiration only. You receive a THE DUPE GOAT dupe or hybrid decant in each selected size—not the original pictured perfume." : "Gaming concept imagery is for reference only. Gaming fragrances ship in separate 30 mL decant bottles."}{hasTdgDecants && <><br />{affiliationDisclosure}</>}</p>}
+                  {hasReferenceDecants && <p className="mb-3 text-xs text-muted-foreground">{hasTdgDecants ? "Designer bottle imagery identifies scent inspiration only. You receive a THE DUPE GOAT dupe or hybrid decant in each selected size—not the original pictured perfume." : "Gaming concept imagery is for reference only. Gaming fragrances ship in separate 30 mL decant bottles."}{hasTdgDecants && <><br />{affiliationDisclosure}</>}</p>}
 
                   {/* Promo Code */}
                   <div className="mb-4 pb-4 border-b">
@@ -565,7 +565,7 @@ export default function Shop() {
                       </Button>
                     </div>
                     {promoApplied && (
-                      <p className="text-xs text-green-600 mt-1">10% discount applied.</p>
+                      <p className="text-xs text-primary mt-1">10% discount applied.</p>
                     )}
                   </div>
 
@@ -575,9 +575,9 @@ export default function Shop() {
                       <span>Subtotal:</span>
                       <span>${subtotal.toFixed(2)}</span>
                     </div>
-                    {setCount > 0 && <div className="flex justify-between text-green-700"><span>Gaming set savings × {setCount}:</span><span>-${setDiscount.toFixed(2)}</span></div>}
+                    {setCount > 0 && <div className="flex justify-between text-primary"><span>Gaming set savings × {setCount}:</span><span>-${setDiscount.toFixed(2)}</span></div>}
                     {promoApplied && (
-                      <div className="flex justify-between text-green-600">
+                      <div className="flex justify-between text-primary">
                         <span>Discount (10%):</span>
                         <span>-${discount.toFixed(2)}</span>
                       </div>
@@ -587,7 +587,7 @@ export default function Shop() {
                       <span>{shipping === 0 ? "FREE" : `$${shipping.toFixed(2)}`}</span>
                     </div>
                     {subtotalCents <= 5000 && subtotal > 0 && (
-                      <p className="text-xs text-gray-500">
+                      <p className="text-xs text-muted-foreground">
                         Add ${((5001 - subtotalCents) / 100).toFixed(2)} more for free shipping.
                       </p>
                     )}
