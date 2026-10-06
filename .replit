@@ -29,6 +29,10 @@ author = "agent"
 task = "workflow.run"
 args = "Start application"
 
+[[workflows.workflow.tasks]]
+task = "workflow.run"
+args = "browser-stock"
+
 [[workflows.workflow]]
 name = "Start application"
 author = "agent"
@@ -37,6 +41,17 @@ author = "agent"
 task = "shell.exec"
 args = "npm run dev"
 waitForPort = 5000
+
+[[workflows.workflow]]
+name = "browser-stock"
+author = "agent"
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "PLAYWRIGHT_CHROMIUM_EXECUTABLE_PATH=\"$(command -v chromium)\" npm run test:browser"
+
+[workflows.workflow.metadata]
+isValidation = true
 
 [agent]
 integrations = ["javascript_stripe:1.0.0", "javascript_paypal:1.0.0", "javascript_google_analytics:1.0.0", "javascript_mem_db:1.0.0"]

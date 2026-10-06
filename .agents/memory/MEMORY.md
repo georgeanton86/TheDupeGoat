@@ -5,3 +5,4 @@
 - [TDG product identity](tdg-product-identity.md) — the user stocks dupes, not designer originals; THE DUPE GOAT sells those alongside Dreamer and Gaming hybrids.
 - [Image download runtime](image-download-runtime.md) — impure fetch works, but AbortSignal is unavailable; do not mistake a missing global for failed image sources.
 - [Checkout availability checks](checkout-availability.md) — stock preflight must recognize the same purchase's unexpired hold without making other held or paid stock available.
+- [Browser payment isolation](browser-payment-isolation.md) — changing-stock regression tests stop before Stripe Elements and must never use live payment services.
