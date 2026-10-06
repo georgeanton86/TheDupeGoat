@@ -7,14 +7,14 @@ import { Link } from "wouter";
 
 export default function Home() {
   return (
-    <div className="min-h-screen bg-[#151a20] text-[#f3ead8]">
+    <div className="store-night min-h-[100dvh] text-[#f3ead8]">
       <Header />
       <main>
-        <section className="noir-grain relative flex min-h-[760px] items-end overflow-hidden bg-[#11161c] pt-24 sm:min-h-[820px]">
+        <section className="store-hero noir-grain relative flex min-h-[760px] items-end overflow-hidden pt-24 sm:min-h-[820px]">
           <div className="absolute inset-0">
-            <img src="/chicago/chicago-noir-skyline.jpg" alt="Chicago skyline and river at night, seen through rain and city lights" className="h-full w-full object-cover object-[58%_center] opacity-75" />
-            <div className="absolute inset-0 bg-gradient-to-r from-[#11161c] via-[#11161c]/80 to-[#11161c]/15" />
-            <div className="absolute inset-0 bg-gradient-to-t from-[#11161c] via-transparent to-[#11161c]/35" />
+            <img src="/chicago/chicago-noir-skyline.jpg" alt="Chicago skyline and river at night, seen through rain and city lights" className="h-full w-full object-cover object-[58%_center] opacity-90" />
+            <div className="absolute inset-0 bg-gradient-to-r from-[#18212a] via-[#18212a]/70 to-[#18212a]/10" />
+            <div className="absolute inset-0 bg-gradient-to-t from-[#18212a] via-transparent to-[#18212a]/25" />
             <div className="absolute inset-0 bg-[#16212a]/25 mix-blend-color" />
           </div>
           <div className="relative mx-auto grid w-full max-w-7xl gap-12 px-5 pb-16 pt-24 sm:px-8 md:grid-cols-[1.05fr_.95fr] md:items-end md:pb-24">
@@ -40,11 +40,11 @@ export default function Home() {
           </div>
         </section>
 
-        <section id="collections" className="scroll-mt-20 bg-[#151a20]">
+        <section id="collections" className="store-night scroll-mt-20">
           <ProductGallery />
         </section>
 
-        <section id="about" className="relative overflow-hidden border-y border-[#d4ad70]/20 bg-[#1c232a]">
+        <section id="about" className="store-panel relative overflow-hidden border-y border-[#d4ad70]/20">
           <div className="absolute -right-24 -top-24 h-96 w-96 rounded-full border border-[#d8b76a]/10" />
           <div className="absolute -right-12 -top-12 h-72 w-72 rounded-full border border-[#d8b76a]/10" />
           <div className="relative mx-auto grid max-w-7xl gap-12 px-5 py-20 sm:px-8 md:grid-cols-[.8fr_1.2fr] md:py-28">
@@ -52,8 +52,8 @@ export default function Home() {
             <div className="max-w-2xl">
               <p className="text-lg leading-8 text-[#f3ead8]/80">THE DUPE GOAT makes Chicago its launchpad for fragrance with a twist: faithful scent directions, unexpected hybrids, and original concepts inspired by the city’s after-hours energy.</p>
               <div className="mt-9 grid gap-5 sm:grid-cols-2">
-                <div className="border-t border-[#cf3e68]/50 pt-5"><Gamepad2 className="h-5 w-5 text-[#ed6689]" /><h3 className="mt-4 font-serif text-2xl">The Gaming Collection</h3><p className="mt-2 text-sm leading-6 text-[#f3ead8]/60">Three original gaming-inspired compositions, sold as 30 mL decants. Pictured bottles are reference imagery; your fragrance arrives in a separate decant bottle.</p></div>
-                <div className="border-t border-[#72e8ef]/50 pt-5"><MoonStar className="h-5 w-5 text-[#72e8ef]" /><h3 className="mt-4 font-serif text-2xl">Dupe / hybrid library</h3><p className="mt-2 text-sm leading-6 text-[#f3ead8]/60">Twenty-five single-scent dupes and Dreamer’s three layered hybrids. Designer names and photos indicate inspiration only; TDG products are independent, not the originals.</p></div>
+                <div className="border-t border-[#cf3e68]/50 pt-5"><Gamepad2 className="h-5 w-5 text-[#ed6689]" /><h3 className="mt-4 font-serif text-2xl">The Gaming Collection</h3><p className="mt-2 text-sm leading-6 text-[#f3ead8]/75">Three original gaming-inspired compositions, sold as 30 mL decants. Pictured bottles are reference imagery; your fragrance arrives in a separate decant bottle.</p></div>
+                <div className="border-t border-[#72e8ef]/50 pt-5"><MoonStar className="h-5 w-5 text-[#72e8ef]" /><h3 className="mt-4 font-serif text-2xl">Dupe / hybrid library</h3><p className="mt-2 text-sm leading-6 text-[#f3ead8]/75">Twenty-five single-scent dupes and Dreamer’s three layered hybrids. Designer names and photos indicate inspiration only; TDG products are independent, not the originals.</p></div>
               </div>
               <Link href="/shop" className="mt-8 inline-flex items-center gap-2 text-sm font-semibold text-[#d8b76a] hover:text-[#f3ead8]">Explore the collections <ArrowUpRight className="h-4 w-4" /></Link>
             </div>
@@ -63,11 +63,11 @@ export default function Home() {
         <section className="mx-auto max-w-7xl px-5 py-20 sm:px-8 md:py-28">
             <div className="grid gap-12 md:grid-cols-[.7fr_1.3fr]">
              <div><Sparkles className="h-6 w-6 text-[#d8b76a]" /><p className="mt-5 text-[10px] uppercase tracking-[0.28em] text-[#d8b76a]">The independent approach</p><h2 className="mt-3 font-serif text-4xl">Familiar notes.<br />New narratives.</h2></div>
-             <div className="border-l border-[#d8b76a]/30 pl-6 sm:pl-10"><p className="font-serif text-2xl leading-snug sm:text-3xl">“A scent can be a reference point—and still take you somewhere new.”</p><p className="mt-5 max-w-xl text-sm leading-7 text-[#f3ead8]/60">TDG fragrances are independently produced. We use designer fragrance names to identify scent inspiration, not affiliation. The bottle you receive is a THE DUPE GOAT decant, not the pictured designer product.</p></div>
+             <div className="border-l border-[#d8b76a]/30 pl-6 sm:pl-10"><p className="font-serif text-2xl leading-snug sm:text-3xl">“A scent can be a reference point—and still take you somewhere new.”</p><p className="mt-5 max-w-xl text-sm leading-7 text-[#f3ead8]/75">TDG fragrances are independently produced. We use designer fragrance names to identify scent inspiration, not affiliation. The bottle you receive is a THE DUPE GOAT decant, not the pictured designer product.</p></div>
           </div>
         </section>
 
-        <section id="faq" className="scroll-mt-20 bg-[#1c232a]">
+        <section id="faq" className="store-panel scroll-mt-20">
           <div className="mx-auto max-w-4xl px-5 py-20 sm:px-8">
             <p className="text-center text-[10px] uppercase tracking-[0.28em] text-[#d8b76a]">A few useful details</p>
             <h2 className="mt-3 text-center font-serif text-4xl">Questions, answered.</h2>

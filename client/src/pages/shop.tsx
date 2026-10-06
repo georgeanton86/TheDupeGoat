@@ -155,7 +155,7 @@ export default function Shop() {
 
   if (isLoading) {
     return (
-      <div className="min-h-screen bg-[#171a16]">
+      <div className="store-night min-h-[100dvh]">
         <Header cartCount={0} onCartClick={() => setIsCartOpen(true)} />
         <div className="mx-auto max-w-7xl px-5 pb-16 pt-32 sm:px-8">
           <div className="h-10 w-72 animate-pulse bg-[#d8b76a]/15" />
@@ -210,13 +210,13 @@ export default function Shop() {
   }
 
   return (
-    <div className="min-h-screen bg-[#151a20] text-[#f3ead8]">
+    <div className="store-night min-h-[100dvh] text-[#f3ead8]">
       <Header cartCount={totalItems} onCartClick={() => setIsCartOpen(true)} />
       
       {/* Hero Banner */}
-      <div className="noir-grain relative isolate overflow-hidden border-b border-[#d4ad70]/25 bg-[#11161c] pb-14 pt-32">
-        <div className="absolute inset-0 -z-10 bg-[url('/dreamer/dreamer-series-tdg.jpg')] bg-cover bg-[center_42%] opacity-40" />
-        <div className="absolute inset-0 -z-10 bg-gradient-to-r from-[#11161c] via-[#11161c]/90 to-[#11161c]/45" />
+      <div className="store-hero noir-grain relative isolate overflow-hidden border-b border-[#d4ad70]/25 pb-14 pt-32">
+        <div className="absolute inset-0 -z-10 bg-[url('/dreamer/dreamer-series-tdg.jpg')] bg-cover bg-[center_42%] opacity-55" />
+        <div className="absolute inset-0 -z-10 bg-gradient-to-r from-[#18212a] via-[#18212a]/80 to-[#18212a]/30" />
         <div className="mx-auto max-w-7xl px-5 sm:px-8">
           <div className="mb-8 max-w-3xl">
             <p className="font-mono text-[10px] font-semibold uppercase tracking-[0.28em] text-[#d4ad70]">THE DUPE GOAT · Chicago fragrance house</p>
@@ -665,9 +665,9 @@ function ProductCard({ product, variants, cart, isCheckingStock, onAddToCart, on
   };
   
   return (
-    <Card className={`overflow-hidden rounded-none border transition-all duration-500 hover:-translate-y-1 ${isChicago ? "border-[#dc7895]/25 bg-[#192027] hover:border-[#dc7895]/65" : "border-[#d4ad70]/20 bg-[#192027] hover:border-[#d4ad70]/55"}`}>
+    <Card className={`overflow-hidden rounded-none border transition-all duration-500 hover:-translate-y-1 ${isChicago ? "border-[#dc7895]/25 bg-[#25303a] hover:border-[#dc7895]/65" : "border-[#d4ad70]/20 bg-[#25303a] hover:border-[#d4ad70]/55"}`}>
       <CardContent className="p-0">
-        <div className={`noir-grain relative flex h-80 items-center justify-center overflow-hidden p-5 ${isChicago ? "bg-[#1b2732]" : "bg-[#242a2d]"}`}>
+        <div className={`noir-grain relative flex h-80 items-center justify-center overflow-hidden ${isChicago ? "bg-[#202b36]" : "bg-[#242a2d] p-5"}`}>
           {!isChicago && <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_50%_65%,rgba(177,139,78,.42),transparent_67%)] opacity-[0.16]" />}
           <img 
             src={chicagoBottleImages[product.name.toUpperCase()]} 
@@ -694,7 +694,7 @@ function ProductCard({ product, variants, cart, isCheckingStock, onAddToCart, on
           </div>
 
           {!isChicago && product.bibleVerse?.trim() && <p className="mb-2 text-sm italic text-white/65">"{product.bibleVerse}"</p>}
-          <p className="mb-4 text-sm leading-6 text-white/65">{product.description}</p>
+          <p className="mb-4 text-sm leading-6 text-white/75">{product.description}</p>
           {gamingOffer && <HybridInspirations inspirations={gamingOffer.inspirations} />}
           {isChicago && <p className="mb-4 border-l-2 border-[#dc7895] pl-3 text-xs leading-5 text-white/75">Gaming concept imagery is for reference only. Your fragrance ships in a separate 30 mL decant bottle.</p>}
           <>

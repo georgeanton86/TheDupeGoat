@@ -29,7 +29,7 @@ export default function ProductDetailModal({ product, isOpen, onClose }: Product
     <Dialog open={isOpen} onOpenChange={(open) => { if (!open) onClose(); }}>
       <DialogContent className="max-h-[90dvh] max-w-3xl overflow-y-auto border-[#d8b76a]/30 bg-[#171a16] p-0 text-[#f3ead8]">
         <div className="grid md:grid-cols-[0.85fr_1.15fr]">
-          <div className="relative flex min-h-[260px] items-center justify-center overflow-hidden bg-[#222722] p-8">
+          <div className={`relative flex min-h-[260px] items-center justify-center overflow-hidden ${gaming ? "bg-[#202b36]" : "bg-[#222722] p-8"}`}>
               {gaming || dreamer || tdg ? <img src={gaming?.image || dreamer?.imageUrl || tdg?.imageUrl} alt={gaming ? `Reference photo of ${product.name}; shipped TDG decant differs` : dreamer ? `${product.name} Dreamer Series artwork reference` : `Reference-only ${tdg?.original} bottle by ${tdg?.house}; TDG dupe ships`} className="max-h-[360px] w-full object-contain" /> : (
               <div className="text-center">
                  <span className="text-[10px] uppercase tracking-[0.3em] text-[#d8b76a]">THE DUPE GOAT</span>

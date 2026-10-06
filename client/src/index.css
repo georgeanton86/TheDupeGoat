@@ -6,6 +6,10 @@
 @tailwind utilities;
 
 :root {
+  /* Brighter midnight surfaces for the storefront, without changing cart tokens. */
+  --store-night: #1c242d;
+  --store-panel: #25303a;
+  --store-hero: #18212a;
   --background: hsl(216, 22%, 9%);
   --foreground: hsl(38, 27%, 91%);
   --card: hsl(216, 18%, 13%);
@@ -117,6 +121,9 @@
 }
 
 html { scroll-behavior: smooth; }
+.store-night { background-color: var(--store-night); }
+.store-panel { background-color: var(--store-panel); }
+.store-hero { background-color: var(--store-hero); }
 body { background: #151a20; }
 ::selection { background: #b68b4f; color: #151a20; }
 .noir-grain::after {

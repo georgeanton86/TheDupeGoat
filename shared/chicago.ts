@@ -9,7 +9,7 @@ export const chicagoOffers = [
     productId: "54ac0000-0000-4000-8000-000000000001",
     variantId: "54ac0000-0000-4000-8000-000000000011",
     sku: "CHICAGO-PLAYER-ONE-30ML",
-    imageUrl: "/assets/generated_images/chicago-player-one-studio.jpg",
+    imageUrl: "/gaming/player-one-cinematic.jpg",
   },
   {
     name: "PLAY AGAIN?",
@@ -17,7 +17,7 @@ export const chicagoOffers = [
     productId: "54ac0000-0000-4000-8000-000000000002",
     variantId: "54ac0000-0000-4000-8000-000000000012",
     sku: "CHICAGO-PLAY-AGAIN-30ML",
-    imageUrl: "/assets/generated_images/chicago-play-again-studio.jpg",
+    imageUrl: "/gaming/play-again-cinematic.jpg",
   },
   {
     name: "HALF LIFE",
@@ -25,7 +25,7 @@ export const chicagoOffers = [
     productId: "54ac0000-0000-4000-8000-000000000003",
     variantId: "54ac0000-0000-4000-8000-000000000013",
     sku: "CHICAGO-HALF-LIFE-30ML",
-    imageUrl: "/assets/generated_images/chicago-half-life-studio.jpg",
+    imageUrl: "/gaming/half-life-cinematic.jpg",
   },
 ] as const;
 
