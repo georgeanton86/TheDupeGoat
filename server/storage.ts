@@ -2,6 +2,7 @@ import { type User, type InsertUser, type Product, type InsertProduct, type Prod
 import { randomUUID } from "crypto";
 import { chicagoOffers } from "@shared/chicago";
 import { dreamerOffers, dreamerVariants } from "@shared/dreamer";
+import { tdgOffers, tdgVariants } from "@shared/tdg";
 
 export interface IStorage {
   getUser(id: string): Promise<User | undefined>;
@@ -151,7 +152,7 @@ export class MemStorage implements IStorage {
         imageUrl: fragrance.imageUrl,
         bibleVerse: fragrance.bibleVerse,
         verseReference: fragrance.verseReference,
-        isActive: true,
+        isActive: false,
         releaseDate: new Date("2024-01-01"),
         createdAt: new Date(),
       };
@@ -186,7 +187,7 @@ export class MemStorage implements IStorage {
           totalInventory: 100,
           remainingInventory: index === 0 && v.concentration === "Extrait de Parfum" && v.size === "100mL" ? 82 : 100,
           soldCount: index === 0 && v.concentration === "Extrait de Parfum" && v.size === "100mL" ? 18 : 0,
-          isActive: true,
+          isActive: false,
           createdAt: new Date(),
         };
         this.productVariants.set(variantId, variant);
@@ -197,7 +198,7 @@ export class MemStorage implements IStorage {
       this.products.set(offer.productId, {
         id: offer.productId,
         name: offer.name,
-        description: "A gaming-inspired Chicago Exclusif fragrance, offered as a 30 mL decant.",
+        description: "A gaming-inspired THE DUPE GOAT hybrid fragrance, offered as a 30 mL decant.",
         notes: "Gaming collection",
         topNotes: "",
         middleNotes: "",
@@ -243,6 +244,27 @@ export class MemStorage implements IStorage {
       });
     }
     for (const variant of dreamerVariants) {
+      this.productVariants.set(variant.id, { ...variant, createdAt: new Date() });
+    }
+    for (const offer of tdgOffers) {
+      this.products.set(offer.productId, {
+        id: offer.productId,
+        name: offer.name,
+        description: offer.description,
+        notes: `Inspired by ${offer.house} ${offer.original}`,
+        topNotes: "",
+        middleNotes: "",
+        baseNotes: "",
+        type: "Fragrance dupe",
+        imageUrl: offer.imageUrl,
+        bibleVerse: "",
+        verseReference: "",
+        isActive: true,
+        releaseDate: new Date(),
+        createdAt: new Date(),
+      });
+    }
+    for (const variant of tdgVariants) {
       this.productVariants.set(variant.id, { ...variant, createdAt: new Date() });
     }
   }

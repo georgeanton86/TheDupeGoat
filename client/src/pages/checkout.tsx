@@ -12,6 +12,7 @@ import Header from "@/components/header";
 import Footer from "@/components/footer";
 import CartPayPalButton from "@/components/CartPayPalButton";
 import type { Product, ProductVariant } from "@shared/schema";
+import { shippingCentsForSubtotal } from "@shared/commerce";
 
 interface CartData {
   cart: Array<{
@@ -302,7 +303,7 @@ export default function Checkout() {
       // Calculate totals
       const subtotal = items.reduce((sum, item) => sum + (parseFloat(item.variant.price) * item.quantity), 0);
       const discount = cartData.promoCode?.toUpperCase() === "WELCOME10" ? subtotal * 0.1 : 0;
-      const shipping = subtotal >= 100 ? 0 : 8.99;
+      const shipping = shippingCentsForSubtotal(Math.round(subtotal * 100)) / 100;
       const total = subtotal - discount + shipping;
 
       setCheckoutData({

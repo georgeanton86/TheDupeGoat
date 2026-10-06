@@ -3,7 +3,7 @@ import { loadStripe } from '@stripe/stripe-js';
 import { useEffect, useRef, useState } from 'react';
 import { useLocation } from 'wouter';
 import { useQuery } from "@tanstack/react-query";
-import { apiRequest } from "@/lib/queryClient";
+import { apiRequest, queryClient } from "@/lib/queryClient";
 import { useToast } from "@/hooks/use-toast";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
@@ -15,6 +15,9 @@ import Footer from "@/components/footer";
 import { Loader2, CheckCircle } from "lucide-react";
 import type { Product, ProductVariant } from "@shared/schema";
 import { chicagoSetDiscountCents, countChicagoSets, decantDisclosure, isChicagoVariant } from "@shared/chicago";
+import { affiliationDisclosure } from "@shared/tdg";
+import { dreamerOffers } from "@shared/dreamer";
+import { tdgOffers } from "@shared/tdg";
 
 interface CartItem {
   variant: ProductVariant;
@@ -182,6 +185,7 @@ export default function StripeCheckout() {
     window.history.replaceState({}, "", "/checkout?order=success");
     setOrderData(data);
     setShowSuccess(true);
+    void queryClient.invalidateQueries({ queryKey: ["/api/product-variants"] });
   };
 
   const { data: products } = useQuery<Product[]>({
@@ -192,6 +196,10 @@ export default function StripeCheckout() {
     queryKey: ["/api/product-variants"],
   });
   const hasChicagoDecant = cartItems.some(item => isChicagoVariant(item.variant.id));
+  const hasTdgDecant = cartItems.some(item =>
+    dreamerOffers.some(offer => offer.productId === item.product.id) ||
+    tdgOffers.some(offer => offer.productId === item.product.id),
+  );
   const setCount = countChicagoSets(cartItems.map(item => ({ variantId: item.variant.id, quantity: item.quantity })));
 
   useEffect(() => {
@@ -399,7 +407,7 @@ export default function StripeCheckout() {
                     <span>${(Number(item.variant.price) * item.quantity).toFixed(2)}</span>
                   </div>)}
                    {setCount > 0 && <div className="flex justify-between text-sm text-green-700"><span>Gaming set savings × {setCount}</span><span>-${(setCount * chicagoSetDiscountCents / 100).toFixed(2)}</span></div>}
-                   {hasChicagoDecant && <p className="mt-3 border-l-2 border-[#dc7895] pl-3 text-sm text-gray-700">{decantDisclosure}</p>}
+                   {hasChicagoDecant && <p className="mt-3 border-l-2 border-[#dc7895] pl-3 text-sm text-gray-700">{hasTdgDecant ? <>{decantDisclosure}<br /><span className="mt-1 block">{affiliationDisclosure}</span></> : "Gaming concept imagery is for reference only. Your fragrance ships in a separate 30 mL decant bottle."}</p>}
                   <p className="text-sm text-gray-600">Shipping and discount are included in the final payment total.</p>
                 </div>
                 <div><Label htmlFor="name">Full name</Label><Input id="name" required value={customerName} onChange={e => setCustomerName(e.target.value)} /></div>
@@ -420,9 +428,9 @@ export default function StripeCheckout() {
                 </div>
                 {hasChicagoDecant && <div className="flex items-start gap-2">
                   <Checkbox id="decant" checked={decantAcknowledged} onCheckedChange={checked => { setDecantAcknowledged(checked === true); setError(""); }} />
-                  <label htmlFor="decant" className="text-sm">I understand the pictured bottle is for reference and my fragrance will arrive in a different 30 mL decant bottle.</label>
+                  <label htmlFor="decant" className="text-sm">{hasTdgDecant ? "I understand pictured designer bottles are reference images only. I will receive a THE DUPE GOAT dupe or hybrid decant in the size I selected—not an original pictured perfume." : "I understand the Gaming concept imagery is for reference only and my fragrance will arrive in a separate 30 mL decant bottle."}</label>
                 </div>}
-                <Button type="submit" disabled={isPreparing || !policyAcknowledged} className="w-full">
+                <Button type="submit" disabled={isPreparing || !policyAcknowledged || (hasChicagoDecant && !decantAcknowledged)} className="w-full">
                   {isPreparing ? "Preparing payment..." : "Continue to payment"}
                 </Button>
               </form>

@@ -1,25 +1,14 @@
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Badge } from "@/components/ui/badge";
 import type { Product } from "@shared/schema";
-import { chicagoBottleImages, decantDisclosure } from "@shared/chicago";
-import equusAlbusImage from "@assets/generated_images/Badass_Equus_Albus_bottle_bde8545f.png";
-import paxObscuraImage from "@assets/generated_images/Pax_Obscura_luxury_bottle_c6928f90.png";
-import famesImage from "@assets/generated_images/Fames_luxury_bottle_fd04fa9c.png";
-import mortemImage from "@assets/generated_images/Mortem_luxury_bottle_f077a9fa.png";
-import voxCaeliImage from "@assets/generated_images/Vox_Caeli_luxury_bottle_6b8efdf7.png";
-import terraTremorImage from "@assets/generated_images/Terra_Tremor_luxury_bottle_27a4bc2e.png";
-import sabbatumImage from "@assets/generated_images/Sabbatum_luxury_bottle_b96d831e.png";
-import luxAeternaImage from "@assets/generated_images/Lux_Aeterna_luxury_bottle_d2b6357e.png";
+import { chicagoBottleImages } from "@shared/chicago";
+import { dreamerOffers } from "@shared/dreamer";
+import { tdgOffers, dupeDisclosure, affiliationDisclosure } from "@shared/tdg";
 
 const gamerProducts: Record<string, { image: string; collection: string }> = {
-  "PLAYER ONE": { image: chicagoBottleImages["PLAYER ONE"], collection: "Chicago Exclusif · Gaming Collection" },
-  "PLAY AGAIN?": { image: chicagoBottleImages["PLAY AGAIN?"], collection: "Chicago Exclusif · Gaming Collection" },
-  "HALF LIFE": { image: chicagoBottleImages["HALF LIFE"], collection: "Chicago Exclusif · Gaming Collection" },
-};
-const sealsImages: Record<string, string> = {
-  "EQUUS ALBUS": equusAlbusImage, "PAX OBSCURA": paxObscuraImage, FAMES: famesImage,
-  MORTEM: mortemImage, "VOX CAELI": voxCaeliImage, "TERRA TREMOR": terraTremorImage,
-  SABBATUM: sabbatumImage, "LUX AETERNA": luxAeternaImage,
+  "PLAYER ONE": { image: chicagoBottleImages["PLAYER ONE"], collection: "THE DUPE GOAT · Gaming Collection" },
+  "PLAY AGAIN?": { image: chicagoBottleImages["PLAY AGAIN?"], collection: "THE DUPE GOAT · Gaming Collection" },
+  "HALF LIFE": { image: chicagoBottleImages["HALF LIFE"], collection: "THE DUPE GOAT · Gaming Collection" },
 };
 
 interface ProductDetailModalProps {
@@ -31,37 +20,56 @@ interface ProductDetailModalProps {
 export default function ProductDetailModal({ product, isOpen, onClose }: ProductDetailModalProps) {
   if (!product) return null;
   const gaming = gamerProducts[product.name.toUpperCase()];
-  const sealsImage = sealsImages[product.name.toUpperCase()];
-  const verseReference = product.verseReference?.trim();
-  const hasVerse = !gaming && Boolean(product.bibleVerse?.trim());
+  const dreamer = dreamerOffers.find(offer => offer.productId === product.id);
+  const tdg = tdgOffers.find(offer => offer.productId === product.id);
   const notes = [product.topNotes, product.middleNotes, product.baseNotes].some((note) => note?.trim());
   return (
     <Dialog open={isOpen} onOpenChange={(open) => { if (!open) onClose(); }}>
       <DialogContent className="max-h-[90dvh] max-w-3xl overflow-y-auto border-[#d8b76a]/30 bg-[#171a16] p-0 text-[#f3ead8]">
         <div className="grid md:grid-cols-[0.85fr_1.15fr]">
           <div className="relative flex min-h-[260px] items-center justify-center overflow-hidden bg-[#222722] p-8">
-             {gaming || sealsImage ? <img src={gaming?.image || sealsImage} alt={gaming ? `Reference photo of ${product.name}; shipped decant bottle differs` : `${product.name} fragrance bottle`} className="max-h-[360px] w-full object-contain" /> : (
+              {gaming || dreamer || tdg ? <img src={gaming?.image || dreamer?.imageUrl || tdg?.imageUrl} alt={gaming ? `Reference photo of ${product.name}; shipped TDG decant differs` : dreamer ? `${product.name} Dreamer Series artwork reference` : `Reference-only ${tdg?.original} bottle by ${tdg?.house}; TDG dupe ships`} className="max-h-[360px] w-full object-contain" /> : (
               <div className="text-center">
-                <span className="text-[10px] uppercase tracking-[0.3em] text-[#d8b76a]">RVLTN Parfums</span>
+                 <span className="text-[10px] uppercase tracking-[0.3em] text-[#d8b76a]">THE DUPE GOAT</span>
                 <p className="mt-3 font-serif text-3xl">{product.name}</p>
               </div>
             )}
           </div>
           <div className="p-6 sm:p-9">
             <DialogHeader className="text-left">
-              <Badge className="mb-3 w-fit border-0 bg-[#d8b76a]/15 text-[#e5c578]">{gaming ? gaming.collection : "RVLTN · The Seven Seals Collection"}</Badge>
+               <Badge className="mb-3 w-fit border-0 bg-[#d8b76a]/15 text-[#e5c578]">{gaming ? gaming.collection : dreamer ? `THE DUPE GOAT · Dreamer ${dreamer.number}` : tdg ? `THE DUPE GOAT · dupe ${tdg.code}` : "THE DUPE GOAT"}</Badge>
               <DialogTitle className="font-serif text-3xl text-[#f3ead8]">{product.name}</DialogTitle>
-              <DialogDescription className="text-[#f3ead8]/55">{gaming ? "30 mL fragrance decant · $59.99" : (verseReference || "A fragrance in the Seven Seals collection.")}</DialogDescription>
+               <DialogDescription className="text-[#f3ead8]/55">{gaming ? "30 mL fragrance decant · $59.99" : dreamer ? `${dreamer.mood} · 5 / 10 / 20 / 30 mL` : tdg ? `Inspired by ${tdg.original} / ${tdg.house} · 5 / 10 / 20 / 30 mL` : "An independent fragrance from THE DUPE GOAT."}</DialogDescription>
             </DialogHeader>
             <div className="mt-6 space-y-5">
-              {hasVerse && <blockquote className="border-l-2 border-[#d8b76a] pl-4 text-sm italic leading-6 text-[#f3ead8]/75">“{product.bibleVerse}”<span className="mt-2 block not-italic text-xs text-[#d8b76a]">{verseReference}</span></blockquote>}
-              <p className="text-sm leading-6 text-[#f3ead8]/75">{product.description}</p>
+              <p className="text-sm leading-6 text-[#f3ead8]/75">{dreamer?.description || tdg?.description || product.description}</p>
+              {dreamer && <div className="space-y-4 border border-[#72e8ef]/20 bg-[#72e8ef]/5 p-4">
+                <div><p className="text-[10px] uppercase tracking-[0.18em] text-[#82e7e5]">Scent profile</p><p className="mt-1 text-sm text-white/80">{dreamer.scentProfile}</p></div>
+                <div><p className="text-[10px] uppercase tracking-[0.18em] text-[#82e7e5]">Hybrid blend · dupe inspirations</p><p className="mt-1 text-sm leading-6 text-white/80">{dreamer.blend}</p></div>
+                <div className="space-y-2 border-t border-white/10 pt-3">
+                  <p className="text-[10px] uppercase tracking-[0.18em] text-[#82e7e5]">Notes</p>
+                  <p className="text-sm"><span className="mr-2 text-[10px] font-semibold tracking-widest text-[#82e7e5]">TOP</span>{dreamer.topNotes}</p>
+                  <p className="text-sm"><span className="mr-2 text-[10px] font-semibold tracking-widest text-[#82e7e5]">HEART</span>{dreamer.middleNotes}</p>
+                  <p className="text-sm"><span className="mr-2 text-[10px] font-semibold tracking-widest text-[#82e7e5]">BASE</span>{dreamer.baseNotes}</p>
+                </div>
+                <p className="text-xs leading-5 text-white/55">Blend components are scent inspirations only; this is a TDG hybrid decant, not the original fragrances.</p>
+              </div>}
+              {tdg && <div className="space-y-3 border border-[#d8b76a]/25 bg-[#d8b76a]/5 p-4">
+                <p className="text-xs font-semibold uppercase tracking-[0.16em] text-[#e5c578]">Scent inspiration only</p>
+                <p className="text-sm leading-6 text-white/75">Inspired by {tdg.original} by {tdg.house}. Product name: {tdg.name}.</p>
+                <p className="text-xs leading-5 text-white/65">{dupeDisclosure}</p><p className="text-xs leading-5 text-white/55">{affiliationDisclosure}</p>
+              </div>}
               {gaming ? (
                 <div className="border border-[#d8b76a]/30 bg-[#d8b76a]/5 p-4">
                   <p className="text-xs font-semibold uppercase tracking-[0.18em] text-[#e5c578]">Reference bottle photo</p>
-                  <p className="mt-2 text-sm leading-6 text-[#f3ead8]/70">{decantDisclosure}</p>
+                  <p className="mt-2 text-sm leading-6 text-[#f3ead8]/70">This concept image is for reference. Your Gaming fragrance ships in a separate 30 mL decant bottle.</p>
                    <p className="mt-2 text-xs text-[#f3ead8]/60">Limited run of 25 per fragrance; current availability is shown in the shop. 5, 10, and 20 mL decants are not available. One 30 mL decant of each: $150, automatically discounted in the cart.</p>
                 </div>
+              ) : (dreamer || tdg) ? (
+                <>
+                  <div className="flex flex-wrap gap-2"><Badge className="bg-[#d8b76a] text-[#171a16]">{dreamer ? "Hybrid · Extrait de Parfum decant" : "TDG fragrance dupe decant"}</Badge><Badge variant="outline" className="border-[#d8b76a]/40 text-[#f3ead8]/75">5 / 10 / 20 / 30 mL</Badge></div>
+                  <p className="text-xs text-[#f3ead8]/55">Choose an available size on the shop card. Current price and stock are shown there.</p>
+                </>
               ) : (
                 <>
                   <div className="flex flex-wrap gap-2">
@@ -77,6 +85,7 @@ export default function ProductDetailModal({ product, isOpen, onClose }: Product
                   <p className="text-xs text-[#f3ead8]/55">Explore sizes and current pricing in the shop.</p>
                 </>
               )}
+              {tdg && <><span className="absolute left-3 top-3 border border-[#e6bd70]/70 bg-[#11161c]/95 px-2.5 py-1.5 font-mono text-[9px] uppercase tracking-[0.12em] text-[#f4d99b]">Designer bottle · reference only</span><span className="absolute bottom-3 left-3 bg-[#11161c]/95 px-2.5 py-1.5 text-[10px] text-[#f4d99b]">Inspired by {tdg.original} · {tdg.house}</span></>}
             </div>
           </div>
         </div>

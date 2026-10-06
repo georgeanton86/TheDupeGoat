@@ -37,21 +37,20 @@ export async function registerRoutes(app: Express): Promise<Server> {
   // Get all products (base fragrances)
   app.get("/api/products", async (req, res) => {
     try {
-      const allProducts = await storage.getAllProducts();
+      const allProducts = (await storage.getAllProducts()).filter(product => product.isActive);
       res.json(allProducts);
     } catch (error: any) {
       res.status(500).json({ message: "Error fetching products: " + error.message });
     }
   });
 
-  // Get featured product (first product - EQUUS ALBUS)
+  // Get the first currently purchasable product, never an archived collection.
   app.get("/api/product", async (req, res) => {
     try {
-      const allProducts = await storage.getAllProducts();
+      const allProducts = (await storage.getAllProducts()).filter(product => product.isActive);
       if (allProducts.length === 0) {
         return res.status(404).json({ message: "No products available" });
       }
-      // Return the first product (EQUUS ALBUS)
       res.json(allProducts[0]);
     } catch (error: any) {
       res.status(500).json({ message: "Error fetching product: " + error.message });
@@ -74,7 +73,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
   // Get all product variants
   app.get("/api/product-variants", async (req, res) => {
     try {
-      const allVariants = await storage.getAllProductVariants();
+      const allVariants = (await storage.getAllProductVariants()).filter(variant => variant.isActive);
       const paid = await getPaidQuantities();
       const unavailable = await getUnavailableQuantities();
       res.json(allVariants.map(v => ({

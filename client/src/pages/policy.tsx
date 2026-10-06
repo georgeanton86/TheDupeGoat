@@ -10,7 +10,7 @@ export default function Policy() {
       <section className="bg-[#151a20] pb-20 pt-36">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-12">
-            <p className="mb-4 font-mono text-[10px] uppercase tracking-[0.25em] text-[#d4ad70]">Chicago Exclusif Parfums · The house</p>
+            <p className="mb-4 font-mono text-[10px] uppercase tracking-[0.25em] text-[#d4ad70]">THE DUPE GOAT · Chicago fragrance house</p>
             <h1 className="mb-4 font-serif text-4xl font-bold text-[#f3ead8]">Terms & Conditions</h1>
             <p className="text-lg text-[#f3ead8]/65">Important information regarding your purchase</p>
           </div>
@@ -23,7 +23,7 @@ export default function Policy() {
                 <div>
                   <h3 className="font-semibold text-luxury-black mb-2 text-lg">OVERVIEW</h3>
                   <p className="leading-relaxed">
-                    Due to health, safety, and hygiene regulations governing cosmetic and fragrance products, Chicago Exclusif Parfums, including its RVLTN collection, operates under a strict <strong>NO RETURN, NO REFUND</strong> policy for purchases.
+                    Due to health, safety, and hygiene considerations governing fragrance products, THE DUPE GOAT operates under a strict <strong>NO RETURN, NO REFUND</strong> policy for purchases.
                   </p>
                 </div>
                 
@@ -54,14 +54,14 @@ export default function Policy() {
                 <div>
                   <h3 className="font-semibold text-luxury-black mb-2 text-lg">HYGIENE & SAFETY COMPLIANCE</h3>
                   <p className="leading-relaxed">
-                    In accordance with FDA regulations and industry safety standards, we cannot accept returns of cosmetic products that may have come into contact with skin, hair, or other surfaces due to contamination risks.
+                    Fragrance products are handled under hygiene standards; we cannot accept returns of products that may have come into contact with skin, hair, or other surfaces due to contamination risks.
                   </p>
                 </div>
                 
                 <div>
                   <h3 className="font-semibold text-luxury-black mb-2 text-lg">QUALITY ASSURANCE</h3>
                   <p className="leading-relaxed">
-                    We stand behind our product quality. If you receive a defective, damaged, or materially different product than ordered, please contact us within 48 hours of delivery at info@rvltnparfums.com.
+                    We stand behind our product quality. If you receive a defective, damaged, or materially different product than ordered, use the contact information provided with your order.
                   </p>
                 </div>
                 
@@ -108,11 +108,8 @@ export default function Policy() {
                 <div>
                   <h3 className="font-semibold text-luxury-black mb-2 text-lg">CONTACT INFORMATION</h3>
                   <p className="leading-relaxed">
-                    For questions regarding this policy or to report product defects:
+                    This storefront does not publish a support email or social handle. Please refer to seller-provided order documentation for any support contact details.
                   </p>
-                  <ul className="mt-2 space-y-1">
-                    <li>Email: info@rvltnparfums.com</li>
-                  </ul>
                 </div>
               </div>
               

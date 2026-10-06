@@ -1,5 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useLocation } from "wouter";
 import Header from "@/components/header";
 import Footer from "@/components/footer";
@@ -10,17 +10,13 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Input } from "@/components/ui/input";
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
 import type { Product, ProductVariant } from "@shared/schema";
-import { chicagoBottleImages, chicagoOffers, chicagoSetDiscountCents, countChicagoSets, decantDisclosure } from "@shared/chicago";
+import { chicagoBottleImages, chicagoOffers, chicagoSetDiscountCents, countChicagoSets, isChicagoVariant } from "@shared/chicago";
+import { dreamerOffers } from "@shared/dreamer";
+import { tdgOffers, affiliationDisclosure } from "@shared/tdg";
+import { shippingCentsForSubtotal } from "@shared/commerce";
 import { ShoppingCart, Tag, Truck, Info } from "lucide-react";
 import ProductDetailModal from "@/components/product-detail-modal";
-import equusAlbusImage from "@assets/generated_images/Badass_Equus_Albus_bottle_bde8545f.png";
-import paxObscuraImage from "@assets/generated_images/Pax_Obscura_luxury_bottle_c6928f90.png";
-import famesImage from "@assets/generated_images/Fames_luxury_bottle_fd04fa9c.png";
-import mortemImage from "@assets/generated_images/Mortem_luxury_bottle_f077a9fa.png";
-import voxCaeliImage from "@assets/generated_images/Vox_Caeli_luxury_bottle_6b8efdf7.png";
-import terraTremorImage from "@assets/generated_images/Terra_Tremor_luxury_bottle_27a4bc2e.png";
-import sabbatumImage from "@assets/generated_images/Sabbatum_luxury_bottle_b96d831e.png";
-import luxAeternaImage from "@assets/generated_images/Lux_Aeterna_luxury_bottle_d2b6357e.png";
+import { DreamerCollection, TdgCollection } from "@/components/catalog-collections";
 
 interface CartItem {
   variant: ProductVariant;
@@ -43,9 +39,16 @@ export default function Shop() {
 
   const { data: variants, isLoading: variantsLoading, isError: variantsError, refetch: refetchVariants } = useQuery<ProductVariant[]>({
     queryKey: ["/api/product-variants"],
+    staleTime: 0,
+    refetchOnWindowFocus: true,
   });
 
   const isLoading = productsLoading || variantsLoading;
+  useEffect(() => {
+    if (!isLoading && window.location.hash) {
+      document.getElementById(window.location.hash.slice(1))?.scrollIntoView({ block: "start" });
+    }
+  }, [isLoading]);
 
   const addToCart = (variant: ProductVariant, product: Product, quantity: number) => {
     setCart(prevCart => {
@@ -88,7 +91,7 @@ export default function Shop() {
   const setCount = countChicagoSets(cart.map(item => ({ variantId: item.variant.id, quantity: item.quantity })));
   const setDiscount = (setCount * chicagoSetDiscountCents) / 100;
   const discount = promoApplied ? Math.round((subtotalCents - setCount * chicagoSetDiscountCents) * 0.1) / 100 : 0;
-  const shipping = subtotal >= 100 ? 0 : 8.99;
+  const shipping = shippingCentsForSubtotal(subtotalCents) / 100;
   const total = subtotal - setDiscount - discount + shipping;
 
   const handleCheckout = () => {
@@ -122,8 +125,14 @@ export default function Shop() {
 
   const activeProducts = products?.filter(p => p.isActive) || [];
   const chicagoProducts = activeProducts.filter((p) => Boolean(chicagoBottleImages[p.name.toUpperCase()]));
-  const rvltnProducts = activeProducts.filter((p) => !chicagoBottleImages[p.name.toUpperCase()]);
+  const dreamerProducts = activeProducts.filter(p => dreamerOffers.some(offer => offer.productId === p.id));
+  const tdgProducts = activeProducts.filter(p => tdgOffers.some(offer => offer.productId === p.id));
   const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
+  const hasReferenceDecants = cart.some(item => isChicagoVariant(item.variant.id));
+  const hasTdgDecants = cart.some(item =>
+    dreamerOffers.some(offer => offer.productId === item.product.id) ||
+    tdgOffers.some(offer => offer.productId === item.product.id),
+  );
   const setItems = chicagoOffers.map(offer => {
     const product = chicagoProducts.find(p => p.id === offer.productId);
     const variant = variants?.find(v => v.id === offer.variantId);
@@ -158,17 +167,17 @@ export default function Shop() {
       
       {/* Hero Banner */}
       <div className="noir-grain relative isolate overflow-hidden border-b border-[#d4ad70]/25 bg-[#11161c] pb-14 pt-32">
-        <div className="absolute inset-0 -z-10 bg-[url('/chicago/chicago-noir-skyline.jpg')] bg-cover bg-[center_43%] opacity-45" />
-        <div className="absolute inset-0 -z-10 bg-gradient-to-r from-[#11161c] via-[#11161c]/85 to-[#11161c]/35" />
+        <div className="absolute inset-0 -z-10 bg-[url('/dreamer/dreamer-series-tdg.jpg')] bg-cover bg-[center_42%] opacity-40" />
+        <div className="absolute inset-0 -z-10 bg-gradient-to-r from-[#11161c] via-[#11161c]/90 to-[#11161c]/45" />
         <div className="mx-auto max-w-7xl px-5 sm:px-8">
           <div className="mb-8 max-w-3xl">
-            <p className="font-mono text-[10px] font-semibold uppercase tracking-[0.28em] text-[#d4ad70]">Chicago Exclusif Parfums · The house</p>
-            <h1 className="mt-3 font-serif text-5xl leading-[.98] sm:text-7xl">Two worlds.<br /><span className="text-[#d4ad70]">Chicago after dark.</span></h1>
-            <p className="mt-5 max-w-2xl text-base leading-7 text-white/75">Shop 30 mL Chicago Exclusif fragrance decants and RVLTN Parfums’ distinct Seven Seals collection.</p>
+            <p className="font-mono text-[10px] font-semibold uppercase tracking-[0.28em] text-[#d4ad70]">THE DUPE GOAT · Chicago fragrance house</p>
+            <h1 className="mt-3 font-serif text-5xl leading-[.98] sm:text-7xl">Scent, shifted.<br /><span className="text-[#80eee8]">City afterimage.</span></h1>
+            <p className="mt-5 max-w-2xl text-base leading-7 text-white/75">Twenty-five single-scent dupes and a three-part Dreamer hybrid collection, alongside the house’s Gaming hybrids. Designer bottle images mark inspiration only; TDG decants are the products sold.</p>
             <div className="mt-6 flex flex-wrap items-center gap-x-6 gap-y-3 text-xs">
               <div className="flex items-center gap-2 text-white">
                 <Truck className="w-5 h-5" />
-                <span>Free shipping over $100</span>
+                <span>Free shipping on merchandise over $50</span>
               </div>
               <div className="flex items-center gap-2 text-white">
                 <Tag className="w-5 h-5" />
@@ -180,9 +189,11 @@ export default function Shop() {
       </div>
       
       <div className="mx-auto max-w-[1440px] px-5 py-14 sm:px-8">
-        {chicagoProducts.length > 0 && <section className="mb-16">
+        <DreamerCollection products={dreamerProducts} variants={variants || []} onAdd={addToCart} onDetails={item => { setSelectedProduct(item); setIsDetailModalOpen(true); }} />
+        <TdgCollection products={tdgProducts} variants={variants || []} onAdd={addToCart} onDetails={item => { setSelectedProduct(item); setIsDetailModalOpen(true); }} />
+        {chicagoProducts.length > 0 && <section id="gaming" className="mb-16 scroll-mt-24">
           <div className="mb-7 flex flex-col justify-between gap-3 border-b border-[#dc7895]/35 pb-5 sm:flex-row sm:items-end">
-            <div><p className="font-mono text-[10px] uppercase tracking-[0.25em] text-[#dc7895]">Chicago Exclusif originals</p><h2 className="mt-2 font-serif text-3xl sm:text-4xl">The Gaming Collection</h2></div>
+            <div><p className="font-mono text-[10px] uppercase tracking-[0.25em] text-[#dc7895]">THE DUPE GOAT · Gaming hybrids</p><h2 className="mt-2 font-serif text-3xl sm:text-4xl">The Gaming Collection</h2></div>
              <p className="max-w-sm text-sm leading-6 text-white/70">Limited run of 25 per fragrance · 30 mL decants · $59.99 each. Smaller sizes are not available. Bottle photos are for reference; shipped decants look different.</p>
           </div>
           <div className="mb-6 flex flex-wrap items-center justify-between gap-3 border border-[#dc7895]/35 bg-[#dc7895]/10 p-4">
@@ -193,33 +204,8 @@ export default function Shop() {
             {chicagoProducts.map((product) => <ProductCard key={product.id} product={product} variants={variants?.filter(v => v.productId === product.id) || []} onAddToCart={addToCart} onViewDetails={(item) => { setSelectedProduct(item); setIsDetailModalOpen(true); }} />)}
           </div>
         </section>}
-        <section>
-          <div className="mb-7 flex flex-col justify-between gap-3 border-b border-[#d8b76a]/30 pb-5 sm:flex-row sm:items-end">
-            <div><p className="font-mono text-[10px] uppercase tracking-[0.25em] text-[#d4ad70]">A distinct collection from RVLTN Parfums</p><h2 className="mt-2 font-serif text-3xl sm:text-4xl">The Seven Seals</h2></div>
-            <p className="max-w-sm text-sm leading-6 text-white/60">Eight spiritual fragrances inspired by Revelation. Available in select sizes and concentrations.</p>
-          </div>
+        <section className="mb-16">
         <div className="grid lg:grid-cols-3 gap-8">
-          {/* Products Grid */}
-          <div className="lg:col-span-2">
-            <div className="grid md:grid-cols-2 gap-6">
-              {rvltnProducts.map((product) => {
-                const productVariants = variants?.filter(v => v.productId === product.id) || [];
-                return (
-                  <ProductCard
-                    key={product.id}
-                    product={product}
-                    variants={productVariants}
-                    onAddToCart={addToCart}
-                    onViewDetails={(product) => {
-                      setSelectedProduct(product);
-                      setIsDetailModalOpen(true);
-                    }}
-                  />
-                );
-              })}
-              {rvltnProducts.length === 0 && <div className="border border-[#d8b76a]/20 p-8 text-sm text-white/60">The Seven Seals collection is being refreshed. Please check back soon.</div>}
-            </div>
-          </div>
 
           {/* Cart Sidebar - Desktop */}
           <div className="lg:col-span-1 hidden lg:block">
@@ -264,7 +250,7 @@ export default function Shop() {
                           </div>
                         ))}
                       </div>
-                      {cart.some(item => Boolean(chicagoBottleImages[item.product.name])) && <p className="mb-3 text-xs text-gray-600">{decantDisclosure}</p>}
+                      {hasReferenceDecants && <p className="mb-3 text-xs text-gray-600">{hasTdgDecants ? "Designer bottle imagery identifies scent inspiration only. You receive a THE DUPE GOAT dupe or hybrid decant in each selected size—not the original pictured perfume." : "Gaming concept imagery is for reference only. Gaming fragrances ship in separate 30 mL decant bottles."}{hasTdgDecants && <><br />{affiliationDisclosure}</>}</p>}
 
                       {/* Promo Code */}
                       <div className="mb-4 pb-4 border-b">
@@ -307,9 +293,9 @@ export default function Shop() {
                           <span>Shipping:</span>
                           <span>{shipping === 0 ? "FREE" : `$${shipping.toFixed(2)}`}</span>
                         </div>
-                        {subtotal < 100 && subtotal > 0 && (
+                        {subtotalCents <= 5000 && subtotal > 0 && (
                           <p className="text-xs text-gray-500">
-                            Add ${(100 - subtotal).toFixed(2)} more for free shipping!
+                            Add ${((5001 - subtotalCents) / 100).toFixed(2)} more for free shipping.
                           </p>
                         )}
                         <div className="flex justify-between font-bold text-lg pt-2 border-t">
@@ -380,7 +366,7 @@ export default function Shop() {
                     </div>
                   ))}
                 </div>
-                  {cart.some(item => Boolean(chicagoBottleImages[item.product.name])) && <p className="mb-3 text-xs text-gray-600">{decantDisclosure}</p>}
+                  {hasReferenceDecants && <p className="mb-3 text-xs text-gray-600">{hasTdgDecants ? "Designer bottle imagery identifies scent inspiration only. You receive a THE DUPE GOAT dupe or hybrid decant in each selected size—not the original pictured perfume." : "Gaming concept imagery is for reference only. Gaming fragrances ship in separate 30 mL decant bottles."}{hasTdgDecants && <><br />{affiliationDisclosure}</>}</p>}
 
                 <div className="mb-4 pb-4 border-b">
                   <div className="flex gap-2">
@@ -420,9 +406,9 @@ export default function Shop() {
                     <span>Shipping:</span>
                     <span>{shipping === 0 ? "FREE" : `$${shipping.toFixed(2)}`}</span>
                   </div>
-                  {subtotal < 100 && subtotal > 0 && (
+                  {subtotalCents <= 5000 && subtotal > 0 && (
                     <p className="text-xs text-gray-500">
-                      Add ${(100 - subtotal).toFixed(2)} more for free shipping!
+                      Add ${((5001 - subtotalCents) / 100).toFixed(2)} more for free shipping.
                     </p>
                   )}
                   <div className="flex justify-between font-bold text-lg pt-2 border-t">
@@ -503,7 +489,7 @@ export default function Shop() {
                       </div>
                     ))}
                   </div>
-                  {cart.some(item => Boolean(chicagoBottleImages[item.product.name])) && <p className="mb-3 text-xs text-gray-600">{decantDisclosure}</p>}
+                  {hasReferenceDecants && <p className="mb-3 text-xs text-gray-600">{hasTdgDecants ? "Designer bottle imagery identifies scent inspiration only. You receive a THE DUPE GOAT dupe or hybrid decant in each selected size—not the original pictured perfume." : "Gaming concept imagery is for reference only. Gaming fragrances ship in separate 30 mL decant bottles."}{hasTdgDecants && <><br />{affiliationDisclosure}</>}</p>}
 
                   {/* Promo Code */}
                   <div className="mb-4 pb-4 border-b">
@@ -547,9 +533,9 @@ export default function Shop() {
                       <span>Shipping:</span>
                       <span>{shipping === 0 ? "FREE" : `$${shipping.toFixed(2)}`}</span>
                     </div>
-                    {subtotal < 100 && subtotal > 0 && (
+                    {subtotalCents <= 5000 && subtotal > 0 && (
                       <p className="text-xs text-gray-500">
-                        Add ${(100 - subtotal).toFixed(2)} more for free shipping!
+                        Add ${((5001 - subtotalCents) / 100).toFixed(2)} more for free shipping.
                       </p>
                     )}
                     <div className="flex justify-between font-bold text-lg pt-2 border-t">
@@ -611,21 +597,6 @@ function ProductCard({ product, variants, onAddToCart, onViewDetails }: {
   const isLowStock = Boolean(selectedVariant && selectedVariant.totalInventory > 0 &&
     selectedVariant.remainingInventory / selectedVariant.totalInventory < 0.2);
   
-  // Select the correct bottle image based on product name
-  const getBottleImage = () => {
-    switch (product.name) {
-      case "EQUUS ALBUS": return equusAlbusImage;
-      case "PAX OBSCURA": return paxObscuraImage;
-      case "FAMES": return famesImage;
-      case "MORTEM": return mortemImage;
-      case "VOX CAELI": return voxCaeliImage;
-      case "TERRA TREMOR": return terraTremorImage;
-      case "SABBATUM": return sabbatumImage;
-      case "LUX AETERNA": return luxAeternaImage;
-      default: return product.imageUrl;
-    }
-  };
-
   // Group variants into a nice display format
   const getVariantDisplay = (v: ProductVariant) => {
     return `${v.size} ${v.concentration} - $${v.price}`;
@@ -637,7 +608,7 @@ function ProductCard({ product, variants, onAddToCart, onViewDetails }: {
         <div className={`noir-grain relative flex h-80 items-center justify-center overflow-hidden p-5 ${isChicago ? "bg-[#1b2732]" : "bg-[#242a2d]"}`}>
           {!isChicago && <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_50%_65%,rgba(177,139,78,.42),transparent_67%)] opacity-[0.16]" />}
           <img 
-            src={getBottleImage()} 
+            src={chicagoBottleImages[product.name.toUpperCase()]} 
             alt={isChicago ? `Reference photo of ${product.name}; shipped decant bottle differs` : `${product.name} fragrance bottle`}
             className="relative h-full w-full object-contain transition-transform duration-500 group-hover:scale-[1.035]"
             data-testid={`img-product-${product.id}`}
@@ -655,14 +626,14 @@ function ProductCard({ product, variants, onAddToCart, onViewDetails }: {
         
         <div className="p-6">
           <div className="mb-3">
-            <p className={`font-mono text-[9px] font-semibold uppercase tracking-[0.2em] ${isChicago ? "text-[#dc7895]" : "text-[#d4ad70]"}`}>{isChicago ? "Chicago Exclusif · Gaming" : "RVLTN · The Seven Seals"}</p>
+            <p className={`font-mono text-[9px] font-semibold uppercase tracking-[0.2em] ${isChicago ? "text-[#dc7895]" : "text-[#d4ad70]"}`}>{isChicago ? "THE DUPE GOAT · Gaming originals" : "THE DUPE GOAT"}</p>
             <h3 className="mt-1 font-serif text-2xl text-[#f3ead8]">{product.name}</h3>
             {!isChicago && product.verseReference?.trim() && <p className="mt-1 text-xs font-medium text-white/50">{product.verseReference.replace('Revelation', 'REV').replace('–', '-')}</p>}
           </div>
 
           {!isChicago && product.bibleVerse?.trim() && <p className="mb-2 text-sm italic text-white/65">"{product.bibleVerse}"</p>}
           <p className="mb-4 text-sm leading-6 text-white/65">{product.description}</p>
-          {isChicago && <p className="mb-4 border-l-2 border-[#dc7895] pl-3 text-xs leading-5 text-white/75">{decantDisclosure}</p>}
+          {isChicago && <p className="mb-4 border-l-2 border-[#dc7895] pl-3 text-xs leading-5 text-white/75">Gaming concept imagery is for reference only. Your fragrance ships in a separate 30 mL decant bottle.</p>}
           <>
            {/* Only the 30 mL Chicago decant is offered; display the other sizes without creating purchasable variants. */}
            {isChicago ? (

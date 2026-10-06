@@ -1,187 +1,21 @@
-import { useQuery } from "@tanstack/react-query";
 import { Link } from "wouter";
-import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import CountdownTimer from "./countdown-timer";
-import type { Product } from "@shared/schema";
-import equusAlbusImage from "@assets/generated_images/Badass_Equus_Albus_bottle_bde8545f.png";
-import paxObscuraImage from "@assets/generated_images/Pax_Obscura_luxury_bottle_c6928f90.png";
-import famesImage from "@assets/generated_images/Fames_luxury_bottle_fd04fa9c.png";
-import mortemImage from "@assets/generated_images/Mortem_luxury_bottle_f077a9fa.png";
-import voxCaeliImage from "@assets/generated_images/Vox_Caeli_luxury_bottle_6b8efdf7.png";
-import terraTremorImage from "@assets/generated_images/Terra_Tremor_luxury_bottle_27a4bc2e.png";
-import sabbatumImage from "@assets/generated_images/Sabbatum_luxury_bottle_b96d831e.png";
-import luxAeternaImage from "@assets/generated_images/Lux_Aeterna_luxury_bottle_d2b6357e.png";
 
 export default function ProductShowcase() {
-  const { data: product, isLoading } = useQuery<Product>({
-    queryKey: ["/api/product"],
-  });
-
-  // Check if this is a pre-order product (release date is in the future)
-  const isPreOrder = product && new Date(product.releaseDate) > new Date();
-
-  if (isLoading) {
-    return (
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
-        <div className="grid lg:grid-cols-2 gap-16 items-center">
-          <div className="animate-pulse">
-            <div className="h-8 bg-gray-200 rounded mb-6"></div>
-            <div className="h-16 bg-gray-200 rounded mb-4"></div>
-            <div className="h-24 bg-gray-200 rounded mb-8"></div>
-            <div className="h-12 bg-gray-200 rounded"></div>
-          </div>
-          <div className="animate-pulse">
-            <div className="w-80 h-96 bg-gray-200 rounded-2xl mx-auto"></div>
-          </div>
-        </div>
-      </div>
-    );
-  }
-
-  if (!product) {
-    return (
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
-        <div className="text-center">
-          <h2 className="text-4xl font-serif font-bold text-champagne">No Product Available</h2>
-          <p className="text-white/80 mt-4">Check back soon for our next limited release.</p>
-        </div>
-      </div>
-    );
-  }
-
-  // Select bottle image based on product name
-  const getBottleImage = () => {
-    switch (product.name) {
-      case "EQUUS ALBUS": return equusAlbusImage;
-      case "PAX OBSCURA": return paxObscuraImage;
-      case "FAMES": return famesImage;
-      case "MORTEM": return mortemImage;
-      case "VOX CAELI": return voxCaeliImage;
-      case "TERRA TREMOR": return terraTremorImage;
-      case "SABBATUM": return sabbatumImage;
-      case "LUX AETERNA": return luxAeternaImage;
-      default: return equusAlbusImage;
-    }
-  };
-
   return (
-    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
-      <div className="grid lg:grid-cols-2 gap-16 items-center">
-        
-        {/* Product Showcase */}
-        <div className="order-2 lg:order-1">
-          <div className="text-center">
-            {/* Collection Badge */}
-            {isPreOrder ? (
-              <Badge variant="secondary" className="mb-6 bg-champagne/20 text-white border-2 border-champagne animate-pulse" data-testid="badge-pre-order">
-                <span className="w-2 h-2 bg-white rounded-full mr-2 animate-pulse"></span>
-                PRE-ORDER NOW
-              </Badge>
-            ) : (
-              <Badge variant="destructive" className="mb-6 bg-champagne/20 text-white border-2 border-champagne animate-pulse" data-testid="badge-inventory">
-                <span className="w-2 h-2 bg-white rounded-full mr-2 animate-pulse"></span>
-                LIMITED EDITION - AVAILABLE NOW
-              </Badge>
-            )}
-            
-            <h2 className="text-5xl lg:text-6xl font-serif font-bold text-champagne mb-2 leading-tight">
-              {product.name}
-            </h2>
-            <p className="text-lg text-white font-medium mb-4">
-              {product.verseReference.replace('Revelation', 'REV').replace('–', '-')}
-            </p>
-            
-            <p className="text-xl text-white mb-6 leading-relaxed max-w-lg mx-auto">
-              {product.description}
-            </p>
-
-            {/* Bible Verse */}
-            <div className="mb-8 p-4 bg-white/5 backdrop-blur-sm border border-champagne/20 rounded-lg max-w-lg mx-auto">
-              <p className="text-sm text-white italic leading-relaxed">
-                "{product.bibleVerse}"
-              </p>
-              <p className="text-xs text-white/90 font-medium mt-2 text-right">
-                — {product.verseReference}
-              </p>
-            </div>
-            
-            {/* Product Details */}
-            <div className="space-y-4 mb-10">
-              <div className="flex items-center justify-center">
-                <span className="text-sm font-medium text-white/90 w-32">Notes:</span>
-                <span className="text-sm text-white">{product.notes}</span>
-              </div>
-              <div className="flex items-center justify-center">
-                <span className="text-sm font-medium text-white/90 w-32">Type:</span>
-                <span className="text-sm text-white">{product.type}</span>
-              </div>
-              <div className="flex items-center justify-center">
-                <span className="text-sm font-medium text-white/90 w-32">Available In:</span>
-                <span className="text-sm text-white">EDP & Extrait, Multiple Sizes</span>
-              </div>
-            </div>
-            
-            {/* Pricing */}
-            <div className="text-center mb-10">
-              <span className="text-4xl font-serif font-bold text-champagne" data-testid="text-price">
-                From $28
-              </span>
-              <div className="text-sm text-white/80 font-medium mt-1">Multiple variants available</div>
-            </div>
-            
-            {/* CTA Buttons */}
-            <div className="space-y-4">
-              <Link href="/shop">
-                <Button 
-                  className="w-full lg:w-auto bg-champagne text-luxury-black px-12 py-4 text-lg font-semibold tracking-wide hover:bg-champagne/90 transition-all duration-300 transform hover:scale-[1.02] shadow-xl"
-                  data-testid="button-shop-now"
-                >
-                  SHOP NOW
-                </Button>
-              </Link>
-              <div className="bg-white/5 backdrop-blur-sm border border-champagne/20 p-4 rounded-lg">
-                <h4 className="font-semibold text-champagne mb-2">✨ The Seven Seals Collection:</h4>
-                <ul className="text-sm text-white/90 space-y-1">
-                  <li>✓ All 8 fragrances available now</li>
-                  <li>✓ 100mL premium bottles</li>
-                  <li>✓ FREE shipping over $100</li>
-                  <li>✓ Use code WELCOME10 for 10% off</li>
-                </ul>
-              </div>
-            </div>
-          </div>
-        </div>
-        
-        {/* Product Image */}
-        <div className="order-1 lg:order-2 flex justify-center">
-          <div className="relative group">
-            {/* Main bottle image */}
-            <div className="relative w-80 h-96 rounded-2xl overflow-hidden shadow-2xl group-hover:shadow-3xl transition-all duration-500 bg-gradient-to-br from-luxury-black via-charcoal to-luxury-black flex items-center justify-center">
-              <img 
-                src={getBottleImage()} 
-                alt={`${product.name} - RVLTN Parfums Limited Edition`} 
-                className="h-80 w-auto object-contain"
-                data-testid="img-product"
-              />
-            </div>
-            
-            {/* Floating Badge */}
-            <Badge className={`absolute -top-4 -right-4 shadow-lg ${
-              isPreOrder 
-                ? "bg-champagne text-luxury-black" 
-                : "bg-champagne text-luxury-black"
-            }`}>
-              {isPreOrder ? "PRE-ORDER" : "AVAILABLE"}
-            </Badge>
-          </div>
-        </div>
+    <section className="mx-auto grid max-w-7xl overflow-hidden border border-[#72e8ef]/25 bg-[#101820] text-[#f3ead8] md:grid-cols-2">
+      <div className="relative min-h-[360px] overflow-hidden">
+        <img src="/dreamer/dreamer-series-tdg.jpg" alt="THE DUPE GOAT Dreamer Series artwork, luminous Chicago at night" className="absolute inset-0 h-full w-full object-cover object-center" />
+        <div className="absolute inset-0 bg-gradient-to-t from-[#07111a]/70 via-transparent to-transparent" />
+        <Badge className="absolute bottom-5 left-5 rounded-none border border-[#8ef2ed]/40 bg-[#07111a]/85 text-[#b4f7f2]">Dreamer Series · reference artwork</Badge>
       </div>
-      
-      {/* Countdown Timer */}
-      <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2">
-        <CountdownTimer nextReleaseDate={product.releaseDate.toString()} isPreOrder={isPreOrder} />
+      <div className="flex flex-col justify-center p-8 sm:p-12">
+        <p className="font-mono text-[10px] uppercase tracking-[0.24em] text-[#81e9e3]">THE DUPE GOAT · Chicago, Illinois</p>
+        <h2 className="mt-4 font-serif text-4xl leading-tight sm:text-5xl">Three states.<br />One collection.</h2>
+        <p className="mt-5 text-sm leading-6 text-white/65">Lucid State, Fever Dream, and Altered Mental Status: three hybrid compositions inspired by altered perception. Each size—5, 10, 20, and 30 mL—is priced at $1.50 per mL.</p>
+        <p className="mt-4 border-l border-[#e6bd70]/60 pl-4 text-xs leading-5 text-white/55">Designer names and imagery identify fragrance inspirations only. TDG products are independently produced dupes and hybrids, not the original pictured perfumes.</p>
+        <Link href="/shop#dreamer" className="mt-8 inline-flex w-fit items-center bg-[#80eee8] px-8 py-3 text-xs font-bold uppercase tracking-[0.14em] text-[#0b1a20] transition-colors hover:bg-[#b7fff5]">Explore Dreamer</Link>
       </div>
-    </div>
+    </section>
   );
 }

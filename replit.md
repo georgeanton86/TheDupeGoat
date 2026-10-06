@@ -1,12 +1,12 @@
 # Overview
 
-This is a perfume storefront for Chicago Exclusif Parfums, the parent fragrance house. RVLTN Parfums remains a distinct collection under that house, selling eight Seven Seals fragrances inspired by Revelation. Three Chicago Exclusif gaming fragrances (Player One, Play Again?, Half Life) are shown with real bottle photos as previews only; they have no prices or variants and cannot be purchased yet. The existing RVLTN shopping cart, promo codes, and checkout remain available.
+This is the THE DUPE GOAT (TDG) storefront. Its active catalog consists of 25 single-scent offers plus the Dreamer and Gaming hybrid collections. Catalog metadata and permanent offer identifiers are in shared/tdg.ts, shared/dreamer.ts, and shared/chicago.ts. The storefront uses the existing cart and Stripe checkout, with database-backed paid orders and inventory reservations.
 
 ## Visual Direction
 
-The user wants Chicago Exclusif to feel bold and cinematic, with a Chicago-at-night noir atmosphere reminiscent of Gotham's mood rather than its copyrighted characters or marks. Ground the design in recognizable Chicago architecture, skyline and street-level energy; use dramatic lighting, shadow, refined gold, and restrained electric accents for the gaming fragrances. Keep the actual photographed bottles recognizable. RVLTN stays a distinct collection within the same house.
+Retain the cinematic Chicago-at-night imagery, dramatic lighting, refined gold, and restrained electric accents under the TDG identity. Keep supplied bottle labels recognizable and make reference imagery clearly distinct from shipped decant packaging.
 
-## Product Catalog - The Seven Seals Collection (8 Fragrances)
+## Archived Catalog - The Seven Seals Collection (not sold on the current storefront)
 
 **The Four Horsemen:**
 1. **EQUUS ALBUS** (White Horse) - Revelation 6:1–2 | "I looked, and behold, a white horse! And its rider had a bow, and a crown was given to him" | Notes: Bright Amber, White Musk, Citrus | Theme: Conquest & awakening

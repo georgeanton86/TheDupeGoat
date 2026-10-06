@@ -2,3 +2,5 @@
 - [Gaming bottle imagery](gaming-bottle-imagery.md) — preserve the supplied label artwork from real photos when polishing product imagery; keep decant packaging distinct.
 - [Checkout draft privacy](checkout-draft-privacy.md) — keep resumable buyer details tab-scoped and tied to the pending purchase; never reuse them for a new purchase by default.
 - [Scarcity messaging](scarcity-messaging.md) — show actual remaining stock and distinguish unavailable sizes from sold-out inventory; never invent sales.
+- [TDG product identity](tdg-product-identity.md) — the user stocks dupes, not designer originals; THE DUPE GOAT sells those alongside Dreamer and Gaming hybrids.
+- [Image download runtime](image-download-runtime.md) — impure fetch works, but AbortSignal is unavailable; do not mistake a missing global for failed image sources.

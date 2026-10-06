@@ -26,17 +26,17 @@ export default function Header({ cartCount = 0, onCartClick }: HeaderProps = {})
   return (
     <header className="fixed inset-x-0 top-0 z-50 border-b border-[#d4ad70]/20 bg-[#11161c]/90 text-[#f3ead8] backdrop-blur-xl">
       <div className="mx-auto flex h-[76px] max-w-[1440px] items-center justify-between px-5 sm:px-8">
-        <Link href="/" className="group flex items-center gap-3" aria-label="Chicago Exclusif Parfums home">
-          <span className="flex h-10 w-10 items-center justify-center border border-[#d4ad70]/70 text-[10px] font-semibold tracking-[0.18em] text-[#d4ad70] transition-transform group-hover:rotate-[-6deg]">CE</span>
+        <Link href="/" className="group flex items-center gap-3" aria-label="THE DUPE GOAT home">
+          <span className="flex h-10 w-10 items-center justify-center border border-[#d4ad70]/70 text-[10px] font-semibold tracking-[0.12em] text-[#d4ad70] transition-transform group-hover:rotate-[-6deg]">TDG</span>
           <span className="leading-none">
-            <span className="block font-serif text-[17px] tracking-[0.04em] sm:text-[19px]">CHICAGO EXCLUSIF</span>
-            <span className="mt-1 block font-mono text-[8px] tracking-[0.28em] text-[#d4ad70]">PARFUMS · CHICAGO, IL</span>
+            <span className="block font-serif text-[17px] tracking-[0.04em] sm:text-[19px]">THE DUPE GOAT</span>
+            <span className="mt-1 block font-mono text-[8px] tracking-[0.28em] text-[#d4ad70]">FRAGRANCE · CHICAGO, IL</span>
           </span>
         </Link>
 
         <nav className="hidden items-center gap-8 md:flex" aria-label="Main navigation">
           <Link href="/shop" className={navClass}>Collections</Link>
-          <button onClick={() => scrollToSection("about")} className={navClass}>Our House</button>
+          <button onClick={() => scrollToSection("about")} className={navClass}>The House</button>
           <Link href="/policy" className={navClass}>Policies</Link>
           {onCartClick ? (
               <Button onClick={onCartClick} size="sm" aria-label={`Open cart, ${cartCount} items`} className="relative rounded-none bg-[#d4ad70] text-[#151a20] hover:bg-[#e3c28e]">
@@ -59,8 +59,8 @@ export default function Header({ cartCount = 0, onCartClick }: HeaderProps = {})
           </SheetTrigger>
           <SheetContent className="border-[#d4ad70]/20 bg-[#11161c] text-[#f3ead8]">
             <div className="mb-9 mt-8 border-b border-[#d8b76a]/20 pb-5">
-              <p className="font-serif text-xl">Chicago Exclusif</p>
-              <p className="mt-1 text-[10px] tracking-[0.3em] text-[#d8b76a]">PARFUMS</p>
+               <p className="font-serif text-xl">THE DUPE GOAT</p>
+               <p className="mt-1 text-[10px] tracking-[0.3em] text-[#d8b76a]">CHICAGO FRAGRANCE HOUSE</p>
             </div>
             <nav className="flex flex-col gap-6">
               <Link href="/shop" onClick={() => setMobileMenuOpen(false)} className={navClass}>Explore collections</Link>

@@ -17,7 +17,7 @@ export default function FAQ() {
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-12">
             <h1 className="text-4xl font-serif font-bold text-champagne mb-4">Frequently Asked Questions</h1>
-            <p className="text-lg text-white/80">Everything you need to know about Chicago Exclusif Parfums and RVLTN</p>
+            <p className="text-lg text-white/80">THE DUPE GOAT · Chicago fragrance house</p>
           </div>
           
           <Card className="bg-white/5 backdrop-blur-sm border-champagne/20">
@@ -25,10 +25,10 @@ export default function FAQ() {
               <Accordion type="single" collapsible className="w-full">
                 <AccordionItem value="item-1" className="border-champagne/20">
                   <AccordionTrigger className="text-left text-white hover:text-champagne">
-                    What is The Seven Seals Collection?
+                    What is THE DUPE GOAT?
                   </AccordionTrigger>
                   <AccordionContent className="text-white/80">
-                    The Seven Seals Collection features 8 unique fragrances inspired by the Book of Revelation. Each scent is crafted to embody a specific biblical theme, from the Four Horsemen to the Seventh Seal, plus our signature Lux Aeterna (Eternal Light).
+                    THE DUPE GOAT is an independent Chicago fragrance house offering 25 single-scent dupes, three Dreamer hybrid fragrances, and original Gaming scents.
                   </AccordionContent>
                 </AccordionItem>
 
@@ -46,7 +46,7 @@ export default function FAQ() {
                     Are your fragrances unisex?
                   </AccordionTrigger>
                   <AccordionContent className="text-white/80">
-                    Yes! All 8 fragrances in The Seven Seals Collection are designed to be unisex. We believe scent transcends gender - choose what resonates with your spirit.
+                    TDG scents are offered without gender labels. Choose the fragrance that appeals to you.
                   </AccordionContent>
                 </AccordionItem>
 
@@ -55,7 +55,7 @@ export default function FAQ() {
                     What is your small batch approach?
                   </AccordionTrigger>
                   <AccordionContent className="text-white/80">
-                    Every batch is handcrafted with meticulous attention - never more than 100 bottles. Like fine craft spirits, our small batches ensure exceptional quality and a personal touch in every bottle.
+                    We focus on carefully composed fragrance and clear inspiration references. Current inventory appears on each product in the shop.
                   </AccordionContent>
                 </AccordionItem>
 
@@ -64,7 +64,7 @@ export default function FAQ() {
                     Do you offer free shipping?
                   </AccordionTrigger>
                   <AccordionContent className="text-white/80">
-                    Yes! Orders over $100 qualify for free shipping nationwide. Prices vary by size and concentration; see the shop for current options.
+                    Standard shipping is $8.99. Merchandise subtotals strictly over $50 qualify for free shipping, before promotions.
                   </AccordionContent>
                 </AccordionItem>
 
@@ -82,7 +82,7 @@ export default function FAQ() {
                     What is your return policy?
                   </AccordionTrigger>
                   <AccordionContent className="text-white/80">
-                    Due to health and safety regulations, we operate under a strict NO RETURN, NO REFUND policy. We only accept returns for defective products, shipping damage, or incorrect items shipped by our error. Please see our full <a href="/policy" className="text-champagne hover:underline">Terms & Conditions</a> page.
+                    Our purchases are generally final sale, with exceptions for defective products, shipping damage, or incorrect items shipped by our error. Please see our full <a href="/policy" className="text-champagne hover:underline">Terms & Conditions</a> page.
                   </AccordionContent>
                 </AccordionItem>
 
@@ -109,19 +109,23 @@ export default function FAQ() {
                     How do I contact customer service?
                   </AccordionTrigger>
                   <AccordionContent className="text-white/80">
-                    For questions, concerns, or support:
-                    <ul className="mt-2 space-y-1">
-                      <li>Email: info@rvltnparfums.com</li>
-                    </ul>
+                    This storefront does not publish a support email or social handle. Please refer to seller-provided order documentation for any support contact details.
                   </AccordionContent>
                 </AccordionItem>
 
                 <AccordionItem value="item-11" className="border-champagne/20">
                   <AccordionTrigger className="text-left text-white hover:text-champagne">
-                    Are all 8 fragrances available now?
+                    What can I buy right now?
                   </AccordionTrigger>
                   <AccordionContent className="text-white/80">
-                    The eight RVLTN Seven Seals fragrances and three Chicago Exclusif fragrances have purchase options in the shop. Chicago fragrances are sold as 30 mL decants. Their bottle photos are for reference; your decant arrives in a different bottle.
+                    The shop includes 25 TDG single-scent dupes and all three Dreamer hybrids in four sizes—5, 10, 20, and 30 mL. Gaming scents are available as 30 mL decants; smaller sizes are not offered for Gaming.
+                  </AccordionContent>
+                </AccordionItem>
+
+                <AccordionItem value="item-13" className="border-champagne/20">
+                  <AccordionTrigger className="text-left text-white hover:text-champagne">Are TDG products the original designer perfumes?</AccordionTrigger>
+                  <AccordionContent className="text-white/80">
+                    No. Designer bottle photographs and brand/fragrance names refer to scent inspiration only. You receive an independently produced THE DUPE GOAT dupe or hybrid decant in the size selected—not an original designer perfume or its packaging. THE DUPE GOAT is not affiliated with, endorsed by, or sponsored by the referenced brands.
                   </AccordionContent>
                 </AccordionItem>
 
@@ -139,7 +143,7 @@ export default function FAQ() {
 
           <div className="mt-8 text-center">
             <p className="text-white/80">
-              Still have questions? <a href="mailto:info@rvltnparfums.com" className="text-champagne hover:underline">Contact us directly</a>
+              Still have questions? Check the contact details supplied with your order.
             </p>
           </div>
         </div>
