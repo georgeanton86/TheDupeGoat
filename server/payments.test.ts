@@ -46,6 +46,15 @@ test("concurrent retries share a hold and intent; a new purchase gets its own", 
     assert.notEqual(another.reservationId, held[0]);
     const after = await getUnavailableQuantities();
     assert.equal(after.get(item[0].variantId), (before.get(item[0].variantId) ?? 0) + 2);
+    const baseline = before.get(item[0].variantId) ?? 0;
+    assert.equal((await getUnavailableQuantities(key)).get(item[0].variantId), baseline + 1,
+      "A checkout can use its own hold but not another checkout's hold");
+    assert.equal((await getUnavailableQuantities(otherKey)).get(item[0].variantId), baseline + 1);
+    assert.equal((await getUnavailableQuantities(randomUUID())).get(item[0].variantId), baseline + 2,
+      "An unrelated checkout cannot reclaim any hold");
+    await pool.query("UPDATE chicago_reservations SET expires_at = now() - interval '1 second' WHERE id = $1", [held[0]]);
+    assert.equal((await getUnavailableQuantities(key)).get(item[0].variantId), baseline + 2,
+      "An expired checkout must not reclaim its hold before payment reconciliation");
   } finally {
     await pool.query("UPDATE chicago_reservations SET status = 'released' WHERE id = ANY($1::uuid[])", [held]);
     await pool.query("DELETE FROM chicago_reservations WHERE id = ANY($1::uuid[])", [held]);

@@ -73,6 +73,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
   // Get all product variants
   app.get("/api/product-variants", async (req, res) => {
     try {
+      res.set("Cache-Control", "no-store");
       const allVariants = (await storage.getAllProductVariants()).filter(variant => variant.isActive);
       const paid = await getPaidQuantities();
       const unavailable = await getUnavailableQuantities();
@@ -83,6 +84,25 @@ export async function registerRoutes(app: Express): Promise<Server> {
       })));
     } catch (error: any) {
       res.status(500).json({ message: "Error fetching product variants: " + error.message });
+    }
+  });
+
+  // A checkout retry may use its own unexpired hold, but never another
+  // purchase's hold or already-paid stock. This is advisory; payment creation
+  // still enforces inventory under the database lock.
+  app.get("/api/checkout-availability/:checkoutKey", async (req, res) => {
+    res.set("Cache-Control", "no-store");
+    const key = z.string().uuid().safeParse(req.params.checkoutKey);
+    if (!key.success) return res.status(400).json({ message: "Invalid checkout key" });
+    try {
+      const variants = (await storage.getAllProductVariants()).filter(variant => variant.isActive);
+      const unavailable = await getUnavailableQuantities(key.data);
+      res.json(variants.map(variant => ({
+        ...variant,
+        remainingInventory: Math.max(0, variant.remainingInventory - (unavailable.get(variant.id) ?? 0)),
+      })));
+    } catch {
+      res.status(503).json({ message: "Could not check stock. Please try again." });
     }
   });
 

@@ -1,5 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useLocation } from "wouter";
 import Header from "@/components/header";
 import Footer from "@/components/footer";
@@ -18,6 +18,8 @@ import { ShoppingCart, Tag, Truck, Info } from "lucide-react";
 import ProductDetailModal from "@/components/product-detail-modal";
 import { DreamerCollection, TdgCollection } from "@/components/catalog-collections";
 import HybridInspirations from "@/components/hybrid-inspirations";
+import { useToast } from "@/hooks/use-toast";
+import { canAddCartLines, cartMatchesInventory, inventoryLimit, reconcileCart } from "@shared/cart-inventory";
 
 interface CartItem {
   variant: ProductVariant;
@@ -33,6 +35,10 @@ export default function Shop() {
   const [isCartOpen, setIsCartOpen] = useState(false);
   const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
   const [isDetailModalOpen, setIsDetailModalOpen] = useState(false);
+  const [isCheckingStock, setIsCheckingStock] = useState(false);
+  const checkingStock = useRef(false);
+  const { toast } = useToast();
+  const cartLines = (items: CartItem[]) => items.map(item => ({ ...item, variantId: item.variant.id }));
 
   const { data: products, isLoading: productsLoading, isError: productsError, refetch: refetchProducts } = useQuery<Product[]>({
     queryKey: ["/api/products"],
@@ -42,7 +48,14 @@ export default function Shop() {
     queryKey: ["/api/product-variants"],
     staleTime: 0,
     refetchOnWindowFocus: true,
+    refetchInterval: 30_000,
   });
+
+  useEffect(() => {
+    if (!variants || cartMatchesInventory(cartLines(cart), variants)) return;
+    setCart(reconcileCart(cartLines(cart), variants));
+    toast({ title: "Stock changed", description: "Your cart was reduced to the available stock. Please review it before checkout." });
+  }, [variants, cart, toast]);
 
   const isLoading = productsLoading || variantsLoading;
   useEffect(() => {
@@ -52,7 +65,13 @@ export default function Shop() {
   }, [isLoading]);
 
   const addToCart = (variant: ProductVariant, product: Product, quantity: number) => {
+    if (checkingStock.current) return;
+    if (!canAddCartLines(cartLines(cart), [{ variantId: variant.id, quantity }], variants || [])) {
+      toast({ title: "Stock limit reached", description: "That quantity is not available, including the decants already in your cart." });
+      return;
+    }
     setCart(prevCart => {
+      if (!canAddCartLines(cartLines(prevCart), [{ variantId: variant.id, quantity }], variants || [])) return prevCart;
       const existing = prevCart.find(item => item.variant.id === variant.id);
       if (existing) {
         return prevCart.map(item =>
@@ -66,18 +85,21 @@ export default function Shop() {
   };
 
   const removeFromCart = (variantId: string) => {
+    if (checkingStock.current) return;
     setCart(prevCart => prevCart.filter(item => item.variant.id !== variantId));
   };
 
   const updateQuantity = (variantId: string, quantity: number) => {
+    if (checkingStock.current || !Number.isInteger(quantity) || quantity < 0) return;
     if (quantity === 0) {
       removeFromCart(variantId);
       return;
     }
     setCart(prevCart =>
       prevCart.map(item =>
-        item.variant.id === variantId ? { ...item, quantity } : item
+        item.variant.id === variantId ? { ...item, quantity: Math.min(quantity, inventoryLimit(variants?.find(v => v.id === variantId))) } : item
       )
+      .filter(item => item.quantity > 0)
     );
   };
 
@@ -95,7 +117,19 @@ export default function Shop() {
   const shipping = shippingCentsForSubtotal(subtotalCents) / 100;
   const total = subtotal - setDiscount - discount + shipping;
 
-  const handleCheckout = () => {
+  const handleCheckout = async () => {
+    if (checkingStock.current || !cart.length) return;
+    checkingStock.current = true;
+    setIsCheckingStock(true);
+    try {
+      const refreshed = await refetchVariants();
+      if (refreshed.isError || !refreshed.data) throw new Error("Could not check stock. Please try again.");
+      if (!cartMatchesInventory(cartLines(cart), refreshed.data)) {
+        setCart(reconcileCart(cartLines(cart), refreshed.data));
+        toast({ title: "Stock changed", description: "Your cart was reduced to the available stock. Please review it before checkout." });
+        setIsCartOpen(true);
+        return;
+      }
     // A new purchase gets a new attempt and no previous buyer details.
     sessionStorage.removeItem("stripeCheckoutDraft");
     sessionStorage.removeItem("checkoutConfirmation");
@@ -108,7 +142,16 @@ export default function Shop() {
       promoCode: promoApplied ? promoCode : null
     }));
     setLocation('/checkout');
+    } catch (error) {
+      toast({ title: "Checkout paused", description: error instanceof Error ? error.message : "Could not check stock.", variant: "destructive" });
+    } finally {
+      checkingStock.current = false;
+      setIsCheckingStock(false);
+    }
   };
+
+  const quantityOptions = (variantId: string) =>
+    Array.from({ length: inventoryLimit(variants?.find(v => v.id === variantId)) + 1 }, (_, n) => n);
 
   if (isLoading) {
     return (
@@ -139,10 +182,14 @@ export default function Shop() {
     const variant = variants?.find(v => v.id === offer.variantId);
     return product && variant && variant.remainingInventory > 0 ? { product, variant } : null;
   });
-  const setAvailable = setItems.every(Boolean);
+  const setInStock = setItems.every(Boolean);
+  const setAvailable = setInStock && canAddCartLines(cartLines(cart),
+    chicagoOffers.map(offer => ({ variantId: offer.variantId, quantity: 1 })), variants || []);
   const addSetToCart = () => {
-    if (!setAvailable) return;
+    if (checkingStock.current || !setAvailable) return;
     setCart(previous => {
+      if (!canAddCartLines(cartLines(previous),
+        chicagoOffers.map(offer => ({ variantId: offer.variantId, quantity: 1 })), variants || [])) return previous;
       const next = [...previous];
       for (const item of setItems) {
         if (!item) return previous;
@@ -198,10 +245,10 @@ export default function Shop() {
           </div>
           <div className="mb-6 flex flex-wrap items-center justify-between gap-3 border border-[#dc7895]/35 bg-[#dc7895]/10 p-4">
             <p className="text-sm text-[#f3ead8]"><strong>The full gaming set · $150 · free shipping</strong><span className="block text-white/65">One 30 mL decant of each fragrance. $29.97 less than buying separately; applied automatically in the cart.</span></p>
-            <Button onClick={addSetToCart} disabled={!setAvailable} className="rounded-none bg-[#dc7895] text-[#151a20] hover:bg-[#ef9ab1]" data-testid="button-add-chicago-set">{setAvailable ? "Add the set — $150" : "Set sold out"}</Button>
+            <Button onClick={addSetToCart} disabled={!setAvailable || isCheckingStock} className="rounded-none bg-[#dc7895] text-[#151a20] hover:bg-[#ef9ab1]" data-testid="button-add-chicago-set">{setAvailable ? "Add the set — $150" : setInStock ? "Set stock limit reached" : "Set sold out"}</Button>
           </div>
           <div className="grid gap-5 md:grid-cols-2 xl:grid-cols-3">
-            {chicagoProducts.map((product) => <ProductCard key={product.id} product={product} variants={variants?.filter(v => v.productId === product.id) || []} onAddToCart={addToCart} onViewDetails={(item) => { setSelectedProduct(item); setIsDetailModalOpen(true); }} />)}
+            {chicagoProducts.map((product) => <ProductCard key={product.id} product={product} variants={variants?.filter(v => v.productId === product.id) || []} cart={cart} isCheckingStock={isCheckingStock} onAddToCart={addToCart} onViewDetails={(item) => { setSelectedProduct(item); setIsDetailModalOpen(true); }} />)}
           </div>
         </section>}
         <TdgCollection products={tdgProducts} variants={variants || []} onAdd={addToCart} onDetails={item => { setSelectedProduct(item); setIsDetailModalOpen(true); }} />
@@ -232,13 +279,14 @@ export default function Shop() {
                             </div>
                             <Select
                               value={item.quantity.toString()}
+                              disabled={isCheckingStock}
                               onValueChange={(val) => updateQuantity(item.variant.id, parseInt(val))}
                             >
                               <SelectTrigger className="w-16 h-8">
                                 <SelectValue />
                               </SelectTrigger>
                               <SelectContent>
-                                {[0, 1, 2, 3, 4, 5].map(n => (
+                                {quantityOptions(item.variant.id).map(n => (
                                   <SelectItem key={n} value={n.toString()}>
                                     {n === 0 ? "Remove" : n}
                                   </SelectItem>
@@ -309,9 +357,10 @@ export default function Shop() {
                         className="w-full bg-luxury-black text-white hover:bg-charcoal"
                         size="lg"
                         onClick={handleCheckout}
+                        disabled={isCheckingStock}
                         data-testid="button-checkout"
                       >
-                        Proceed to Checkout
+                        {isCheckingStock ? "Checking stock..." : "Proceed to Checkout"}
                       </Button>
                     </>
                   )}
@@ -348,13 +397,14 @@ export default function Shop() {
                       </div>
                       <Select
                         value={item.quantity.toString()}
+                        disabled={isCheckingStock}
                         onValueChange={(val) => updateQuantity(item.variant.id, parseInt(val))}
                       >
                         <SelectTrigger className="w-16 h-8">
                           <SelectValue />
                         </SelectTrigger>
                         <SelectContent>
-                          {[0, 1, 2, 3, 4, 5].map(n => (
+                          {quantityOptions(item.variant.id).map(n => (
                             <SelectItem key={n} value={n.toString()}>
                               {n === 0 ? "Remove" : n}
                             </SelectItem>
@@ -422,8 +472,9 @@ export default function Shop() {
                   className="w-full bg-luxury-black text-white hover:bg-charcoal"
                   size="lg"
                   onClick={handleCheckout}
+                  disabled={isCheckingStock}
                 >
-                  Proceed to Checkout
+                  {isCheckingStock ? "Checking stock..." : "Proceed to Checkout"}
                 </Button>
               </>
             )}
@@ -471,13 +522,14 @@ export default function Shop() {
                         </div>
                         <Select
                           value={item.quantity.toString()}
+                          disabled={isCheckingStock}
                           onValueChange={(val) => updateQuantity(item.variant.id, parseInt(val))}
                         >
                           <SelectTrigger className="w-16 h-8">
                             <SelectValue />
                           </SelectTrigger>
                           <SelectContent>
-                            {[0, 1, 2, 3, 4, 5].map(n => (
+                            {quantityOptions(item.variant.id).map(n => (
                               <SelectItem key={n} value={n.toString()}>
                                 {n === 0 ? "Remove" : n}
                               </SelectItem>
@@ -549,9 +601,10 @@ export default function Shop() {
                     className="w-full bg-luxury-black text-white hover:bg-charcoal"
                     size="lg"
                     onClick={handleCheckout}
+                    disabled={isCheckingStock}
                     data-testid="button-checkout-mobile"
                   >
-                    Proceed to Checkout
+                    {isCheckingStock ? "Checking stock..." : "Proceed to Checkout"}
                   </Button>
                 </>
               )}
@@ -575,9 +628,11 @@ export default function Shop() {
   );
 }
 
-function ProductCard({ product, variants, onAddToCart, onViewDetails }: { 
+function ProductCard({ product, variants, cart, isCheckingStock, onAddToCart, onViewDetails }: {
   product: Product;
   variants: ProductVariant[];
+  cart: CartItem[];
+  isCheckingStock: boolean;
   onAddToCart: (variant: ProductVariant, product: Product, quantity: number) => void;
   onViewDetails: (product: Product) => void;
 }) {
@@ -588,10 +643,15 @@ function ProductCard({ product, variants, onAddToCart, onViewDetails }: {
 
   const chicagoDecant = isChicago ? variants.find(v => v.size.replace(/\s/g, "").toLowerCase() === "30ml") : undefined;
   const selectedVariant = isChicago ? chicagoDecant : variants.find(v => v.id === selectedVariantId) || variants[0];
+  const availableToAdd = Math.max(0, inventoryLimit(selectedVariant) -
+    (cart.find(item => item.variant.id === selectedVariant?.id)?.quantity ?? 0));
+  const maxQuantity = Math.min(5, availableToAdd);
+  const selectedQuantity = Math.min(quantity, maxQuantity);
+  useEffect(() => { setQuantity(previous => Math.max(1, Math.min(previous, maxQuantity))); }, [maxQuantity]);
 
   const handleAddToCart = () => {
     if (selectedVariant) {
-      onAddToCart(selectedVariant, product, quantity);
+      onAddToCart(selectedVariant, product, selectedQuantity);
       setQuantity(1);
     }
   };
@@ -698,12 +758,12 @@ function ProductCard({ product, variants, onAddToCart, onViewDetails }: {
                 <p className="text-xs text-white/60">{selectedVariant.size} • {selectedVariant.concentration}</p>
               )}
             </div>
-            <Select value={quantity.toString()} onValueChange={(val) => setQuantity(parseInt(val))}>
+            <Select value={selectedQuantity > 0 ? selectedQuantity.toString() : ""} disabled={!availableToAdd || isCheckingStock} onValueChange={(val) => setQuantity(parseInt(val))}>
               <SelectTrigger className="w-20 rounded-none border-[#d4ad70]/30 bg-[#12181e] text-white hover:bg-[#1d262d]" data-testid={`select-quantity-${product.id}`}>
                 <SelectValue />
               </SelectTrigger>
               <SelectContent className="bg-luxury-black border-champagne/30">
-                {[1, 2, 3, 4, 5].map(n => (
+                {Array.from({ length: maxQuantity }, (_, n) => n + 1).map(n => (
                   <SelectItem key={n} value={n.toString()} className="text-white hover:bg-champagne/20 focus:bg-champagne/20">{n}</SelectItem>
                 ))}
               </SelectContent>
@@ -713,11 +773,11 @@ function ProductCard({ product, variants, onAddToCart, onViewDetails }: {
           <div className="flex gap-2">
             <Button
               onClick={handleAddToCart}
-              disabled={!selectedVariant || !selectedVariant.isActive || selectedVariant.remainingInventory === 0}
+              disabled={!availableToAdd || isCheckingStock}
               className="flex-1 rounded-none bg-[#d4ad70] text-[#151a20] hover:bg-[#e3c28e]"
               data-testid={`button-add-to-cart-${product.id}`}
             >
-              {selectedVariant && selectedVariant.remainingInventory > 0 ? "Add to Cart" : "Out of Stock"}
+              {availableToAdd > 0 ? "Add to Cart" : selectedVariant && selectedVariant.remainingInventory > 0 ? "All available stock in cart" : "Out of Stock"}
             </Button>
             <Button
               variant="outline"

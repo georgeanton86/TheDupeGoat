@@ -18,6 +18,8 @@ import { chicagoSetDiscountCents, countChicagoSets, decantDisclosure, isChicagoV
 import { affiliationDisclosure } from "@shared/tdg";
 import { dreamerOffers } from "@shared/dreamer";
 import { tdgOffers } from "@shared/tdg";
+import { cartMatchesInventory, inventoryLimit, reconcileCart } from "@shared/cart-inventory";
+import { fetchCheckoutInventory } from "@/lib/checkout-inventory";
 
 interface CartItem {
   variant: ProductVariant;
@@ -192,9 +194,15 @@ export default function StripeCheckout() {
     queryKey: ["/api/products"],
   });
 
-  const { data: variants } = useQuery<ProductVariant[]>({
-    queryKey: ["/api/product-variants"],
+  const { data: variants, isError: stockError, refetch: refetchStock } = useQuery<ProductVariant[]>({
+    queryKey: ["checkout-availability", checkoutKey],
+    queryFn: () => fetchCheckoutInventory(checkoutKey),
+    enabled: Boolean(checkoutKey) && !clientSecret && !showSuccess,
+    staleTime: 0,
+    refetchOnWindowFocus: true,
   });
+  const lines = cartItems.map(item => ({ ...item, variantId: item.variant.id }));
+  const stockChanged = Boolean(variants && !cartMatchesInventory(lines, variants));
   const hasChicagoDecant = cartItems.some(item => isChicagoVariant(item.variant.id));
   const hasTdgDecant = cartItems.some(item =>
     dreamerOffers.some(offer => offer.productId === item.product.id) ||
@@ -269,10 +277,12 @@ export default function StripeCheckout() {
       const items: CartItem[] = [];
       for (const cartItem of cartData.cart) {
         const variant = variants.find(v => v.id === cartItem.variantId);
-        if (!variant) continue;
+        if (!variant) throw new Error("An item is no longer available");
         
         const product = products.find(p => p.id === variant.productId);
-        if (!product) continue;
+        if (!product) throw new Error("An item is no longer available");
+        if (!Number.isInteger(cartItem.quantity) || cartItem.quantity < 1 ||
+          items.some(item => item.variant.id === cartItem.variantId)) throw new Error("Invalid cart quantity");
 
         items.push({
           variant,
@@ -303,8 +313,21 @@ export default function StripeCheckout() {
     sessionStorage.setItem(checkoutDraftKey, JSON.stringify(draft));
   }, [checkoutKey, customerName, customerEmail, address, policyAcknowledged, decantAcknowledged, showSuccess]);
 
+  const updateCartStock = (available: ProductVariant[]) => {
+    const updated = reconcileCart(lines, available);
+    setCartItems(updated);
+    localStorage.setItem("checkoutCart", JSON.stringify({
+      checkoutKey, promoCode,
+      cart: updated.map(item => ({ variantId: item.variant.id, quantity: item.quantity })),
+    }));
+    setError(updated.length
+      ? "Stock changed. Your cart was reduced to the available quantities. Review your order before continuing."
+      : "These decants are no longer available. Please return to the shop.");
+  };
+
   const startPayment = async (e: React.FormEvent) => {
     e.preventDefault();
+    if (isPreparing || !cartItems.length) return;
     if (!policyAcknowledged) {
       setError("Please accept the no-returns policy before paying.");
       return;
@@ -316,6 +339,12 @@ export default function StripeCheckout() {
     setIsPreparing(true);
     setError("");
     try {
+      const available = await fetchCheckoutInventory(checkoutKey);
+      queryClient.setQueryData(["checkout-availability", checkoutKey], available);
+      if (!cartMatchesInventory(lines, available)) {
+        updateCartStock(available);
+        return;
+      }
       const response = await apiRequest("POST", "/api/create-payment-intent", {
         items: cartItems.map(item => ({ variantId: item.variant.id, quantity: item.quantity })),
         checkoutKey, promoCode, customerEmail, customerName, policyAcknowledged, decantAcknowledged, address,
@@ -372,6 +401,13 @@ export default function StripeCheckout() {
     );
   }
 
+  if (isLoadingCart && stockError) {
+    return <div className="min-h-screen bg-white"><Header /><main className="mx-auto max-w-2xl px-4 py-32">
+      <p role="alert">Could not check stock. Your checkout details are unchanged.</p>
+      <Button className="mt-4" onClick={() => void refetchStock()}>Retry stock check</Button>
+    </main><Footer /></div>;
+  }
+
   if (isLoadingCart || new URLSearchParams(window.location.search).has("payment_intent") && !error && !showSuccess) {
     return (
       <div className="min-h-screen bg-white">
@@ -406,6 +442,14 @@ export default function StripeCheckout() {
                      <span>{item.product.name} ({item.variant.size} {item.variant.concentration}) × {item.quantity}</span>
                     <span>${(Number(item.variant.price) * item.quantity).toFixed(2)}</span>
                   </div>)}
+                  {stockChanged && <div role="alert" className="space-y-2 text-sm text-red-700">
+                    <p>Some quantities are no longer available. Update your cart before paying.</p>
+                    {cartItems.filter(item => item.quantity > inventoryLimit(variants?.find(v => v.id === item.variant.id)))
+                      .map(item => <p key={item.variant.id}>{item.product.name}: {inventoryLimit(variants?.find(v => v.id === item.variant.id))} available.</p>)}
+                    <Button type="button" variant="outline" disabled={isPreparing} onClick={() => variants && updateCartStock(variants)}>Update cart to available stock</Button>
+                  </div>}
+                  {stockError && <p role="alert" className="text-sm text-red-700">Could not refresh stock. We will check again before payment.</p>}
+                  {!cartItems.length && <Button type="button" onClick={() => setLocation("/shop")}>Return to shop</Button>}
                    {setCount > 0 && <div className="flex justify-between text-sm text-green-700"><span>Gaming set savings × {setCount}</span><span>-${(setCount * chicagoSetDiscountCents / 100).toFixed(2)}</span></div>}
                    {hasChicagoDecant && <p className="mt-3 border-l-2 border-[#dc7895] pl-3 text-sm text-gray-700">{hasTdgDecant ? <>{decantDisclosure}<br /><span className="mt-1 block">{affiliationDisclosure}</span></> : "Gaming concept imagery is for reference only. Your fragrance ships in a separate 30 mL decant bottle."}</p>}
                   <p className="text-sm text-gray-600">Shipping and discount are included in the final payment total.</p>
@@ -430,7 +474,7 @@ export default function StripeCheckout() {
                   <Checkbox id="decant" checked={decantAcknowledged} onCheckedChange={checked => { setDecantAcknowledged(checked === true); setError(""); }} />
                   <label htmlFor="decant" className="text-sm">{hasTdgDecant ? "I understand pictured designer bottles are reference images only. I will receive a THE DUPE GOAT dupe or hybrid decant in the size I selected—not an original pictured perfume." : "I understand the Gaming concept imagery is for reference only and my fragrance will arrive in a separate 30 mL decant bottle."}</label>
                 </div>}
-                <Button type="submit" disabled={isPreparing || !policyAcknowledged || (hasChicagoDecant && !decantAcknowledged)} className="w-full">
+                <Button type="submit" disabled={isPreparing || !cartItems.length || stockChanged || !policyAcknowledged || (hasChicagoDecant && !decantAcknowledged)} className="w-full">
                   {isPreparing ? "Preparing payment..." : "Continue to payment"}
                 </Button>
               </form>

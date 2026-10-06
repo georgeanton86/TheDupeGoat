@@ -28,7 +28,7 @@ async function withChicagoLock<T>(action: (client: PoolClient) => Promise<T>): P
   }
 }
 
-async function quantities(query: Pool | PoolClient, includePending: boolean): Promise<Map<string, number>> {
+async function quantities(query: Pool | PoolClient, includePending: boolean, checkoutKey?: string): Promise<Map<string, number>> {
   const result = await query.query(
     `SELECT variant_id, SUM(quantity)::integer AS sold FROM (
        SELECT line->>'variantId' AS variant_id, (line->>'quantity')::integer AS quantity
@@ -36,8 +36,9 @@ async function quantities(query: Pool | PoolClient, includePending: boolean): Pr
        ${includePending ? `UNION ALL
        SELECT line->>'variantId', (line->>'quantity')::integer
        FROM chicago_reservations, LATERAL jsonb_array_elements(items) AS line
-       WHERE status = 'pending'` : ""}
+        WHERE status = 'pending' ${checkoutKey ? "AND NOT (checkout_key IS NOT DISTINCT FROM $1 AND expires_at > now())" : ""}` : ""}
      ) AS stock GROUP BY variant_id`,
+    checkoutKey ? [checkoutKey] : [],
   );
   return new Map(result.rows.map(row => [row.variant_id, row.sold]));
 }
@@ -46,8 +47,8 @@ export async function getPaidQuantities(): Promise<Map<string, number>> {
   return quantities(pool, false);
 }
 
-export async function getUnavailableQuantities(): Promise<Map<string, number>> {
-  return quantities(pool, true);
+export async function getUnavailableQuantities(checkoutKey?: string): Promise<Map<string, number>> {
+  return quantities(pool, true, checkoutKey);
 }
 
 export async function reserveChicago(items: CartLine[], stripe: Stripe): Promise<string | undefined> {
