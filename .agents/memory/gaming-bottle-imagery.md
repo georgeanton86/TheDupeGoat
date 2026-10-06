@@ -9,6 +9,12 @@ For Chicago gaming fragrance imagery, use faithful crops or composites of the su
 
 **How to apply:** When refreshing product images, preserve the photographed bottle and lettering, polish the lighting/background around them, and check that product listings and checkout still distinguish the reference image from shipped packaging.
 
+Use Lucid State's detailed, atmospheric backgrounds as the visual reference for Gaming imagery; keep the storefront slightly brighter without abandoning its nighttime feel.
+
+**Why:** The user said they love Lucid's background and detail and requested a similar treatment for the Gaming bottles, with a little more brightness on the page.
+
+**How to apply:** Preserve the real Gaming labels while adding rich environmental backgrounds; favor readable text and visible scenery over heavy dark overlays.
+
 TDG original-bottle search results can be misleading: product titles may describe a full bottle while the image shows only a travel decant or a box. Baccarat Rouge 540 and its Extrait must also have distinct reference photos.
 
 **Why:** Multiple search refinements were necessary to find full bottles for Cactus Garden and Gucci Oud rather than sample packaging.

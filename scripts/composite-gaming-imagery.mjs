@@ -9,7 +9,9 @@ import path from "node:path";
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const sources = path.join(root, "attached_assets/generated_images");
 const output = path.join(root, "client/public/gaming");
+const intermediates = path.join(sources, "gaming-compositing");
 mkdirSync(output, { recursive: true });
+mkdirSync(intermediates, { recursive: true });
 const convert = (...args) => execFileSync("convert", args, { stdio: "inherit" });
 const bottles = [
   {
@@ -31,17 +33,19 @@ const bottles = [
 
 for (const { slug, outline, reflectionWidth } of bottles) {
   const source = path.join(sources, `chicago-${slug}-studio.jpg`);
-  const cutout = path.join(output, `${slug}-bottle-cutout.png`);
-  const mask = path.join(output, `${slug}-bottle-mask.png`);
-  const reflection = path.join(output, `${slug}-reflection.png`);
+  const cutout = path.join(intermediates, `${slug}-bottle-cutout.png`);
+  const mask = path.join(intermediates, `${slug}-bottle-mask.png`);
+  const reflection = path.join(intermediates, `${slug}-reflection.png`);
   convert("-size", "900x900", "xc:black", "-fill", "white", "-stroke", "none",
     "-draw", `path '${outline}'`, mask);
   convert(source, mask, "-alpha", "off", "-compose", "CopyOpacity", "-composite", cutout);
   convert(cutout, "-trim", "+repage", "-flip", "-resize", `${reflectionWidth}x150!`,
-    "-channel", "A", "-evaluate", "multiply", "0.13", "+channel", reflection);
+    "-channel", "A", "-evaluate", "multiply", "0.08", "+channel", "-blur", "0x1", reflection);
   convert(path.join(sources, `gaming-${slug}-background.jpg`),
-    "-resize", "1024x1024!", "-fill", "rgba(5,12,18,0.62)", "-stroke", "none",
-    "-draw", "ellipse 512,887 170,15 0,360",
+    "-resize", "1024x1024!",
+    "(", "-size", "1024x1024", "xc:none", "-fill", "rgba(5,12,18,0.68)", "-stroke", "none",
+    "-draw", "ellipse 512,885 153,10 0,360", "-blur", "0x9", ")",
+    "-compose", "Over", "-composite",
     reflection, "-geometry", `+${Math.round((1024 - reflectionWidth) / 2)}+892`,
     "-compose", "Over", "-composite",
     "(", cutout, "-resize", "1024x1024", ")",

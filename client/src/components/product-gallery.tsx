@@ -51,7 +51,7 @@ export default function ProductGallery() {
               <img src={offer.imageUrl} alt={`${offer.name} Dreamer hybrid reference artwork`} loading="lazy" className="h-full w-full object-contain transition-transform duration-500 group-hover:scale-[1.025]" />
               <span className="absolute bottom-3 left-3 bg-[#09141d]/90 px-2.5 py-1 font-mono text-[9px] uppercase tracking-wider text-[#b5f8f2]">Reference artwork · hybrid {offer.number}</span>
             </Link>
-            <div className="flex flex-1 flex-col p-5 sm:p-6"><p className="font-mono text-[9px] uppercase tracking-wider text-[#82e7e5]">{offer.mood}</p><h4 className="mt-2 font-serif text-2xl">{offer.name}</h4><p className="mt-3 text-sm leading-6 text-white/65">{offer.description}</p><HybridInspirations blend={offer.blend} dreamer /><Link href="/shop#dreamer" className="mt-auto inline-flex items-center gap-2 border-t border-white/10 pt-4 text-xs font-semibold text-[#82e7e5]">Explore {offer.name} <ArrowUpRight className="h-4 w-4" /></Link></div>
+            <div className="flex flex-1 flex-col p-5 sm:p-6"><p className="font-mono text-[9px] uppercase tracking-wider text-[#82e7e5]">{offer.mood}</p><h4 className="mt-2 font-serif text-2xl">{offer.name}</h4><p className="mt-3 text-sm leading-6 text-white/75">{offer.description}</p><HybridInspirations blend={offer.blend} dreamer /><Link href="/shop#dreamer" className="mt-auto inline-flex items-center gap-2 border-t border-white/10 pt-4 text-xs font-semibold text-[#82e7e5]">Explore {offer.name} <ArrowUpRight className="h-4 w-4" /></Link></div>
           </article>)}
         </div>
       </div>
