@@ -1,3 +1,5 @@
+import { isDreamerVariant } from "./dreamer";
+
 // Stable identifiers keep paid inventory attached to the same offers after a republish.
 export const chicagoOffers = [
   {
@@ -28,7 +30,7 @@ export const chicagoBottleImages: Record<string, string> = Object.fromEntries(
 );
 
 export const decantDisclosure =
-  "Bottle photos are for reference. Your 30 mL fragrance ships in a different decant bottle; its shape and label may vary.";
+  "Bottle images are for reference. Your fragrance ships in a decant bottle in the size you select; its shape and label may differ from the pictured bottle.";
 
 export const chicagoSetDiscountCents = 3 * 5999 - 15000;
 
@@ -39,5 +41,5 @@ export function countChicagoSets(items: { variantId: string; quantity: number }[
 }
 
 export function isChicagoVariant(variantId: string): boolean {
-  return chicagoOffers.some(offer => offer.variantId === variantId);
+  return chicagoOffers.some(offer => offer.variantId === variantId) || isDreamerVariant(variantId);
 }

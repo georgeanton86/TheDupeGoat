@@ -1,6 +1,7 @@
 import { type User, type InsertUser, type Product, type InsertProduct, type ProductVariant, type InsertProductVariant, type Order, type InsertOrder } from "@shared/schema";
 import { randomUUID } from "crypto";
 import { chicagoOffers } from "@shared/chicago";
+import { dreamerOffers, dreamerVariants } from "@shared/dreamer";
 
 export interface IStorage {
   getUser(id: string): Promise<User | undefined>;
@@ -222,6 +223,27 @@ export class MemStorage implements IStorage {
         isActive: true,
         createdAt: new Date(),
       });
+    }
+    for (const offer of dreamerOffers) {
+      this.products.set(offer.productId, {
+        id: offer.productId,
+        name: offer.name,
+        description: offer.description,
+        notes: offer.scentProfile,
+        topNotes: offer.topNotes,
+        middleNotes: offer.middleNotes,
+        baseNotes: offer.baseNotes,
+        type: "Extrait de Parfum",
+        imageUrl: offer.imageUrl,
+        bibleVerse: "",
+        verseReference: "",
+        isActive: true,
+        releaseDate: new Date(),
+        createdAt: new Date(),
+      });
+    }
+    for (const variant of dreamerVariants) {
+      this.productVariants.set(variant.id, { ...variant, createdAt: new Date() });
     }
   }
 

@@ -2,6 +2,7 @@ import { Pool, type PoolClient } from "pg";
 import type Stripe from "stripe";
 import { storage } from "./storage";
 import { chicagoSetDiscountCents, countChicagoSets, isChicagoVariant } from "@shared/chicago";
+import { shippingCentsForSubtotal } from "@shared/commerce";
 
 if (!process.env.DATABASE_URL) throw new Error("DATABASE_URL is required for orders");
 const pool = new Pool({ connectionString: process.env.DATABASE_URL });
@@ -227,7 +228,7 @@ export async function priceCart(items: CartLine[], promoCode?: string, unavailab
   const setDiscountCents = countChicagoSets(items) * chicagoSetDiscountCents;
   const discountCents = promoCode?.toUpperCase() === "WELCOME10"
     ? Math.round((subtotalCents - setDiscountCents) * 0.1) : 0;
-  const shippingCents = subtotalCents >= 10000 ? 0 : 899;
+  const shippingCents = shippingCentsForSubtotal(subtotalCents);
   return subtotalCents - setDiscountCents - discountCents + shippingCents;
 }
 
