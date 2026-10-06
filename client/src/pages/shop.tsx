@@ -374,8 +374,8 @@ export default function Shop() {
 
       {/* Header Cart Drawer - Opened from header cart button */}
       <Sheet open={isCartOpen} onOpenChange={setIsCartOpen}>
-        <SheetContent side="right" className="w-full sm:max-w-md overflow-y-auto">
-          <SheetHeader>
+        <SheetContent side="right" className="w-full max-w-full sm:max-w-md overflow-y-auto p-4 sm:p-6">
+          <SheetHeader className="pr-8">
             <SheetTitle className="flex items-center gap-2">
               <ShoppingCart className="w-5 h-5" />
               Your Cart
@@ -390,8 +390,8 @@ export default function Shop() {
               <>
                 <div className="space-y-3 mb-4">
                   {cart.map(item => (
-                    <div key={item.variant.id} className="flex items-center gap-3 p-3 bg-gray-50 rounded-lg">
-                      <div className="flex-1">
+                    <div key={item.variant.id} className="grid grid-cols-[minmax(0,1fr)_auto] items-center gap-3 p-3 bg-gray-50 rounded-lg sm:flex">
+                      <div className="col-span-2 min-w-0 break-words sm:flex-1">
                         <p className="font-semibold text-sm">{item.product.name}</p>
                         <p className="text-xs text-gray-500">{item.variant.size} • {item.variant.concentration}</p>
                       </div>
@@ -400,7 +400,7 @@ export default function Shop() {
                         disabled={isCheckingStock}
                         onValueChange={(val) => updateQuantity(item.variant.id, parseInt(val))}
                       >
-                        <SelectTrigger className="w-16 h-8">
+                        <SelectTrigger className="w-20 h-8 shrink-0 sm:w-16" aria-label={`Quantity for ${item.product.name}`}>
                           <SelectValue />
                         </SelectTrigger>
                         <SelectContent>
@@ -411,7 +411,7 @@ export default function Shop() {
                           ))}
                         </SelectContent>
                       </Select>
-                      <p className="font-semibold text-sm w-16 text-right">
+                      <p className="font-semibold text-sm whitespace-nowrap text-right sm:w-16 sm:shrink-0">
                         ${(parseFloat(item.variant.price) * item.quantity).toFixed(2)}
                       </p>
                     </div>
@@ -426,7 +426,7 @@ export default function Shop() {
                       value={promoCode}
                       onChange={(e) => setPromoCode(e.target.value)}
                       disabled={promoApplied}
-                      className="flex-1"
+                      className="min-w-0 flex-1"
                     />
                     <Button
                       onClick={applyPromoCode}
@@ -441,7 +441,7 @@ export default function Shop() {
                   )}
                 </div>
 
-                <div className="space-y-2 text-sm mb-4">
+                <div className="space-y-2 text-sm mb-4 [&>div]:gap-3 [&>div>span:first-child]:min-w-0 [&>div>span:last-child]:shrink-0">
                   <div className="flex justify-between">
                     <span>Subtotal:</span>
                     <span>${subtotal.toFixed(2)}</span>
@@ -499,8 +499,8 @@ export default function Shop() {
               )}
             </Button>
           </SheetTrigger>
-          <SheetContent side="right" className="w-full sm:max-w-md overflow-y-auto">
-            <SheetHeader>
+          <SheetContent side="right" className="w-full max-w-full sm:max-w-md overflow-y-auto p-4 sm:p-6">
+            <SheetHeader className="pr-8">
               <SheetTitle className="flex items-center gap-2">
                 <ShoppingCart className="w-5 h-5" />
                 Your Cart
@@ -515,8 +515,8 @@ export default function Shop() {
                 <>
                   <div className="space-y-3 mb-4">
                     {cart.map(item => (
-                      <div key={item.variant.id} className="flex items-center gap-3 p-3 bg-gray-50 rounded-lg">
-                        <div className="flex-1">
+                      <div key={item.variant.id} className="grid grid-cols-[minmax(0,1fr)_auto] items-center gap-3 p-3 bg-gray-50 rounded-lg sm:flex">
+                        <div className="col-span-2 min-w-0 break-words sm:flex-1">
                           <p className="font-semibold text-sm">{item.product.name}</p>
                           <p className="text-xs text-gray-500">{item.variant.size} • {item.variant.concentration}</p>
                         </div>
@@ -525,7 +525,7 @@ export default function Shop() {
                           disabled={isCheckingStock}
                           onValueChange={(val) => updateQuantity(item.variant.id, parseInt(val))}
                         >
-                          <SelectTrigger className="w-16 h-8">
+                          <SelectTrigger className="w-20 h-8 shrink-0 sm:w-16" aria-label={`Quantity for ${item.product.name}`}>
                             <SelectValue />
                           </SelectTrigger>
                           <SelectContent>
@@ -536,7 +536,7 @@ export default function Shop() {
                             ))}
                           </SelectContent>
                         </Select>
-                        <p className="font-semibold text-sm w-16 text-right">
+                        <p className="font-semibold text-sm whitespace-nowrap text-right sm:w-16 sm:shrink-0">
                           ${(parseFloat(item.variant.price) * item.quantity).toFixed(2)}
                         </p>
                       </div>
@@ -552,7 +552,7 @@ export default function Shop() {
                         value={promoCode}
                         onChange={(e) => setPromoCode(e.target.value)}
                         disabled={promoApplied}
-                        className="flex-1"
+                        className="min-w-0 flex-1"
                         data-testid="input-promo-code-mobile"
                       />
                       <Button
@@ -570,7 +570,7 @@ export default function Shop() {
                   </div>
 
                   {/* Totals */}
-                  <div className="space-y-2 text-sm mb-4">
+                  <div className="space-y-2 text-sm mb-4 [&>div]:gap-3 [&>div>span:first-child]:min-w-0 [&>div>span:last-child]:shrink-0">
                     <div className="flex justify-between">
                       <span>Subtotal:</span>
                       <span>${subtotal.toFixed(2)}</span>
