@@ -17,6 +17,7 @@ import { shippingCentsForSubtotal } from "@shared/commerce";
 import { ShoppingCart, Tag, Truck, Info } from "lucide-react";
 import ProductDetailModal from "@/components/product-detail-modal";
 import { DreamerCollection, TdgCollection } from "@/components/catalog-collections";
+import HybridInspirations from "@/components/hybrid-inspirations";
 
 interface CartItem {
   variant: ProductVariant;
@@ -173,7 +174,7 @@ export default function Shop() {
           <div className="mb-8 max-w-3xl">
             <p className="font-mono text-[10px] font-semibold uppercase tracking-[0.28em] text-[#d4ad70]">THE DUPE GOAT · Chicago fragrance house</p>
             <h1 className="mt-3 font-serif text-5xl leading-[.98] sm:text-7xl">Scent, shifted.<br /><span className="text-[#80eee8]">City afterimage.</span></h1>
-            <p className="mt-5 max-w-2xl text-base leading-7 text-white/75">Twenty-five single-scent dupes and a three-part Dreamer hybrid collection, alongside the house’s Gaming hybrids. Designer bottle images mark inspiration only; TDG decants are the products sold.</p>
+            <p className="mt-5 max-w-2xl text-base leading-7 text-white/75">Six hybrids lead the house: three Dreamer states and three Gaming compositions, built from dupe inspirations. Explore the twenty-five single-scent dupes after the hybrids. Reference images are not the packaging you receive.</p>
             <div className="mt-6 flex flex-wrap items-center gap-x-6 gap-y-3 text-xs">
               <div className="flex items-center gap-2 text-white">
                 <Truck className="w-5 h-5" />
@@ -190,7 +191,6 @@ export default function Shop() {
       
       <div className="mx-auto max-w-[1440px] px-5 py-14 sm:px-8">
         <DreamerCollection products={dreamerProducts} variants={variants || []} onAdd={addToCart} onDetails={item => { setSelectedProduct(item); setIsDetailModalOpen(true); }} />
-        <TdgCollection products={tdgProducts} variants={variants || []} onAdd={addToCart} onDetails={item => { setSelectedProduct(item); setIsDetailModalOpen(true); }} />
         {chicagoProducts.length > 0 && <section id="gaming" className="mb-16 scroll-mt-24">
           <div className="mb-7 flex flex-col justify-between gap-3 border-b border-[#dc7895]/35 pb-5 sm:flex-row sm:items-end">
             <div><p className="font-mono text-[10px] uppercase tracking-[0.25em] text-[#dc7895]">THE DUPE GOAT · Gaming hybrids</p><h2 className="mt-2 font-serif text-3xl sm:text-4xl">The Gaming Collection</h2></div>
@@ -204,6 +204,7 @@ export default function Shop() {
             {chicagoProducts.map((product) => <ProductCard key={product.id} product={product} variants={variants?.filter(v => v.productId === product.id) || []} onAddToCart={addToCart} onViewDetails={(item) => { setSelectedProduct(item); setIsDetailModalOpen(true); }} />)}
           </div>
         </section>}
+        <TdgCollection products={tdgProducts} variants={variants || []} onAdd={addToCart} onDetails={item => { setSelectedProduct(item); setIsDetailModalOpen(true); }} />
         <section className="mb-16">
         <div className="grid lg:grid-cols-3 gap-8">
 
@@ -581,6 +582,7 @@ function ProductCard({ product, variants, onAddToCart, onViewDetails }: {
   onViewDetails: (product: Product) => void;
 }) {
   const isChicago = Boolean(chicagoBottleImages[product.name.toUpperCase()]);
+  const gamingOffer = chicagoOffers.find(offer => offer.productId === product.id);
   const [quantity, setQuantity] = useState(1);
   const [selectedVariantId, setSelectedVariantId] = useState(variants[0]?.id || "");
 
@@ -633,6 +635,7 @@ function ProductCard({ product, variants, onAddToCart, onViewDetails }: {
 
           {!isChicago && product.bibleVerse?.trim() && <p className="mb-2 text-sm italic text-white/65">"{product.bibleVerse}"</p>}
           <p className="mb-4 text-sm leading-6 text-white/65">{product.description}</p>
+          {gamingOffer && <HybridInspirations inspirations={gamingOffer.inspirations} />}
           {isChicago && <p className="mb-4 border-l-2 border-[#dc7895] pl-3 text-xs leading-5 text-white/75">Gaming concept imagery is for reference only. Your fragrance ships in a separate 30 mL decant bottle.</p>}
           <>
            {/* Only the 30 mL Chicago decant is offered; display the other sizes without creating purchasable variants. */}

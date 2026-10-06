@@ -1,7 +1,6 @@
 import Header from "@/components/header";
 import Footer from "@/components/footer";
-import ProductGallery from "@/components/product-gallery";
-import { Button } from "@/components/ui/button";
+import ProductGallery, { HybridSpotlight } from "@/components/product-gallery";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { ArrowDown, ArrowUpRight, Gamepad2, Sparkles, MoonStar } from "lucide-react";
 import { Link } from "wouter";
@@ -21,27 +20,22 @@ export default function Home() {
           <div className="relative mx-auto grid w-full max-w-7xl gap-12 px-5 pb-16 pt-24 sm:px-8 md:grid-cols-[1.05fr_.95fr] md:items-end md:pb-24">
             <div className="max-w-2xl reveal-up">
               <p className="mb-6 flex items-center gap-3 font-mono text-[10px] font-medium uppercase tracking-[0.24em] text-[#d4ad70]"><span className="h-px w-9 bg-[#d4ad70]" /> THE DUPE GOAT · Chicago fragrance house</p>
-              <h1 className="font-serif text-5xl leading-[0.91] tracking-[-0.045em] sm:text-7xl lg:text-[96px]">Scent for<br /><span className="text-[#d4ad70]">another</span><br />state of mind.</h1>
-              <p className="mt-7 max-w-lg text-base leading-7 text-[#f3ead8]/75 sm:text-lg">An independent fragrance house with an unapologetic point of view: designer scent inspirations, layered Dreamer hybrids, and Chicago Gaming hybrids.</p>
+              <h1 className="font-serif text-5xl leading-[0.94] tracking-[-0.045em] sm:text-7xl lg:text-[82px]">Six hybrids.<br /><span className="text-[#d4ad70]">Different states</span><br />of mind.</h1>
+              <p className="mt-7 max-w-lg text-base leading-7 text-[#f3ead8]/75 sm:text-lg">Dreamer’s three altered states. Gaming’s three bold compositions. Six THE DUPE GOAT hybrids built from dupe inspirations—not original designer ingredients.</p>
               <div className="mt-9 flex flex-wrap gap-3">
-                <Link href="/shop" className="inline-flex items-center gap-3 bg-[#d4ad70] px-6 py-3.5 text-xs font-bold uppercase tracking-[0.16em] text-[#151a20] transition-colors hover:bg-[#e3c28e]">Enter the shop <ArrowUpRight className="h-4 w-4" /></Link>
-                <button onClick={() => document.getElementById("collections")?.scrollIntoView({ behavior: "smooth" })} className="inline-flex items-center gap-3 border border-white/30 px-6 py-3.5 text-xs font-semibold uppercase tracking-[0.16em] text-[#f3ead8] transition-colors hover:border-[#d4ad70] hover:text-[#d4ad70]">Explore the house <ArrowDown className="h-4 w-4" /></button>
+                <Link href="/shop#dreamer" className="inline-flex items-center gap-3 bg-[#80eee8] px-6 py-3.5 text-xs font-bold uppercase tracking-[0.16em] text-[#151a20] transition-colors hover:bg-[#b7fff5]">Shop Dreamer <ArrowUpRight className="h-4 w-4" /></Link>
+                <Link href="/shop#gaming" className="inline-flex items-center gap-3 border border-[#dc7895]/70 px-6 py-3.5 text-xs font-semibold uppercase tracking-[0.16em] text-[#f1a0b5] hover:bg-[#dc7895]/10">Shop Gaming <ArrowUpRight className="h-4 w-4" /></Link>
+                <button onClick={() => document.getElementById("collections")?.scrollIntoView({ behavior: "smooth" })} className="inline-flex items-center gap-3 py-3.5 text-xs font-semibold uppercase tracking-[0.16em] text-[#f3ead8]/75 hover:text-[#d4ad70]">Meet the six <ArrowDown className="h-4 w-4" /></button>
               </div>
             </div>
-            <div className="hidden md:block">
-              <div className="ml-auto max-w-[350px] border-l border-[#d8b76a]/60 pl-6 pb-2">
-                <p className="font-mono text-[10px] uppercase tracking-[0.25em] text-[#d4ad70]">41° 52′ 55″ N · DREAMER / 01—03</p>
-                <p className="mt-3 font-serif text-2xl">Three states. One collection.</p>
-                <p className="mt-2 text-sm leading-6 text-[#f3ead8]/65">Lucid State, Fever Dream, Altered Mental Status. Dreamer transforms dupe inspirations into three original hybrid compositions.</p>
-              </div>
-            </div>
+            <div><p className="mb-4 font-mono text-[10px] uppercase tracking-[0.2em] text-[#d4ad70]">The six house hybrids · Dreamer / Gaming</p><HybridSpotlight /></div>
           </div>
           <div className="absolute bottom-5 right-6 hidden font-mono text-[9px] uppercase tracking-[0.24em] text-white/55 lg:block">The river remembers every light</div>
         </section>
 
         <section className="border-y border-[#d4ad70]/30 bg-[#d4ad70] text-[#151a20]">
           <div className="mx-auto flex max-w-7xl flex-col gap-2 px-5 py-4 sm:px-8 md:flex-row md:items-center md:justify-between">
-            <p className="text-xs font-semibold uppercase tracking-[0.17em]">TDG dupes &amp; hybrids · 5 / 10 / 20 / 30 mL</p>
+            <p className="text-xs font-semibold uppercase tracking-[0.17em]">Dreamer + Gaming · Six hybrid compositions</p>
             <p className="text-xs">Designer imagery shows scent inspiration only. THE DUPE GOAT is independent and unaffiliated.</p>
           </div>
         </section>

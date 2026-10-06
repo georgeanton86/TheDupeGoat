@@ -5,6 +5,7 @@ import { tdgOffers, tdgSizes, dupeDisclosure, affiliationDisclosure } from "@sha
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { ArrowUpRight, Search } from "lucide-react";
+import HybridInspirations from "@/components/hybrid-inspirations";
 
 type CartAdd = (variant: ProductVariant, product: Product, quantity: number) => void;
 type DetailOpen = (product: Product) => void;
@@ -54,6 +55,7 @@ export function DreamerCollection({ products, variants, onAdd, onDetails }: {
                 <p className="font-mono text-[9px] uppercase tracking-[0.2em] text-[#70dfe5]">{offer.mood}</p>
                 <h3 className="mt-2 min-h-[2.3em] font-serif text-2xl leading-tight text-[#f1f5ec]">{offer.name}</h3>
                 <p className="mt-3 min-h-[5.5rem] text-sm leading-6 text-white/65">{offer.description}</p>
+                <HybridInspirations blend={offer.blend} dreamer />
                 <div className="mt-4 flex flex-wrap gap-2">
                   {dreamerSizes.map(size => {
                     const variant = offerVariants.find(v => v.size === `${size} mL`);

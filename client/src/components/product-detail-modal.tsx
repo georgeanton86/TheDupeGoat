@@ -1,7 +1,8 @@
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Badge } from "@/components/ui/badge";
 import type { Product } from "@shared/schema";
-import { chicagoBottleImages } from "@shared/chicago";
+import { chicagoBottleImages, chicagoOffers } from "@shared/chicago";
+import HybridInspirations from "@/components/hybrid-inspirations";
 import { dreamerOffers } from "@shared/dreamer";
 import { tdgOffers, dupeDisclosure, affiliationDisclosure } from "@shared/tdg";
 
@@ -20,6 +21,7 @@ interface ProductDetailModalProps {
 export default function ProductDetailModal({ product, isOpen, onClose }: ProductDetailModalProps) {
   if (!product) return null;
   const gaming = gamerProducts[product.name.toUpperCase()];
+  const gamingOffer = chicagoOffers.find(offer => offer.productId === product.id);
   const dreamer = dreamerOffers.find(offer => offer.productId === product.id);
   const tdg = tdgOffers.find(offer => offer.productId === product.id);
   const notes = [product.topNotes, product.middleNotes, product.baseNotes].some((note) => note?.trim());
@@ -43,6 +45,7 @@ export default function ProductDetailModal({ product, isOpen, onClose }: Product
             </DialogHeader>
             <div className="mt-6 space-y-5">
               <p className="text-sm leading-6 text-[#f3ead8]/75">{dreamer?.description || tdg?.description || product.description}</p>
+              {gamingOffer && <HybridInspirations inspirations={gamingOffer.inspirations} />}
               {dreamer && <div className="space-y-4 border border-[#72e8ef]/20 bg-[#72e8ef]/5 p-4">
                 <div><p className="text-[10px] uppercase tracking-[0.18em] text-[#82e7e5]">Scent profile</p><p className="mt-1 text-sm text-white/80">{dreamer.scentProfile}</p></div>
                 <div><p className="text-[10px] uppercase tracking-[0.18em] text-[#82e7e5]">Hybrid blend · dupe inspirations</p><p className="mt-1 text-sm leading-6 text-white/80">{dreamer.blend}</p></div>

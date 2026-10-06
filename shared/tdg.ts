@@ -14,7 +14,7 @@ const scents = [
   { code: "05", name: "BLUE RIVIERA", slug: "neroli-portofino", original: "Neroli Portofino", house: "Tom Ford" },
   { code: "06", name: "DESERT GREEN", slug: "cactus-garden", original: "Cactus Garden", house: "Louis Vuitton" },
   { code: "07", name: "RUBY RESERVE", slug: "rouge-extrait", original: "Baccarat Rouge 540 Extrait", house: "Maison Francis Kurkdjian" },
-  { code: "08", name: "RAIN STEEP", slug: "rain-tea", original: "Rain Tea", house: "Chasing Scents" },
+  { code: "08", name: "TEA STORM", slug: "rain-tea", original: "Rain Tea", house: "Chasing Scents" },
   { code: "09", name: "VICTORY LAP", slug: "aventus", original: "Aventus", house: "Creed" },
   { code: "10", name: "DARK INSTINCT", slug: "terrible-teddy", original: "Terrible Teddy", house: "Penhaligon’s" },
   { code: "11", name: "SPICE REBEL", slug: "blazing-sam", original: "The Blazing Mr Sam", house: "Penhaligon’s" },

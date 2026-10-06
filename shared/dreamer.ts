@@ -29,7 +29,7 @@ export const dreamerOffers = [
     productId: "64ac0000-0000-4000-8000-000000000002",
     imageUrl: "/dreamer/fever-dream.jpg",
     mood: "Magnetic. Euphoric. Addictive.",
-    blend: "⅓ Baccarat Rouge 540 · ⅓ Louis Vuitton Météore · ⅓ Louis Vuitton Moon Tale",
+    blend: "⅓ Maison Francis Kurkdjian Baccarat Rouge 540 · ⅓ Louis Vuitton Météore · ⅓ Louis Vuitton Moon Tail",
     description: "Sweet, luminous and slightly surreal. Fever Dream combines an addictive amber-saffron sweetness with bright citrus, clean aromatics and a deeper sensual backbone. It moves between fresh and seductive—the kind of scent that feels familiar for a second, then suddenly becomes something else.",
     scentProfile: "Sweet · Airy · Amber · Citrus · Aromatic · Musky · Seductive",
     topNotes: "Saffron · Citrus Zest · Aldehydic Freshness",
