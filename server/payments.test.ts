@@ -109,6 +109,88 @@ test("expired attached holds release only after Stripe confirms cancellation", a
   }
 });
 
+for (const failure of ["initial retrieval", "cancellation", "retrieval after cancellation"] as const) {
+  test(`expired holds survive temporary Stripe ${failure} failures until cancellation succeeds`, async () => {
+    if (process.env.NODE_ENV === "production") throw new Error("Never run inventory tests on production");
+    const pool = new Pool({ connectionString: process.env.DATABASE_URL });
+    const variantId = chicagoOffers[0].variantId;
+    const held: string[] = [];
+    let intentId: string | undefined;
+    try {
+      const before = (await getUnavailableQuantities()).get(variantId) ?? 0;
+      const available = 25 - before;
+      assert.ok(available > 0, "Test requires available decants");
+      // Hold every remaining decant so another buyer cannot buy held stock.
+      const id = (await reserveChicago([{ variantId, quantity: available }],
+        { paymentIntents: {} } as Stripe))!;
+      held.push(id);
+      intentId = `pi_expiry_failure_test_${id.replaceAll("-", "")}`;
+      await attachChicagoIntent(id, intentId);
+      await pool.query("UPDATE chicago_reservations SET expires_at = now() - interval '1 second' WHERE id = $1", [id]);
+      let recovered = false;
+      let retrievals = 0;
+      let cancellations = 0;
+      const stripe = {
+        paymentIntents: {
+          retrieve: async (paymentIntentId: string) => {
+            assert.equal(paymentIntentId, intentId);
+            retrievals++;
+            if (!recovered && (failure === "initial retrieval" ||
+                (failure === "retrieval after cancellation" && retrievals % 2 === 0)))
+              throw new Error("Temporary Stripe retrieval outage");
+            return { id: intentId, status: "requires_payment_method" };
+          },
+          cancel: async (paymentIntentId: string) => {
+            assert.equal(paymentIntentId, intentId);
+            cancellations++;
+            if (!recovered) throw new Error("Temporary Stripe cancellation outage");
+            return { id: intentId, status: "canceled" };
+          },
+        },
+      } as unknown as Stripe;
+      const assertPending = async () => {
+        assert.equal((await pool.query(
+          "SELECT status FROM chicago_reservations WHERE id = $1", [id],
+        )).rows[0].status, "pending");
+        assert.equal((await pool.query(
+          "SELECT count(*)::integer AS count FROM payment_orders WHERE payment_intent_id = $1", [intentId],
+        )).rows[0].count, 0);
+        assert.equal((await getUnavailableQuantities()).get(variantId), 25);
+      };
+      await reconcileExpiredReservations(stripe);
+      assert.equal(retrievals, failure === "initial retrieval" ? 1 : 2);
+      assert.equal(cancellations, failure === "initial retrieval" ? 0 : 1);
+      await assertPending();
+      // A new checkout also retries reconciliation; the outage must still
+      // leave the original hold unavailable to that buyer.
+      await assert.rejects(async () => {
+        const other = await reserveChicago([{ variantId, quantity: 1 }], stripe);
+        if (other) held.push(other);
+      }, /Insufficient inventory/);
+      await assertPending();
+
+      recovered = true;
+      const cancellationsBeforeRecovery = cancellations;
+      await reconcileExpiredReservations(stripe);
+      assert.equal(cancellations, cancellationsBeforeRecovery + 1);
+      assert.equal((await pool.query(
+        "SELECT status FROM chicago_reservations WHERE id = $1", [id],
+      )).rows[0].status, "released");
+      assert.equal((await pool.query(
+        "SELECT count(*)::integer AS count FROM payment_orders WHERE payment_intent_id = $1", [intentId],
+      )).rows[0].count, 0);
+      assert.equal((await getUnavailableQuantities()).get(variantId) ?? 0, before);
+      // Prove the released stock can actually be reserved again.
+      held.push((await reserveChicago([{ variantId, quantity: available }], stripe))!);
+      assert.equal((await getUnavailableQuantities()).get(variantId), 25);
+    } finally {
+      await pool.query("DELETE FROM payment_orders WHERE payment_intent_id = $1", [intentId]);
+      await pool.query("DELETE FROM chicago_reservations WHERE id = ANY($1::uuid[])", [held]);
+      await pool.end();
+    }
+  });
+}
+
 test("a successful payment commits its hold and records only one order", async () => {
   if (process.env.NODE_ENV === "production") throw new Error("Never run inventory tests on production");
   const pool = new Pool({ connectionString: process.env.DATABASE_URL });
