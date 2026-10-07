@@ -1,6 +1,6 @@
 import Header from "@/components/header";
 import Footer from "@/components/footer";
-import ProductGallery, { HybridSpotlight } from "@/components/product-gallery";
+import ProductGallery, { DupeSpotlight } from "@/components/product-gallery";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { ArrowDown, ArrowUpRight, Gamepad2, Sparkles, MoonStar } from "lucide-react";
 import { Link } from "wouter";
@@ -20,23 +20,23 @@ export default function Home() {
           <div className="relative mx-auto grid w-full max-w-7xl gap-12 px-5 pb-16 pt-24 sm:px-8 md:grid-cols-[1.05fr_.95fr] md:items-end md:pb-24">
             <div className="max-w-2xl reveal-up">
               <p className="mb-6 flex items-center gap-3 font-mono text-[10px] font-medium uppercase tracking-[0.24em] text-[#d4ad70]"><span className="h-px w-9 bg-[#d4ad70]" /> THE DUPE GOAT · Chicago fragrance house</p>
-              <h1 className="font-serif text-5xl leading-[0.94] tracking-[-0.045em] sm:text-7xl lg:text-[82px]">Six hybrids.<br /><span className="text-[#d4ad70]">Different states</span><br />of mind.</h1>
-              <p className="mt-7 max-w-lg text-base leading-7 text-[#f3ead8]/75 sm:text-lg">Dreamer’s three altered states. Gaming’s three bold compositions. Six THE DUPE GOAT hybrids built from dupe inspirations—not original designer ingredients.</p>
+               <h1 className="font-serif text-5xl leading-[0.94] tracking-[-0.045em] sm:text-7xl lg:text-[82px]">Designer-inspired.<br /><span className="text-[#d4ad70]">Everyday</span><br />priced.</h1>
+               <p className="mt-7 max-w-lg text-base leading-7 text-[#f3ead8]/75 sm:text-lg">Find familiar scent inspirations in 25 affordable, single-scent TDG dupes. Independent fragrances in your choice of decant size—not authentic designer perfume.</p>
+               <p className="mt-4 font-mono text-xs tracking-wide text-[#d4ad70]">5 / 10 / 20 / 30 mL decants</p>
               <div className="mt-9 flex flex-wrap gap-3">
-                <Link href="/shop#dreamer" className="inline-flex items-center gap-3 bg-[#80eee8] px-6 py-3.5 text-xs font-bold uppercase tracking-[0.16em] text-[#151a20] transition-colors hover:bg-[#b7fff5]">Shop Dreamer <ArrowUpRight className="h-4 w-4" /></Link>
-                <Link href="/shop#gaming" className="inline-flex items-center gap-3 border border-[#dc7895]/70 px-6 py-3.5 text-xs font-semibold uppercase tracking-[0.16em] text-[#f1a0b5] hover:bg-[#dc7895]/10">Shop Gaming <ArrowUpRight className="h-4 w-4" /></Link>
-                <button onClick={() => document.getElementById("collections")?.scrollIntoView({ behavior: "smooth" })} className="inline-flex items-center gap-3 py-3.5 text-xs font-semibold uppercase tracking-[0.16em] text-[#f3ead8]/75 hover:text-[#d4ad70]">Meet the six <ArrowDown className="h-4 w-4" /></button>
+                 <Link href="/shop#dupes" className="inline-flex items-center gap-3 bg-[#d4ad70] px-6 py-3.5 text-xs font-bold uppercase tracking-[0.16em] text-[#151a20] transition-colors hover:bg-[#e3c28e]">Shop designer-inspired dupes <ArrowUpRight className="h-4 w-4" /></Link>
+                 <button onClick={() => document.getElementById("collections")?.scrollIntoView({ behavior: "smooth" })} className="inline-flex items-center gap-3 py-3.5 text-xs font-semibold uppercase tracking-[0.16em] text-[#f3ead8]/75 hover:text-[#d4ad70]">Find your inspiration <ArrowDown className="h-4 w-4" /></button>
               </div>
             </div>
-            <div><p className="mb-4 font-mono text-[10px] uppercase tracking-[0.2em] text-[#d4ad70]">The six house hybrids · Dreamer / Gaming</p><HybridSpotlight /></div>
+             <div><p className="mb-4 font-mono text-[10px] uppercase tracking-[0.2em] text-[#d4ad70]">Recognize the inspiration. Shop the TDG dupe.</p><DupeSpotlight /></div>
           </div>
           <div className="absolute bottom-5 right-6 hidden font-mono text-[9px] uppercase tracking-[0.24em] text-white/55 lg:block">The river remembers every light</div>
         </section>
 
         <section className="border-y border-[#d4ad70]/30 bg-[#d4ad70] text-[#151a20]">
           <div className="mx-auto flex max-w-7xl flex-col gap-2 px-5 py-4 sm:px-8 md:flex-row md:items-center md:justify-between">
-            <p className="text-xs font-semibold uppercase tracking-[0.17em]">Dreamer + Gaming · Six hybrid compositions</p>
-            <p className="text-xs">Designer imagery shows scent inspiration only. THE DUPE GOAT is independent and unaffiliated.</p>
+             <p className="text-xs font-semibold uppercase tracking-[0.17em]">25 single-scent dupes · Selected-size decants</p>
+             <p className="max-w-xl text-xs leading-5">Designer bottles show inspiration only, not shipped packaging. THE DUPE GOAT is independent and unaffiliated.</p>
           </div>
         </section>
 
@@ -52,8 +52,8 @@ export default function Home() {
             <div className="max-w-2xl">
               <p className="text-lg leading-8 text-[#f3ead8]/80">THE DUPE GOAT makes Chicago its launchpad for fragrance with a twist: faithful scent directions, unexpected hybrids, and original concepts inspired by the city’s after-hours energy.</p>
               <div className="mt-9 grid gap-5 sm:grid-cols-2">
-                <div className="border-t border-[#cf3e68]/50 pt-5"><Gamepad2 className="h-5 w-5 text-[#ed6689]" /><h3 className="mt-4 font-serif text-2xl">The Gaming Collection</h3><p className="mt-2 text-sm leading-6 text-[#f3ead8]/75">Three original gaming-inspired compositions, sold as 30 mL decants. Pictured bottles are reference imagery; your fragrance arrives in a separate decant bottle.</p></div>
-                <div className="border-t border-[#72e8ef]/50 pt-5"><MoonStar className="h-5 w-5 text-[#72e8ef]" /><h3 className="mt-4 font-serif text-2xl">Dupe / hybrid library</h3><p className="mt-2 text-sm leading-6 text-[#f3ead8]/75">Twenty-five single-scent dupes and Dreamer’s three layered hybrids. Designer names and photos indicate inspiration only; TDG products are independent, not the originals.</p></div>
+                 <div className="border-t border-[#d4ad70]/50 pt-5"><Sparkles className="h-5 w-5 text-[#d4ad70]" /><h3 className="mt-4 font-serif text-2xl">The single-scent library</h3><p className="mt-2 text-sm leading-6 text-[#f3ead8]/75">Twenty-five designer-inspired TDG dupes in 5, 10, 20 and 30 mL decants. Find a recognizable scent direction without buying the original designer perfume.</p><Link href="/shop#dupes" className="mt-4 inline-flex items-center gap-2 text-xs text-[#d4ad70]">Shop the dupe library <ArrowUpRight className="h-4 w-4" /></Link></div>
+                 <div className="border-t border-[#72e8ef]/50 pt-5"><div className="flex gap-3"><MoonStar className="h-5 w-5 text-[#72e8ef]" /><Gamepad2 className="h-5 w-5 text-[#ed6689]" /></div><h3 className="mt-4 font-serif text-2xl">The house hybrids</h3><p className="mt-2 text-sm leading-6 text-[#f3ead8]/75">For another direction, discover the owner-created Dreamer and Gaming collections. Layered dupe inspirations, separate decant packaging, and a character of their own.</p><div className="mt-4 flex gap-5 text-xs"><Link href="/shop#dreamer" className="text-[#72e8ef]">Explore Dreamer</Link><Link href="/shop#gaming" className="text-[#ed6689]">Explore Gaming</Link></div></div>
               </div>
               <Link href="/shop" className="mt-8 inline-flex items-center gap-2 text-sm font-semibold text-[#d8b76a] hover:text-[#f3ead8]">Explore the collections <ArrowUpRight className="h-4 w-4" /></Link>
             </div>

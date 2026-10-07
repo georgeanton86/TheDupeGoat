@@ -9,8 +9,8 @@ The brand is THE DUPE GOAT (TDG). The user owns dupe versions of the listed desi
 
 **How to apply:** Treat designer names, bottle imagery, and blend components as inspiration references only. Never imply TDG sells authentic designer perfume or blends made from authentic designer products. Distinct TDG product names and non-affiliation disclosures are useful, but do not claim that renaming or a disclaimer guarantees legal clearance.
 
-Gaming and Dreamer’s six hybrids should take the main stage, ahead of the single-scent catalog.
+Designer-inspired single-scent dupes should take priority over the owner's Gaming and Dreamer series.
 
-**Why:** The user explicitly asked to feature these six blends as the main attraction.
+**Why:** The user changed the merchandising direction to emphasize recognizable name-brand inspirations and dupes, choosing to update the storefront before preparing an ad.
 
-**How to apply:** Give both hybrid collections priority on the home and shop pages, with their blend inspirations visible. Keep the existing collection memberships and purchase options unless the user changes them.
+**How to apply:** Lead the home and shop pages with the single-scent dupes. Keep Gaming and Dreamer available as secondary collections, without changing collection memberships or purchase options.

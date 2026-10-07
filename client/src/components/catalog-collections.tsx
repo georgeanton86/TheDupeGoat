@@ -96,7 +96,7 @@ export function TdgCollection({ products, variants, onAdd, onDetails }: {
   return (
     <section id="dupes" className="mb-20 scroll-mt-24">
       <div className="mb-7 flex flex-col justify-between gap-5 border-b border-[#e6bd70]/35 pb-5 sm:flex-row sm:items-end">
-        <div><p className="font-mono text-[10px] uppercase tracking-[0.25em] text-[#e6bd70]">THE DUPE GOAT · SINGLE-SCENT DUPE COLLECTION</p><h2 className="mt-2 font-serif text-3xl sm:text-5xl">The originals, reimagined.</h2><p className="mt-3 max-w-2xl text-sm leading-6 text-white/60">25 independently produced scent dupes. Alias names are the product names; designer references identify inspiration only.</p></div>
+        <div><p className="font-mono text-[10px] uppercase tracking-[0.25em] text-[#e6bd70]">Start with the inspiration · SINGLE-SCENT DUPES</p><h2 className="mt-2 font-serif text-3xl sm:text-5xl">Designer-inspired. TDG-made.</h2><p className="mt-3 max-w-2xl text-sm leading-6 text-white/75">Explore 25 independently produced dupes inspired by recognizable fragrances. Designer names identify scent inspiration only; each TDG alias is the product you buy, not an authentic designer perfume.</p><p className="mt-3 text-xs leading-5 text-[#e6bd70]">Choose 5, 10, 20 or 30 mL below. You receive a TDG decant in that size—not the pictured bottle.</p></div>
         <label className="relative block w-full sm:max-w-xs"><span className="sr-only">Search by TDG scent, inspiration, or house</span><Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-[#e6bd70]/70" /><Input value={query} onChange={event => setQuery(event.target.value)} placeholder="Search scent or inspiration" className="rounded-none border-[#e6bd70]/30 bg-[#10171c] pl-9 text-white placeholder:text-white/40" /></label>
       </div>
       <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-3">
@@ -106,15 +106,16 @@ export function TdgCollection({ products, variants, onAdd, onDetails }: {
           const selectedVariant = offerVariants.find(v => v.id === selected[offer.productId]);
           const variant = selectedVariant || offerVariants.find(v => v.isActive && v.remainingInventory > 0) || offerVariants[0];
           const image = offer.imageUrl;
-          return <article key={offer.productId} className="group overflow-hidden border border-[#e6bd70]/20 bg-[#171e24] transition-colors hover:border-[#e6bd70]/60">
+           return <article id={`dupe-${offer.code}`} key={offer.productId} className="group scroll-mt-24 overflow-hidden border border-[#e6bd70]/30 bg-[#171e24] transition-colors hover:border-[#e6bd70]/60">
             <div className="relative h-64 overflow-hidden bg-[#10161a] sm:h-72">
               <img src={image} alt={`Reference-only designer bottle of ${offer.original} by ${offer.house}; TDG dupe ships`} loading="lazy" className="h-full w-full object-contain p-5 transition-transform duration-500 group-hover:scale-[1.035]" />
               <span className="absolute left-3 top-3 border border-[#f2cd82]/75 bg-[#10161a]/95 px-2.5 py-1.5 font-mono text-[9px] font-semibold uppercase tracking-[0.14em] text-[#f4d99b]">Reference only · not the product</span>
-              <span className="absolute bottom-3 left-3 bg-[#10161a]/90 px-2.5 py-1 text-[10px] font-semibold text-[#f4d99b]">Inspired by {offer.original} / {offer.house}</span>
+               <span className="absolute bottom-3 left-3 right-3 bg-[#10161a]/90 px-2.5 py-1 text-[10px] font-semibold leading-5 text-[#f4d99b]">Scent inspiration only · {offer.house}</span>
             </div>
             <div className="p-4 sm:p-5">
-              <div className="flex items-start justify-between gap-3"><div><p className="font-mono text-[9px] uppercase tracking-[0.2em] text-[#e6bd70]">TDG DUPE · {offer.code}</p><h3 className="mt-1 font-serif text-2xl">{offer.name}</h3></div><button type="button" onClick={() => product && onDetails(product)} disabled={!product} className="mt-1 text-[10px] uppercase tracking-wider text-[#edca83] hover:text-white disabled:opacity-40">Details</button></div>
-              <p className="mt-2 text-xs font-medium leading-5 text-[#f5dba2]">Inspired by {offer.original} · {offer.house}</p>
+               <p className="font-mono text-[9px] uppercase tracking-[0.16em] text-[#e6bd70]">Inspired by {offer.house}</p>
+               <h3 className="mt-2 font-serif text-2xl leading-tight"><span className="mb-1 block font-sans text-[10px] uppercase tracking-wider text-white/60">Scent inspiration</span>{offer.original}</h3>
+               <div className="mt-4 flex items-start justify-between gap-3 border-t border-[#e6bd70]/15 pt-3"><div><p className="font-mono text-[9px] uppercase tracking-[0.2em] text-[#e6bd70]">Your TDG dupe · {offer.code}</p><p className="mt-1 text-sm font-semibold">{offer.name}</p></div><button type="button" onClick={() => product && onDetails(product)} disabled={!product} className="mt-1 text-[10px] uppercase tracking-wider text-[#edca83] hover:text-white disabled:opacity-40">Details</button></div>
               <p className="mt-2 min-h-10 text-xs leading-5 text-white/55">{offer.description}</p>
               <p className="mt-3 border-l border-[#e6bd70]/70 pl-3 text-[11px] leading-5 text-white/65">{dupeDisclosure}</p>
               <div className="mt-4 grid grid-cols-4 gap-1.5">
@@ -127,8 +128,8 @@ export function TdgCollection({ products, variants, onAdd, onDetails }: {
                     aria-label={`${size} mL, ${available ? `${sizeVariant?.remainingInventory} in stock` : "sold out"}`}>{size} mL</button>;
                 })}
               </div>
-              <div className="mt-3 flex items-center justify-between"><span className="font-serif text-xl text-[#f2cd82]">{variant ? `$${variant.price}` : "—"}</span><span className="text-[10px] text-white/50">{variant ? `${variant.remainingInventory} available` : "Unavailable"}</span></div>
-              <Button onClick={() => variant && product && onAdd(variant, product, 1)} disabled={!product || !variant || !variant.isActive || variant.remainingInventory <= 0} className="mt-3 w-full rounded-none bg-[#e6bd70] text-[#171a20] hover:bg-[#f5d99e]">Add TDG dupe</Button>
+               <div className="mt-3 flex items-end justify-between gap-3"><div><span className="font-serif text-xl text-[#f2cd82]">{variant ? `$${variant.price}` : "—"}</span><p className="mt-1 text-[11px] text-[#f5dba2]">{variant ? `${variant.size} TDG dupe decant` : "Choose an available size"}</p></div><span className="text-[10px] text-white/60">{variant ? `${variant.remainingInventory} available` : "Unavailable"}</span></div>
+               <Button onClick={() => variant && product && onAdd(variant, product, 1)} disabled={!product || !variant || !variant.isActive || variant.remainingInventory <= 0} className="mt-3 w-full rounded-none bg-[#e6bd70] text-[#171a20] hover:bg-[#f5d99e]">{variant ? `Add ${variant.size} TDG dupe` : "TDG dupe unavailable"}</Button>
             </div>
           </article>;
         })}

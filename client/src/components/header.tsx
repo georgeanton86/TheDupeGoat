@@ -34,8 +34,9 @@ export default function Header({ cartCount = 0, onCartClick }: HeaderProps = {})
           </span>
         </Link>
 
-        <nav className="hidden items-center gap-8 md:flex" aria-label="Main navigation">
-          <Link href="/shop" className={navClass}>Collections</Link>
+        <nav className="hidden items-center gap-8 lg:flex" aria-label="Main navigation">
+          <a href="/shop#dupes" className={navClass}>Shop dupes</a>
+          <a href="/shop#dreamer" className={navClass}>House hybrids</a>
           <button onClick={() => scrollToSection("about")} className={navClass}>The House</button>
           <Link href="/policy" className={navClass}>Policies</Link>
           {onCartClick ? (
@@ -53,7 +54,7 @@ export default function Header({ cartCount = 0, onCartClick }: HeaderProps = {})
 
         <Sheet open={mobileMenuOpen} onOpenChange={setMobileMenuOpen}>
           <SheetTrigger asChild>
-            <Button variant="outline" size="icon" className="border-[#d8b76a]/30 bg-transparent text-[#f3ead8] md:hidden" aria-label="Open navigation">
+            <Button variant="outline" size="icon" className="border-[#d8b76a]/30 bg-transparent text-[#f3ead8] lg:hidden" aria-label="Open navigation">
               <Menu className="h-5 w-5" />
             </Button>
           </SheetTrigger>
@@ -63,7 +64,9 @@ export default function Header({ cartCount = 0, onCartClick }: HeaderProps = {})
                <p className="mt-1 text-[10px] tracking-[0.3em] text-[#d8b76a]">CHICAGO FRAGRANCE HOUSE</p>
             </div>
             <nav className="flex flex-col gap-6">
-              <Link href="/shop" onClick={() => setMobileMenuOpen(false)} className={navClass}>Explore collections</Link>
+              <a href="/shop#dupes" onClick={() => setMobileMenuOpen(false)} className={navClass}>Shop designer-inspired dupes</a>
+              <a href="/shop#dreamer" onClick={() => setMobileMenuOpen(false)} className={navClass}>Dreamer hybrids</a>
+              <a href="/shop#gaming" onClick={() => setMobileMenuOpen(false)} className={navClass}>Gaming hybrids</a>
               <button onClick={() => scrollToSection("about")} className={`${navClass} text-left`}>Our house</button>
               <Link href="/policy" onClick={() => setMobileMenuOpen(false)} className={navClass}>Policies</Link>
               {onCartClick && <button onClick={() => { setMobileMenuOpen(false); onCartClick(); }} className={`${navClass} text-left`}>Shopping bag ({cartCount})</button>}

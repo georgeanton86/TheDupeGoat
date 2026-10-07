@@ -235,13 +235,18 @@ export default function Shop() {
       
       {/* Hero Banner */}
       <div className="store-hero noir-grain relative isolate overflow-hidden border-b border-[#d4ad70]/25 pb-14 pt-32">
-        <div className="absolute inset-0 -z-10 bg-[url('/dreamer/dreamer-series-tdg.jpg')] bg-cover bg-[center_42%] opacity-55" />
+         <div className="absolute inset-0 -z-10 bg-[url('/chicago/chicago-noir-skyline.jpg')] bg-cover bg-center opacity-40" />
         <div className="absolute inset-0 -z-10 bg-gradient-to-r from-[#18212a] via-[#18212a]/80 to-[#18212a]/30" />
         <div className="mx-auto max-w-7xl px-5 sm:px-8">
           <div className="mb-8 max-w-3xl">
             <p className="font-mono text-[10px] font-semibold uppercase tracking-[0.28em] text-[#d4ad70]">THE DUPE GOAT · Chicago fragrance house</p>
-            <h1 className="mt-3 font-serif text-5xl leading-[.98] sm:text-7xl">Scent, shifted.<br /><span className="text-[#80eee8]">City afterimage.</span></h1>
-            <p className="mt-5 max-w-2xl text-base leading-7 text-white/75">Six hybrids lead the house: three Dreamer states and three Gaming compositions, built from dupe inspirations. Explore the twenty-five single-scent dupes after the hybrids. Reference images are not the packaging you receive.</p>
+             <h1 className="mt-3 font-serif text-5xl leading-[.98] sm:text-7xl">Familiar inspiration.<br /><span className="text-[#d4ad70]">Your kind of price.</span></h1>
+             <p className="mt-5 max-w-2xl text-base leading-7 text-white/75">Start with 25 single-scent, designer-inspired TDG dupes. Search by fragrance or house, then choose a 5, 10, 20 or 30 mL decant. These are independent dupes—not authentic designer perfumes. Reference bottles are not shipped packaging.</p>
+             <nav aria-label="Shop collections" className="mt-7 flex flex-wrap items-center gap-3">
+               <a href="#dupes" className="border border-[#d4ad70] bg-[#d4ad70] px-5 py-3 text-xs font-semibold uppercase tracking-wider text-[#151a20] hover:bg-[#e3c28e]">Shop single-scent dupes</a>
+               <a href="#dreamer" className="px-3 py-3 text-xs text-[#a4f1ed] hover:text-[#f3ead8]">Dreamer hybrids</a>
+               <a href="#gaming" className="px-3 py-3 text-xs text-[#f1a0b5] hover:text-[#f3ead8]">Gaming hybrids</a>
+             </nav>
             <div className="mt-6 flex flex-wrap items-center gap-x-6 gap-y-3 text-xs">
               <div className="flex items-center gap-2 text-white">
                 <Truck className="w-5 h-5" />
@@ -257,6 +262,12 @@ export default function Shop() {
       </div>
       
       <div className="mx-auto max-w-[1440px] px-5 py-14 sm:px-8">
+         <TdgCollection products={tdgProducts} variants={variants || []} onAdd={addToCart} onDetails={item => { setSelectedProduct(item); setIsDetailModalOpen(true); }} />
+         <div className="mb-9 border-t border-[#d4ad70]/25 pt-8">
+           <p className="font-mono text-[10px] uppercase tracking-[0.25em] text-[#d4ad70]">Explore another direction · owner-created hybrids</p>
+           <h2 className="mt-3 font-serif text-3xl sm:text-4xl">The house has more to say.</h2>
+           <p className="mt-3 max-w-2xl text-sm leading-6 text-white/70">Dreamer and Gaming bring dupe inspirations together in original hybrid compositions. All existing collection sizes and offers are below.</p>
+         </div>
         <DreamerCollection products={dreamerProducts} variants={variants || []} onAdd={addToCart} onDetails={item => { setSelectedProduct(item); setIsDetailModalOpen(true); }} />
         {chicagoProducts.length > 0 && <section id="gaming" className="mb-16 scroll-mt-24">
           <div className="mb-7 flex flex-col justify-between gap-3 border-b border-[#dc7895]/35 pb-5 sm:flex-row sm:items-end">
@@ -271,7 +282,6 @@ export default function Shop() {
             {chicagoProducts.map((product) => <ProductCard key={product.id} product={product} variants={variants?.filter(v => v.productId === product.id) || []} cart={cart} isCheckingStock={isCheckingStock} onAddToCart={addToCart} onViewDetails={(item) => { setSelectedProduct(item); setIsDetailModalOpen(true); }} />)}
           </div>
         </section>}
-        <TdgCollection products={tdgProducts} variants={variants || []} onAdd={addToCart} onDetails={item => { setSelectedProduct(item); setIsDetailModalOpen(true); }} />
         <section className="mb-16">
         <div className="grid lg:grid-cols-3 gap-8">
 

@@ -8,6 +8,30 @@ import { tdgOffers, affiliationDisclosure } from "@shared/tdg";
 import { ArrowUpRight } from "lucide-react";
 import HybridInspirations from "@/components/hybrid-inspirations";
 
+export function DupeSpotlight() {
+  const { data: products } = useQuery<Product[]>({ queryKey: ["/api/products"] });
+  const featured = tdgOffers.filter(offer => ["02", "07", "09", "14"].includes(offer.code) && products?.some(product => product.id === offer.productId && product.isActive));
+  return (
+    <div className="border border-[#d4ad70]/35 bg-[#18212a]/90 p-3 sm:p-4">
+      <div className="grid grid-cols-2 gap-3">
+        {featured.map(offer => <Link key={offer.code} href={`/shop#dupe-${offer.code}`} className="group overflow-hidden border border-[#d4ad70]/20 bg-[#10161a] hover:border-[#d4ad70]/70">
+          <div className="relative h-36 sm:h-44">
+            <img src={offer.imageUrl} alt={`${offer.original} reference bottle, not shipped packaging`} className="h-full w-full object-contain p-4 transition-transform duration-500 group-hover:scale-[1.035]" />
+            <span className="absolute left-2 top-2 bg-[#10161a]/95 px-2 py-1 font-mono text-[8px] uppercase text-[#d4ad70]">Reference only</span>
+          </div>
+          <div className="border-t border-[#d4ad70]/15 p-3">
+            <p className="text-[10px] leading-4 text-[#d4ad70]">Inspired by {offer.house}</p>
+            <p className="mt-1 font-serif text-lg leading-tight">{offer.original}</p>
+            <p className="mt-2 text-[9px] uppercase tracking-wider text-[#f3ead8]/60">TDG dupe: {offer.name}</p>
+          </div>
+        </Link>)}
+      </div>
+      <p className="mt-3 text-[10px] leading-5 text-[#f3ead8]/70">Independent TDG dupes, not designer perfumes. Choose a 5, 10, 20 or 30 mL decant in the shop; pictured bottles do not ship.</p>
+      <Link href="/shop#dupes" className="mt-3 inline-flex items-center gap-2 text-xs font-semibold text-[#d4ad70]">Explore all 25 scent inspirations <ArrowUpRight className="h-4 w-4" /></Link>
+    </div>
+  );
+}
+
 export function HybridSpotlight() {
   return (
     <div className="grid grid-cols-2 gap-3 sm:grid-cols-3">
@@ -38,10 +62,31 @@ export default function ProductGallery() {
   return (
     <section className="mx-auto max-w-[1440px] px-5 py-20 sm:px-8 md:py-24">
       <div className="mb-10 border-b border-[#d4ad70]/30 pb-7">
-        <p className="font-mono text-[10px] uppercase tracking-[0.25em] text-[#d4ad70]">The house signatures · six hybrids</p>
-        <h2 className="mt-3 font-serif text-4xl leading-[1.04] text-[#f3ead8] sm:text-6xl">Not one note.<br />A new composition.</h2>
-        <p className="mt-4 max-w-2xl text-sm leading-6 text-white/75">Dreamer and Gaming take center stage. Each hybrid layers dupe inspirations into its own identity—not original designer ingredients.</p>
+        <p className="font-mono text-[10px] uppercase tracking-[0.25em] text-[#d4ad70]">Start here · 25 single-scent dupes</p>
+        <h2 className="mt-3 font-serif text-4xl leading-[1.04] text-[#f3ead8] sm:text-6xl">Find your inspiration.<br />Make it your everyday.</h2>
+        <p className="mt-4 max-w-2xl text-sm leading-6 text-white/75">Recognizable scent inspirations from Louis Vuitton, Creed, Tom Ford, Le Labo and more. These are independently produced THE DUPE GOAT dupes—not authentic designer perfumes.</p>
+        <p className="mt-3 text-xs text-[#d4ad70]">Your choice of 5, 10, 20 or 30 mL · TDG decants, not pictured designer bottles</p>
       </div>
+
+      <div className="mb-16">
+        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+          {tdgOffers.filter(offer => ["01", "02", "05", "07", "09", "14"].includes(offer.code) && active.some(product => product.id === offer.productId)).map(offer => <Link key={offer.code} href={`/shop#dupe-${offer.code}`} className="group overflow-hidden border border-[#e6bd70]/30 bg-[#171e24] hover:border-[#e6bd70]/70">
+            <div className="relative h-60 bg-[#10161a]">
+              <img src={offer.imageUrl} alt={`Reference-only ${offer.original} by ${offer.house}; TDG dupe decant ships instead`} loading="lazy" className="h-full w-full object-contain p-6 transition-transform duration-500 group-hover:scale-[1.035]" />
+              <span className="absolute left-3 top-3 bg-[#10161a]/95 px-2.5 py-1 font-mono text-[9px] uppercase tracking-wider text-[#e6bd70]">Reference bottle · not shipped</span>
+            </div>
+            <div className="border-t border-[#e6bd70]/20 p-5">
+              <p className="font-mono text-[9px] uppercase tracking-wider text-[#e6bd70]">Inspired by {offer.house}</p>
+              <h3 className="mt-2 font-serif text-2xl">{offer.original}</h3>
+              <p className="mt-3 text-xs text-white/70">TDG dupe: {offer.name}</p>
+              <span className="mt-5 inline-flex items-center gap-2 text-xs font-semibold text-[#e6bd70]">Choose your decant size <ArrowUpRight className="h-4 w-4" /></span>
+            </div>
+          </Link>)}
+        </div>
+        <Link href="/shop#dupes" className="mt-7 inline-flex items-center gap-3 bg-[#d4ad70] px-6 py-3.5 text-xs font-bold uppercase tracking-[0.14em] text-[#151a20] hover:bg-[#e3c28e]">Shop all single-scent dupes <ArrowUpRight className="h-4 w-4" /></Link>
+      </div>
+
+      <div className="mb-9 border-t border-[#d4ad70]/25 pt-9"><p className="font-mono text-[10px] uppercase tracking-[0.22em] text-[#d4ad70]">Another side of the house · owner-created hybrids</p><h2 className="mt-3 font-serif text-3xl sm:text-4xl">Want something unexpected?</h2><p className="mt-3 max-w-2xl text-sm leading-6 text-white/70">Explore Dreamer and Gaming next. Six house hybrids layer dupe inspirations into their own compositions.</p></div>
 
       <div className="mb-14">
         <div className="mb-5 flex flex-wrap items-end justify-between gap-4"><div><p className="font-mono text-[10px] uppercase tracking-[0.2em] text-[#82e7e5]">Three states. One collection.</p><h3 className="mt-2 font-serif text-3xl sm:text-4xl">The Dreamer Series</h3></div><Link href="/shop#dreamer" className="inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-wider text-[#82e7e5]">Shop Dreamer <ArrowUpRight className="h-4 w-4" /></Link></div>
@@ -72,10 +117,6 @@ export default function ProductGallery() {
         </div>
       </div>
 
-      <article className="grid gap-6 border-t border-[#e6bd70]/25 pt-8 md:grid-cols-[1fr_1fr]">
-        <div><p className="font-mono text-[10px] uppercase tracking-[0.22em] text-[#e6bd70]">Also in the house · 25 single-scent dupes</p><h3 className="mt-3 font-serif text-3xl">The TDG library</h3><p className="mt-3 text-sm leading-6 text-white/60">Looking for one scent direction rather than a hybrid? Explore independently produced TDG dupes. Designer names and bottles identify inspiration only.</p><Link href="/shop#dupes" className="mt-5 inline-flex items-center gap-2 text-xs font-bold uppercase tracking-[0.14em] text-[#e6bd70]">Browse single-scent dupes <ArrowUpRight className="h-4 w-4" /></Link></div>
-        <div className="grid grid-cols-3 gap-2">{tdgOffers.slice(0,3).map(offer => <Link key={offer.code} href="/shop#dupes" className="relative border border-[#e6bd70]/15 bg-[#10161a]"><span className="absolute left-1 top-1 bg-[#10161a]/95 px-1.5 py-1 font-mono text-[7px] uppercase text-[#f4d99b]">Reference only</span><img src={offer.imageUrl} alt={`Reference-only ${offer.original} bottle`} loading="lazy" className="h-32 w-full object-contain p-3" /><span className="block border-t border-white/10 p-2 text-[9px] leading-4 text-[#f4d99b]">{offer.name}<br />Inspired by {offer.original}<br />{offer.house}</span></Link>)}</div>
-      </article>
       <p className="mt-8 border-l-2 border-[#e6bd70]/60 pl-4 text-xs leading-5 text-white/70">{affiliationDisclosure}</p>
     </section>
   );
