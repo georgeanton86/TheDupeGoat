@@ -2,7 +2,7 @@ import { shippingCentsForSubtotal } from "./commerce";
 
 // Temporary purchase codes: turn this off after the owner's trial purchase.
 // This is a manual switch, not a single-use redemption limit.
-export const trialPromotionsEnabled = true;
+export const trialPromotionsEnabled = false;
 export const minimumCardChargeCents = 50;
 
 export function parsePromoCodes(value?: string | null): string[] {
