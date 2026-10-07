@@ -2,7 +2,7 @@ import { Pool, type PoolClient } from "pg";
 import type Stripe from "stripe";
 import { storage } from "./storage";
 import { chicagoSetDiscountCents, countChicagoSets, isChicagoVariant } from "@shared/chicago";
-import { shippingCentsForSubtotal } from "@shared/commerce";
+import { cartPricing, minimumCardChargeCents } from "@shared/promotions";
 
 if (!process.env.DATABASE_URL) throw new Error("DATABASE_URL is required for orders");
 const pool = new Pool({ connectionString: process.env.DATABASE_URL });
@@ -227,10 +227,11 @@ export async function priceCart(items: CartLine[], promoCode?: string, unavailab
     subtotalCents += Math.round(Number(variant.price) * 100) * item.quantity;
   }
   const setDiscountCents = countChicagoSets(items) * chicagoSetDiscountCents;
-  const discountCents = promoCode?.toUpperCase() === "WELCOME10"
-    ? Math.round((subtotalCents - setDiscountCents) * 0.1) : 0;
-  const shippingCents = shippingCentsForSubtotal(subtotalCents);
-  return subtotalCents - setDiscountCents - discountCents + shippingCents;
+  const { totalCents } = cartPricing(subtotalCents, setDiscountCents, promoCode);
+  if (totalCents < minimumCardChargeCents) {
+    throw new CheckoutConflict("The discounted total is below Stripe's $0.50 minimum. Add an item or remove a promo code.");
+  }
+  return totalCents;
 }
 
 export async function recordPaidOrder(intent: Stripe.PaymentIntent) {

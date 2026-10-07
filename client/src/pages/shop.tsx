@@ -13,7 +13,7 @@ import type { Product, ProductVariant } from "@shared/schema";
 import { chicagoBottleImages, chicagoOffers, chicagoSetDiscountCents, countChicagoSets, isChicagoVariant } from "@shared/chicago";
 import { dreamerOffers } from "@shared/dreamer";
 import { tdgOffers, affiliationDisclosure } from "@shared/tdg";
-import { shippingCentsForSubtotal } from "@shared/commerce";
+import { cartPricing, parsePromoCodes, minimumCardChargeCents } from "@shared/promotions";
 import { ShoppingCart, Tag, Truck, Info } from "lucide-react";
 import ProductDetailModal from "@/components/product-detail-modal";
 import { DreamerCollection, TdgCollection } from "@/components/catalog-collections";
@@ -104,21 +104,41 @@ export default function Shop() {
   };
 
   const applyPromoCode = () => {
-    if (promoCode.toUpperCase() === "WELCOME10") {
+    try {
+      const codes = parsePromoCodes(promoCode);
+      if (!codes.length) return;
+      setPromoCode(codes.join(" "));
       setPromoApplied(true);
+    } catch (error) {
+      setPromoApplied(false);
+      toast({ title: "Promo not applied", description: error instanceof Error ? error.message : "Invalid promo code", variant: "destructive" });
     }
+  };
+
+  const changePromoCode = (value: string) => {
+    setPromoCode(value);
+    setPromoApplied(false);
   };
 
   const subtotalCents = cart.reduce((sum, item) => sum + Math.round(Number(item.variant.price) * 100) * item.quantity, 0);
   const subtotal = subtotalCents / 100;
   const setCount = countChicagoSets(cart.map(item => ({ variantId: item.variant.id, quantity: item.quantity })));
   const setDiscount = (setCount * chicagoSetDiscountCents) / 100;
-  const discount = promoApplied ? Math.round((subtotalCents - setCount * chicagoSetDiscountCents) * 0.1) / 100 : 0;
-  const shipping = shippingCentsForSubtotal(subtotalCents) / 100;
-  const total = subtotal - setDiscount - discount + shipping;
+  const pricing = cartPricing(subtotalCents, setCount * chicagoSetDiscountCents, promoApplied ? promoCode : undefined);
+  const discount = pricing.discountCents / 100;
+  const shipping = pricing.shippingCents / 100;
+  const total = pricing.totalCents / 100;
+  const promoMessage = [
+    pricing.discountPercent ? `${pricing.discountPercent}% discount applied.` : "",
+    pricing.codes.includes("FREESHIP") ? "Free shipping applied." : "",
+  ].filter(Boolean).join(" ");
 
   const handleCheckout = async () => {
     if (checkingStock.current || !cart.length) return;
+    if (pricing.totalCents < minimumCardChargeCents) {
+      toast({ title: "Total is below $0.50", description: "Stripe requires a $0.50 minimum charge. Add an item or remove a promo code.", variant: "destructive" });
+      return;
+    }
     checkingStock.current = true;
     setIsCheckingStock(true);
     try {
@@ -305,10 +325,9 @@ export default function Shop() {
                       <div className="mb-4 pb-4 border-b">
                         <div className="flex gap-2">
                           <Input
-                            placeholder="Promo code"
+                            placeholder="Codes separated by spaces"
                             value={promoCode}
-                            onChange={(e) => setPromoCode(e.target.value)}
-                            disabled={promoApplied}
+                            onChange={(e) => changePromoCode(e.target.value)}
                             className="h-9"
                           />
                           <Button
@@ -321,7 +340,7 @@ export default function Shop() {
                           </Button>
                         </div>
                         {promoApplied && (
-                          <p className="text-xs text-primary mt-1">10% discount applied.</p>
+                          <p className="text-xs text-primary mt-1">{promoMessage}</p>
                         )}
                       </div>
 
@@ -334,7 +353,7 @@ export default function Shop() {
                         {setCount > 0 && <div className="flex justify-between text-primary"><span>Gaming set savings × {setCount}:</span><span>-${setDiscount.toFixed(2)}</span></div>}
                         {promoApplied && (
                           <div className="flex justify-between text-primary">
-                            <span>Discount (10%):</span>
+                            <span>Discount ({pricing.discountPercent}%):</span>
                             <span>-${discount.toFixed(2)}</span>
                           </div>
                         )}
@@ -342,7 +361,7 @@ export default function Shop() {
                           <span>Shipping:</span>
                           <span>{shipping === 0 ? "FREE" : `$${shipping.toFixed(2)}`}</span>
                         </div>
-                        {subtotalCents <= 5000 && subtotal > 0 && (
+                        {shipping > 0 && subtotalCents <= 5000 && subtotal > 0 && (
                           <p className="text-xs text-muted-foreground">
                             Add ${((5001 - subtotalCents) / 100).toFixed(2)} more for free shipping.
                           </p>
@@ -422,10 +441,9 @@ export default function Shop() {
                 <div className="mb-4 pb-4 border-b">
                   <div className="flex gap-2">
                     <Input
-                      placeholder="Promo code"
+                      placeholder="Codes separated by spaces"
                       value={promoCode}
-                      onChange={(e) => setPromoCode(e.target.value)}
-                      disabled={promoApplied}
+                      onChange={(e) => changePromoCode(e.target.value)}
                       className="min-w-0 flex-1"
                     />
                     <Button
@@ -437,7 +455,7 @@ export default function Shop() {
                     </Button>
                   </div>
                   {promoApplied && (
-                    <p className="text-xs text-primary mt-1">10% discount applied.</p>
+                    <p className="text-xs text-primary mt-1">{promoMessage}</p>
                   )}
                 </div>
 
@@ -449,7 +467,7 @@ export default function Shop() {
                   {setCount > 0 && <div className="flex justify-between text-primary"><span>Gaming set savings × {setCount}:</span><span>-${setDiscount.toFixed(2)}</span></div>}
                   {promoApplied && (
                     <div className="flex justify-between text-primary">
-                      <span>Discount (10%):</span>
+                      <span>Discount ({pricing.discountPercent}%):</span>
                       <span>-${discount.toFixed(2)}</span>
                     </div>
                   )}
@@ -457,7 +475,7 @@ export default function Shop() {
                     <span>Shipping:</span>
                     <span>{shipping === 0 ? "FREE" : `$${shipping.toFixed(2)}`}</span>
                   </div>
-                  {subtotalCents <= 5000 && subtotal > 0 && (
+                  {shipping > 0 && subtotalCents <= 5000 && subtotal > 0 && (
                     <p className="text-xs text-muted-foreground">
                       Add ${((5001 - subtotalCents) / 100).toFixed(2)} more for free shipping.
                     </p>
@@ -548,10 +566,9 @@ export default function Shop() {
                   <div className="mb-4 pb-4 border-b">
                     <div className="flex gap-2">
                       <Input
-                        placeholder="Promo code"
+                        placeholder="Codes separated by spaces"
                         value={promoCode}
-                        onChange={(e) => setPromoCode(e.target.value)}
-                        disabled={promoApplied}
+                        onChange={(e) => changePromoCode(e.target.value)}
                         className="min-w-0 flex-1"
                         data-testid="input-promo-code-mobile"
                       />
@@ -565,7 +582,7 @@ export default function Shop() {
                       </Button>
                     </div>
                     {promoApplied && (
-                      <p className="text-xs text-primary mt-1">10% discount applied.</p>
+                      <p className="text-xs text-primary mt-1">{promoMessage}</p>
                     )}
                   </div>
 
@@ -578,7 +595,7 @@ export default function Shop() {
                     {setCount > 0 && <div className="flex justify-between text-primary"><span>Gaming set savings × {setCount}:</span><span>-${setDiscount.toFixed(2)}</span></div>}
                     {promoApplied && (
                       <div className="flex justify-between text-primary">
-                        <span>Discount (10%):</span>
+                        <span>Discount ({pricing.discountPercent}%):</span>
                         <span>-${discount.toFixed(2)}</span>
                       </div>
                     )}
@@ -586,7 +603,7 @@ export default function Shop() {
                       <span>Shipping:</span>
                       <span>{shipping === 0 ? "FREE" : `$${shipping.toFixed(2)}`}</span>
                     </div>
-                    {subtotalCents <= 5000 && subtotal > 0 && (
+                    {shipping > 0 && subtotalCents <= 5000 && subtotal > 0 && (
                       <p className="text-xs text-muted-foreground">
                         Add ${((5001 - subtotalCents) / 100).toFixed(2)} more for free shipping.
                       </p>
