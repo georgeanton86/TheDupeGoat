@@ -13,3 +13,7 @@ export function decantPrice(size: number): string {
   if (!price) throw new Error(`Unsupported decant size: ${size} mL`);
   return price;
 }
+
+export function decantPricePerMl(size: number): string {
+  return (Number(decantPrice(size)) / size).toFixed(2);
+}

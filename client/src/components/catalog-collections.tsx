@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { ArrowUpRight, Search } from "lucide-react";
 import HybridInspirations from "@/components/hybrid-inspirations";
+import { decantPricePerMl } from "@shared/decant-pricing";
 
 type CartAdd = (variant: ProductVariant, product: Product, quantity: number) => void;
 type DetailOpen = (product: Product) => void;
@@ -34,7 +35,7 @@ export function DreamerCollection({ products, variants, onAdd, onDetails }: {
           <p className="max-w-xl text-sm leading-6 text-[#e5f0ed]/75">A luminous night-city triptych for altered states of perception—from clear-eyed brightness, through the fever of a vivid dream, into a darker and more complex perspective. Each hybrid blends dupe inspirations into its own composition.</p>
         </div>
         <div className="mt-6 flex flex-wrap gap-x-5 gap-y-2 text-xs text-[#e5f0ed]/70">
-          <span>5 / 10 / 15 / 20 / 30 mL</span><span>Better value in larger sizes · from $7.50</span><span>Live inventory by selected size</span>
+          <span>5 / 10 / 15 / 20 / 30 mL</span><span>$7.50 · $12 · $16.50 · $20 · $27</span><span>Lower price per mL at each larger size</span>
         </div>
       </div>
       <div className="relative grid gap-px bg-[#72e8ef]/15 md:grid-cols-3">
@@ -70,7 +71,7 @@ export function DreamerCollection({ products, variants, onAdd, onDetails }: {
                   })}
                 </div>
                 <div className="mt-4 flex items-end justify-between border-t border-white/10 pt-4">
-                  <div><p className="font-serif text-2xl text-[#9bf0e6]">{activeVariant ? `$${activeVariant.price}` : "—"}</p><p className="mt-1 text-[11px] text-white/50">{activeVariant ? `${activeVariant.size} · ${remaining} in stock` : "Choose an available size"}</p></div>
+                  <div><p className="font-serif text-2xl text-[#9bf0e6]">{activeVariant ? `$${activeVariant.price}` : "—"}</p><p className="mt-1 text-[11px] text-white/50">{activeVariant ? `${activeVariant.size} · ${remaining} in stock · $${decantPricePerMl(Number.parseInt(activeVariant.size, 10))}/mL` : "Choose an available size"}</p></div>
                   <button type="button" onClick={() => product && onDetails(product)} disabled={!product} className="text-xs uppercase tracking-[0.12em] text-[#a9f6f0] hover:text-white disabled:opacity-40">Scent details <ArrowUpRight className="ml-1 inline h-3.5 w-3.5" /></button>
                 </div>
                 <Button onClick={() => activeVariant && product && onAdd(activeVariant, product, 1)} disabled={!activeVariant || !product || !activeVariant.isActive || remaining <= 0}
@@ -128,7 +129,7 @@ export function TdgCollection({ products, variants, onAdd, onDetails }: {
                     aria-label={`${size} mL, ${available ? `${sizeVariant?.remainingInventory} in stock` : "sold out"}`}>{size} mL</button>;
                 })}
               </div>
-               <div className="mt-3 flex items-end justify-between gap-3"><div><span className="font-serif text-xl text-[#f2cd82]">{variant ? `$${variant.price}` : "—"}</span><p className="mt-1 text-[11px] text-[#f5dba2]">{variant ? `${variant.size} TDG dupe decant` : "Choose an available size"}</p></div><span className="text-[10px] text-white/60">{variant ? `${variant.remainingInventory} available` : "Unavailable"}</span></div>
+                <div className="mt-3 flex items-end justify-between gap-3"><div><span className="font-serif text-xl text-[#f2cd82]">{variant ? `$${variant.price}` : "—"}</span><p className="mt-1 text-[11px] text-[#f5dba2]">{variant ? `${variant.size} TDG dupe decant · $${decantPricePerMl(Number.parseInt(variant.size, 10))}/mL` : "Choose an available size"}</p></div><span className="text-[10px] text-white/60">{variant ? `${variant.remainingInventory} available` : "Unavailable"}</span></div>
                <Button onClick={() => variant && product && onAdd(variant, product, 1)} disabled={!product || !variant || !variant.isActive || variant.remainingInventory <= 0} className="mt-3 w-full rounded-none bg-[#e6bd70] text-[#171a20] hover:bg-[#f5d99e]">{variant ? `Add ${variant.size} TDG dupe` : "TDG dupe unavailable"}</Button>
             </div>
           </article>;

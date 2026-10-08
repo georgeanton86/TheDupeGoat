@@ -241,7 +241,7 @@ export default function Shop() {
           <div className="mb-8 max-w-3xl">
             <p className="font-mono text-[10px] font-semibold uppercase tracking-[0.28em] text-[#d4ad70]">THE DUPE GOAT · Chicago fragrance house</p>
              <h1 className="mt-3 font-serif text-5xl leading-[.98] sm:text-7xl">Familiar inspiration.<br /><span className="text-[#d4ad70]">Your kind of price.</span></h1>
-             <p className="mt-5 max-w-2xl text-base leading-7 text-white/75">Start with 25 single-scent, designer-inspired TDG dupes. Search by fragrance or house, then choose a 5, 10, 20 or 30 mL decant. These are independent dupes—not authentic designer perfumes. Reference bottles are not shipped packaging.</p>
+             <p className="mt-5 max-w-2xl text-base leading-7 text-white/75">Start with 25 single-scent, designer-inspired TDG dupes. Search by fragrance or house, then choose a 5, 10, 15, 20 or 30 mL decant. Larger sizes have a lower price per mL. These are independent dupes—not authentic designer perfumes. Reference bottles are not shipped packaging.</p>
              <nav aria-label="Shop collections" className="mt-7 flex flex-wrap items-center gap-3">
                <a href="#dupes" className="border border-[#d4ad70] bg-[#d4ad70] px-5 py-3 text-xs font-semibold uppercase tracking-wider text-[#151a20] hover:bg-[#e3c28e]">Shop single-scent dupes</a>
                <a href="#dreamer" className="px-3 py-3 text-xs text-[#a4f1ed] hover:text-[#f3ead8]">Dreamer hybrids</a>
@@ -729,8 +729,8 @@ function ProductCard({ product, variants, cart, isCheckingStock, onAddToCart, on
            {isChicago ? (
              <div className="mb-4">
                <p className="mb-2 text-sm font-medium text-white">Decant size</p>
-               <div className="grid grid-cols-4 gap-2" role="group" aria-label={`${product.name} decant sizes`}>
-                 {[5, 10, 20, 30].map(size => {
+               <div className="grid grid-cols-5 gap-2" role="group" aria-label={`${product.name} decant sizes`}>
+                 {[5, 10, 15, 20, 30].map(size => {
                    const available = size === 30 && Boolean(chicagoDecant?.isActive && chicagoDecant.remainingInventory > 0);
                    return (
                      <button

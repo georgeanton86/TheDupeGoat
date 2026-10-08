@@ -3,8 +3,8 @@ import { Badge } from "@/components/ui/badge";
 import type { Product } from "@shared/schema";
 import { chicagoBottleImages, chicagoOffers } from "@shared/chicago";
 import HybridInspirations from "@/components/hybrid-inspirations";
-import { dreamerOffers } from "@shared/dreamer";
-import { tdgOffers, dupeDisclosure, affiliationDisclosure } from "@shared/tdg";
+import { dreamerOffers, dreamerSizes } from "@shared/dreamer";
+import { tdgOffers, tdgSizes, dupeDisclosure, affiliationDisclosure } from "@shared/tdg";
 
 const gamerProducts: Record<string, { image: string; collection: string }> = {
   "PLAYER ONE": { image: chicagoBottleImages["PLAYER ONE"], collection: "THE DUPE GOAT · Gaming Collection" },
@@ -41,7 +41,7 @@ export default function ProductDetailModal({ product, isOpen, onClose }: Product
             <DialogHeader className="text-left">
                <Badge className="mb-3 w-fit border-0 bg-[#d8b76a]/15 text-[#e5c578]">{gaming ? gaming.collection : dreamer ? `THE DUPE GOAT · Dreamer ${dreamer.number}` : tdg ? `THE DUPE GOAT · dupe ${tdg.code}` : "THE DUPE GOAT"}</Badge>
               <DialogTitle className="font-serif text-3xl text-[#f3ead8]">{product.name}</DialogTitle>
-               <DialogDescription className="text-[#f3ead8]/55">{gaming ? "30 mL fragrance decant · $59.99" : dreamer ? `${dreamer.mood} · 5 / 10 / 20 / 30 mL` : tdg ? `Inspired by ${tdg.original} / ${tdg.house} · 5 / 10 / 20 / 30 mL` : "An independent fragrance from THE DUPE GOAT."}</DialogDescription>
+               <DialogDescription className="text-[#f3ead8]/55">{gaming ? "30 mL fragrance decant · $59.99" : dreamer ? `${dreamer.mood} · ${dreamerSizes.join(" / ")} mL` : tdg ? `Inspired by ${tdg.original} / ${tdg.house} · ${tdgSizes.join(" / ")} mL` : "An independent fragrance from THE DUPE GOAT."}</DialogDescription>
             </DialogHeader>
             <div className="mt-6 space-y-5">
               <p className="text-sm leading-6 text-[#f3ead8]/75">{dreamer?.description || tdg?.description || product.description}</p>
@@ -66,11 +66,11 @@ export default function ProductDetailModal({ product, isOpen, onClose }: Product
                 <div className="border border-[#d8b76a]/30 bg-[#d8b76a]/5 p-4">
                   <p className="text-xs font-semibold uppercase tracking-[0.18em] text-[#e5c578]">Reference bottle photo</p>
                   <p className="mt-2 text-sm leading-6 text-[#f3ead8]/70">This concept image is for reference. Your Gaming fragrance ships in a separate 30 mL decant bottle.</p>
-                   <p className="mt-2 text-xs text-[#f3ead8]/60">Limited run of 25 per fragrance; current availability is shown in the shop. 5, 10, and 20 mL decants are not available. One 30 mL decant of each: $150, automatically discounted in the cart.</p>
+                   <p className="mt-2 text-xs text-[#f3ead8]/60">Limited run of 25 per fragrance; current availability is shown in the shop. 5, 10, 15, and 20 mL decants are not available. One 30 mL decant of each: $150, automatically discounted in the cart.</p>
                 </div>
               ) : (dreamer || tdg) ? (
                 <>
-                  <div className="flex flex-wrap gap-2"><Badge className="bg-[#d8b76a] text-[#171a16]">{dreamer ? "Hybrid · Extrait de Parfum decant" : "TDG fragrance dupe decant"}</Badge><Badge variant="outline" className="border-[#d8b76a]/40 text-[#f3ead8]/75">5 / 10 / 20 / 30 mL</Badge></div>
+                  <div className="flex flex-wrap gap-2"><Badge className="bg-[#d8b76a] text-[#171a16]">{dreamer ? "Hybrid · Extrait de Parfum decant" : "TDG fragrance dupe decant"}</Badge><Badge variant="outline" className="border-[#d8b76a]/40 text-[#f3ead8]/75">{dreamerSizes.join(" / ")} mL</Badge></div>
                   <p className="text-xs text-[#f3ead8]/55">Choose an available size on the shop card. Current price and stock are shown there.</p>
                 </>
               ) : (

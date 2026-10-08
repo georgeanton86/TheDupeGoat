@@ -26,7 +26,7 @@ export function DupeSpotlight() {
           </div>
         </Link>)}
       </div>
-      <p className="mt-3 text-[10px] leading-5 text-[#f3ead8]/70">Independent TDG dupes, not designer perfumes. Choose a 5, 10, 20 or 30 mL decant in the shop; pictured bottles do not ship.</p>
+      <p className="mt-3 text-[10px] leading-5 text-[#f3ead8]/70">Independent TDG dupes, not designer perfumes. Choose a 5, 10, 15, 20 or 30 mL decant in the shop; pictured bottles do not ship.</p>
       <Link href="/shop#dupes" className="mt-3 inline-flex items-center gap-2 text-xs font-semibold text-[#d4ad70]">Explore all 25 scent inspirations <ArrowUpRight className="h-4 w-4" /></Link>
     </div>
   );
@@ -65,7 +65,7 @@ export default function ProductGallery() {
         <p className="font-mono text-[10px] uppercase tracking-[0.25em] text-[#d4ad70]">Start here · 25 single-scent dupes</p>
         <h2 className="mt-3 font-serif text-4xl leading-[1.04] text-[#f3ead8] sm:text-6xl">Find your inspiration.<br />Make it your everyday.</h2>
         <p className="mt-4 max-w-2xl text-sm leading-6 text-white/75">Recognizable scent inspirations from Louis Vuitton, Creed, Tom Ford, Le Labo and more. These are independently produced THE DUPE GOAT dupes—not authentic designer perfumes.</p>
-        <p className="mt-3 text-xs text-[#d4ad70]">Your choice of 5, 10, 20 or 30 mL · TDG decants, not pictured designer bottles</p>
+        <p className="mt-3 text-xs text-[#d4ad70]">Your choice of 5, 10, 15, 20 or 30 mL · lower price per mL at larger sizes</p>
       </div>
 
       <div className="mb-16">
