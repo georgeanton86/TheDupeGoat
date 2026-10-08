@@ -34,7 +34,7 @@ export function DreamerCollection({ products, variants, onAdd, onDetails }: {
           <p className="max-w-xl text-sm leading-6 text-[#e5f0ed]/75">A luminous night-city triptych for altered states of perception—from clear-eyed brightness, through the fever of a vivid dream, into a darker and more complex perspective. Each hybrid blends dupe inspirations into its own composition.</p>
         </div>
         <div className="mt-6 flex flex-wrap gap-x-5 gap-y-2 text-xs text-[#e5f0ed]/70">
-          <span>5 / 10 / 20 / 30 mL</span><span>$1.50 per mL</span><span>Live inventory by selected size</span>
+          <span>5 / 10 / 15 / 20 / 30 mL</span><span>Better value in larger sizes · from $7.50</span><span>Live inventory by selected size</span>
         </div>
       </div>
       <div className="relative grid gap-px bg-[#72e8ef]/15 md:grid-cols-3">
@@ -96,7 +96,7 @@ export function TdgCollection({ products, variants, onAdd, onDetails }: {
   return (
     <section id="dupes" className="mb-20 scroll-mt-24">
       <div className="mb-7 flex flex-col justify-between gap-5 border-b border-[#e6bd70]/35 pb-5 sm:flex-row sm:items-end">
-        <div><p className="font-mono text-[10px] uppercase tracking-[0.25em] text-[#e6bd70]">Start with the inspiration · SINGLE-SCENT DUPES</p><h2 className="mt-2 font-serif text-3xl sm:text-5xl">Designer-inspired. TDG-made.</h2><p className="mt-3 max-w-2xl text-sm leading-6 text-white/75">Explore 25 independently produced dupes inspired by recognizable fragrances. Designer names identify scent inspiration only; each TDG alias is the product you buy, not an authentic designer perfume.</p><p className="mt-3 text-xs leading-5 text-[#e6bd70]">Choose 5, 10, 20 or 30 mL below. You receive a TDG decant in that size—not the pictured bottle.</p></div>
+        <div><p className="font-mono text-[10px] uppercase tracking-[0.25em] text-[#e6bd70]">Start with the inspiration · SINGLE-SCENT DUPES</p><h2 className="mt-2 font-serif text-3xl sm:text-5xl">Designer-inspired. TDG-made.</h2><p className="mt-3 max-w-2xl text-sm leading-6 text-white/75">Explore 25 independently produced dupes inspired by recognizable fragrances. Designer names identify scent inspiration only; each TDG alias is the product you buy, not an authentic designer perfume.</p><p className="mt-3 text-xs leading-5 text-[#e6bd70]">Choose 5, 10, 15, 20 or 30 mL below. Larger sizes cost less per mL. You receive a TDG decant in that size—not the pictured bottle.</p></div>
         <label className="relative block w-full sm:max-w-xs"><span className="sr-only">Search by TDG scent, inspiration, or house</span><Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-[#e6bd70]/70" /><Input value={query} onChange={event => setQuery(event.target.value)} placeholder="Search scent or inspiration" className="rounded-none border-[#e6bd70]/30 bg-[#10171c] pl-9 text-white placeholder:text-white/40" /></label>
       </div>
       <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-3">
@@ -118,7 +118,7 @@ export function TdgCollection({ products, variants, onAdd, onDetails }: {
                <div className="mt-4 flex items-start justify-between gap-3 border-t border-[#e6bd70]/15 pt-3"><div><p className="font-mono text-[9px] uppercase tracking-[0.2em] text-[#e6bd70]">Your TDG dupe · {offer.code}</p><p className="mt-1 text-sm font-semibold">{offer.name}</p></div><button type="button" onClick={() => product && onDetails(product)} disabled={!product} className="mt-1 text-[10px] uppercase tracking-wider text-[#edca83] hover:text-white disabled:opacity-40">Details</button></div>
               <p className="mt-2 min-h-10 text-xs leading-5 text-white/55">{offer.description}</p>
               <p className="mt-3 border-l border-[#e6bd70]/70 pl-3 text-[11px] leading-5 text-white/65">{dupeDisclosure}</p>
-              <div className="mt-4 grid grid-cols-4 gap-1.5">
+              <div className="mt-4 grid grid-cols-5 gap-1">
                 {tdgSizes.map(size => {
                   const sizeVariant = offerVariants.find(v => v.size === `${size} mL`);
                   const available = Boolean(sizeVariant?.isActive && sizeVariant.remainingInventory > 0);

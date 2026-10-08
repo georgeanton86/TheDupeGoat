@@ -1,4 +1,6 @@
-export const dreamerSizes = [5, 10, 20, 30] as const;
+import { decantPrice } from "./decant-pricing";
+
+export const dreamerSizes = [5, 10, 15, 20, 30] as const;
 
 // Fixed IDs keep paid inventory attached to these offers across restarts and publishes.
 export const dreamerOffers = [
@@ -18,6 +20,7 @@ export const dreamerOffers = [
     variantIds: [
       "64ac0000-0000-4000-8000-000000000101",
       "64ac0000-0000-4000-8000-000000000102",
+      "64ac0000-0000-4000-8000-000000000105",
       "64ac0000-0000-4000-8000-000000000103",
       "64ac0000-0000-4000-8000-000000000104",
     ],
@@ -38,6 +41,7 @@ export const dreamerOffers = [
     variantIds: [
       "64ac0000-0000-4000-8000-000000000201",
       "64ac0000-0000-4000-8000-000000000202",
+      "64ac0000-0000-4000-8000-000000000205",
       "64ac0000-0000-4000-8000-000000000203",
       "64ac0000-0000-4000-8000-000000000204",
     ],
@@ -58,6 +62,7 @@ export const dreamerOffers = [
     variantIds: [
       "64ac0000-0000-4000-8000-000000000301",
       "64ac0000-0000-4000-8000-000000000302",
+      "64ac0000-0000-4000-8000-000000000305",
       "64ac0000-0000-4000-8000-000000000303",
       "64ac0000-0000-4000-8000-000000000304",
     ],
@@ -73,7 +78,7 @@ export const dreamerVariants = dreamerOffers.flatMap(offer => dreamerSizes.map((
   sku: `DREAMER-${offer.slug.toUpperCase()}-${size}ML`,
   size: `${size} mL`,
   concentration: "Extrait de Parfum decant",
-  price: (size * 1.5).toFixed(2),
+  price: decantPrice(size),
   totalInventory: 50,
   remainingInventory: 50,
   soldCount: 0,

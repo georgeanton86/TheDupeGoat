@@ -118,7 +118,7 @@ export default function FAQ() {
                     What can I buy right now?
                   </AccordionTrigger>
                   <AccordionContent className="text-white/80">
-                    The shop includes 25 TDG single-scent dupes and all three Dreamer hybrids in four sizes—5, 10, 20, and 30 mL. Gaming scents are available as 30 mL decants; smaller sizes are not offered for Gaming.
+                    The shop includes 25 TDG single-scent dupes and all three Dreamer hybrids in 5, 10, 15, 20, and 30 mL sizes. Larger sizes have a lower price per mL. Gaming scents are available as 30 mL decants; smaller sizes are not offered for Gaming.
                   </AccordionContent>
                 </AccordionItem>
 

@@ -12,7 +12,7 @@ export default function ProductShowcase() {
       <div className="flex flex-col justify-center p-8 sm:p-12">
         <p className="font-mono text-[10px] uppercase tracking-[0.24em] text-[#81e9e3]">THE DUPE GOAT · Chicago, Illinois</p>
         <h2 className="mt-4 font-serif text-4xl leading-tight sm:text-5xl">Three states.<br />One collection.</h2>
-        <p className="mt-5 text-sm leading-6 text-white/65">Lucid State, Fever Dream, and Altered Mental Status: three hybrid compositions inspired by altered perception. Each size—5, 10, 20, and 30 mL—is priced at $1.50 per mL.</p>
+        <p className="mt-5 text-sm leading-6 text-white/65">Lucid State, Fever Dream, and Altered Mental Status: three hybrid compositions inspired by altered perception. Choose from 5, 10, 15, 20, or 30 mL, with a lower price per mL in larger sizes.</p>
         <p className="mt-4 border-l border-[#e6bd70]/60 pl-4 text-xs leading-5 text-white/55">Designer names and imagery identify fragrance inspirations only. TDG products are independently produced dupes and hybrids, not the original pictured perfumes.</p>
         <Link href="/shop#dreamer" className="mt-8 inline-flex w-fit items-center bg-[#80eee8] px-8 py-3 text-xs font-bold uppercase tracking-[0.14em] text-[#0b1a20] transition-colors hover:bg-[#b7fff5]">Explore Dreamer</Link>
       </div>

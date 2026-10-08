@@ -1,4 +1,6 @@
-export const tdgSizes = [5, 10, 20, 30] as const;
+import { decantPrice } from "./decant-pricing";
+
+export const tdgSizes = [5, 10, 15, 20, 30] as const;
 export const tdgBrand = "THE DUPE GOAT";
 export const dupeDisclosure =
   "TDG fragrances are independently produced dupes, not the original designer perfumes. Designer bottle photos show the scent inspiration only—not the product or packaging you receive. You receive a TDG decant in your selected size.";
@@ -38,16 +40,20 @@ export const tdgOffers = scents.map(scent => ({
   ...scent,
   productId: `70ac0000-0000-4000-8000-${scent.code.padStart(12, "0")}`,
   imageUrl: `/tdg/reference/${scent.slug}.jpg`,
-  description: `An independently produced TDG dupe inspired by ${scent.house} ${scent.original}. Explore this scent inspiration in a 5, 10, 20, or 30 mL decant. This is not the original designer fragrance.`,
+  description: `An independently produced TDG dupe inspired by ${scent.house} ${scent.original}. Explore this scent inspiration in a 5, 10, 15, 20, or 30 mL decant. This is not the original designer fragrance.`,
 }));
 
-export const tdgVariants = tdgOffers.flatMap(offer => tdgSizes.map((size, index) => ({
-  id: `70ac0000-0000-4000-8000-${String(1000 + Number(offer.code) * 10 + index).padStart(12, "0")}`,
+// Slots 0–3 are the original size identifiers; reserve slot 4 for the new 15 mL
+// size so adding it never changes identifiers already used by inventory/orders.
+const tdgVariantSlot: Record<number, number> = { 5: 0, 10: 1, 15: 4, 20: 2, 30: 3 };
+
+export const tdgVariants = tdgOffers.flatMap(offer => tdgSizes.map(size => ({
+  id: `70ac0000-0000-4000-8000-${String(1000 + Number(offer.code) * 10 + tdgVariantSlot[size]).padStart(12, "0")}`,
   productId: offer.productId,
   sku: `TDG-${offer.code}-${size}ML`,
   size: `${size} mL`,
   concentration: "Fragrance dupe decant",
-  price: (size * 1.5).toFixed(2),
+  price: decantPrice(size),
   totalInventory: 50,
   remainingInventory: 50,
   soldCount: 0,
