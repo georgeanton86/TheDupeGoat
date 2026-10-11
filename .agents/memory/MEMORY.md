@@ -8,3 +8,4 @@
 - [Browser payment isolation](browser-payment-isolation.md) — changing-stock regression tests stop before Stripe Elements and must never use live payment services.
 - [Trial purchase promotions](trial-purchase-promotions.md) — temporary discounts are intended for the owner's trial purchase, then disabled.
 - [Decant volume pricing](decant-pricing.md) — TDG dupes and Dreamer use a graduated 5–30 mL ladder; preserve variant IDs and the fixed-size Gaming exception.
+- [Production database unpause](production-database-unpause.md) — after billing is restored, production may still need a manual unpause; rely on Support's incident guidance.
