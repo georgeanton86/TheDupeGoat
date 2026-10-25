@@ -48,14 +48,13 @@ export default function ProductDetailModal({ product, isOpen, onClose }: Product
               {gamingOffer && <HybridInspirations inspirations={gamingOffer.inspirations} />}
               {dreamer && <div className="space-y-4 border border-[#72e8ef]/20 bg-[#72e8ef]/5 p-4">
                 <div><p className="text-[10px] uppercase tracking-[0.18em] text-[#82e7e5]">Scent profile</p><p className="mt-1 text-sm text-white/80">{dreamer.scentProfile}</p></div>
-                <div><p className="text-[10px] uppercase tracking-[0.18em] text-[#82e7e5]">Hybrid blend · dupe inspirations</p><p className="mt-1 text-sm leading-6 text-white/80">{dreamer.blend}</p></div>
                 <div className="space-y-2 border-t border-white/10 pt-3">
                   <p className="text-[10px] uppercase tracking-[0.18em] text-[#82e7e5]">Notes</p>
                   <p className="text-sm"><span className="mr-2 text-[10px] font-semibold tracking-widest text-[#82e7e5]">TOP</span>{dreamer.topNotes}</p>
                   <p className="text-sm"><span className="mr-2 text-[10px] font-semibold tracking-widest text-[#82e7e5]">HEART</span>{dreamer.middleNotes}</p>
                   <p className="text-sm"><span className="mr-2 text-[10px] font-semibold tracking-widest text-[#82e7e5]">BASE</span>{dreamer.baseNotes}</p>
                 </div>
-                <p className="text-xs leading-5 text-white/55">Blend components are scent inspirations only; this is a TDG hybrid decant, not the original fragrances.</p>
+                <p className="text-xs leading-5 text-white/55">A TDG hybrid decant described by its scent notes.</p>
               </div>}
               {tdg && <div className="space-y-3 border border-[#d8b76a]/25 bg-[#d8b76a]/5 p-4">
                 <p className="text-xs font-semibold uppercase tracking-[0.16em] text-[#e5c578]">Scent inspiration only</p>

@@ -56,7 +56,7 @@ export function DreamerCollection({ products, variants, onAdd, onDetails }: {
                 <p className="font-mono text-[9px] uppercase tracking-[0.2em] text-[#70dfe5]">{offer.mood}</p>
                 <h3 className="mt-2 min-h-[2.3em] font-serif text-2xl leading-tight text-[#f1f5ec]">{offer.name}</h3>
                 <p className="mt-3 min-h-[5.5rem] text-sm leading-6 text-white/65">{offer.description}</p>
-                <HybridInspirations blend={offer.blend} dreamer />
+                <HybridInspirations notes={{ top: offer.topNotes, heart: offer.middleNotes, base: offer.baseNotes }} dreamer />
                 <div className="mt-4 flex flex-wrap gap-2">
                   {dreamerSizes.map(size => {
                     const variant = offerVariants.find(v => v.size === `${size} mL`);
