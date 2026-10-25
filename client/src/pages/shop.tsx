@@ -17,7 +17,6 @@ import { cartPricing, parsePromoCodes, minimumCardChargeCents } from "@shared/pr
 import { ShoppingCart, Tag, Truck, Info } from "lucide-react";
 import ProductDetailModal from "@/components/product-detail-modal";
 import { DreamerCollection, TdgCollection } from "@/components/catalog-collections";
-import HybridInspirations from "@/components/hybrid-inspirations";
 import { useToast } from "@/hooks/use-toast";
 import { canAddCartLines, cartMatchesInventory, inventoryLimit, reconcileCart } from "@shared/cart-inventory";
 
@@ -664,7 +663,6 @@ function ProductCard({ product, variants, cart, isCheckingStock, onAddToCart, on
   onViewDetails: (product: Product) => void;
 }) {
   const isChicago = Boolean(chicagoBottleImages[product.name.toUpperCase()]);
-  const gamingOffer = chicagoOffers.find(offer => offer.productId === product.id);
   const [quantity, setQuantity] = useState(1);
   const [selectedVariantId, setSelectedVariantId] = useState(variants[0]?.id || "");
 
@@ -722,7 +720,6 @@ function ProductCard({ product, variants, cart, isCheckingStock, onAddToCart, on
 
           {!isChicago && product.bibleVerse?.trim() && <p className="mb-2 text-sm italic text-white/65">"{product.bibleVerse}"</p>}
           <p className="mb-4 text-sm leading-6 text-white/75">{product.description}</p>
-          {gamingOffer && <HybridInspirations inspirations={gamingOffer.inspirations} />}
           {isChicago && <p className="mb-4 border-l-2 border-[#dc7895] pl-3 text-xs leading-5 text-white/75">Gaming concept imagery is for reference only. Your fragrance ships in a separate 30 mL decant bottle.</p>}
           <>
            {/* Only the 30 mL Chicago decant is offered; display the other sizes without creating purchasable variants. */}

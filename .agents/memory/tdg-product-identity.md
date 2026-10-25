@@ -14,3 +14,9 @@ Designer-inspired single-scent dupes should take priority over the owner's Gamin
 **Why:** The user changed the merchandising direction to emphasize recognizable name-brand inspirations and dupes, choosing to update the storefront before preparing an ad.
 
 **How to apply:** Lead the home and shop pages with the single-scent dupes. Keep Gaming and Dreamer available as secondary collections, without changing collection memberships or purchase options.
+
+Do not display the source fragrance names or blend ratios for either Dreamer or Gaming. This does not change the named inspirations for the single-scent dupes.
+
+**Why:** The user explicitly requested removal for both hybrid series.
+
+**How to apply:** Use approved scent notes where available; do not reintroduce named formulas in cards, galleries, or detail views.

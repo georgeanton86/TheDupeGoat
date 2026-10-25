@@ -111,7 +111,7 @@ export default function ProductGallery() {
                 <img src={offer.imageUrl} alt={`${offer.name} Gaming hybrid reference artwork`} loading="lazy" className="h-full w-full object-contain transition-transform duration-500 group-hover:scale-[1.025]" />
                 <span className="absolute bottom-3 left-3 bg-[#101820]/90 px-2.5 py-1 font-mono text-[9px] uppercase tracking-wider text-[#f1a0b5]">Reference artwork · TDG hybrid</span>
               </Link>
-              <div className="flex flex-1 flex-col p-5 sm:p-6"><h4 className="font-serif text-2xl">{offer.name}</h4>{product && <p className="mt-3 text-sm leading-6 text-white/75">{product.description}</p>}<HybridInspirations inspirations={offer.inspirations} /><Link href="/shop#gaming" className="mt-auto inline-flex items-center gap-2 border-t border-white/10 pt-4 text-xs font-semibold text-[#f1a0b5]">Explore {offer.name} <ArrowUpRight className="h-4 w-4" /></Link></div>
+              <div className="flex flex-1 flex-col p-5 sm:p-6"><h4 className="font-serif text-2xl">{offer.name}</h4>{product && <p className="mt-3 text-sm leading-6 text-white/75">{product.description}</p>}<Link href="/shop#gaming" className="mt-auto inline-flex items-center gap-2 border-t border-white/10 pt-4 text-xs font-semibold text-[#f1a0b5]">Explore {offer.name} <ArrowUpRight className="h-4 w-4" /></Link></div>
             </article>;
           })}
         </div>
