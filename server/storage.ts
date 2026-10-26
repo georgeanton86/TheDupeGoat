@@ -219,7 +219,8 @@ export class MemStorage implements IStorage {
         concentration: "Fragrance decant",
         price: "59.99",
         totalInventory: 25,
-        remainingInventory: 25,
+        // Owner confirmed the remaining Gaming stock was sold offline.
+        remainingInventory: 0,
         soldCount: 0,
         isActive: true,
         createdAt: new Date(),

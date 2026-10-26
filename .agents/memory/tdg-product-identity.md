@@ -20,3 +20,9 @@ Do not display the source fragrance names or blend ratios for either Dreamer or 
 **Why:** The user explicitly requested removal for both hybrid series.
 
 **How to apply:** Use approved scent notes where available; do not reintroduce named formulas in cards, galleries, or detail views.
+
+The owner confirmed all Gaming fragrances were sold offline.
+
+**Why:** Online availability was stale; the owner clarified that the remaining stock had sold outside the website.
+
+**How to apply:** Keep Gaming visible but sold out until the owner confirms a restock. Preserve historical orders and do not invent an offline sales count.

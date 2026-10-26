@@ -52,7 +52,8 @@ test("Dreamer and Gaming remain active; Seven Seals is archived rather than dele
   for (const offer of chicagoOffers) {
     const variant = await storage.getProductVariant(offer.variantId);
     assert.equal(variant?.price, "59.99");
-    assert.equal(variant?.remainingInventory, 25);
+    assert.equal(variant?.remainingInventory, 0);
+    assert.equal(variant?.soldCount, 0, "Offline sellout must not fabricate online sales");
   }
 });
 
@@ -74,7 +75,10 @@ test("server prices TDG carts and shipping; clients cannot supply a price", asyn
   assert.equal(await priceCart(mixed, "WELCOME10", new Map()), 4004);
   assert.equal(countChicagoSets(mixed), 0);
   const gaming = chicagoOffers.map(offer => ({ variantId: offer.variantId, quantity: 1 }));
-  assert.equal(await priceCart(gaming, undefined, new Map()), 15000);
+  await assert.rejects(priceCart(gaming, undefined, new Map()), /Insufficient inventory/);
+  for (const item of gaming) {
+    await assert.rejects(priceCart([item], undefined, new Map()), /Insufficient inventory/);
+  }
   assert.equal(countChicagoSets([...gaming, ...mixed]), 1);
 });
 
