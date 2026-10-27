@@ -20,7 +20,7 @@ export default function Home() {
           <div className="relative mx-auto grid w-full max-w-7xl gap-12 px-5 pb-16 pt-24 sm:px-8 md:grid-cols-[1.05fr_.95fr] md:items-end md:pb-24">
             <div className="max-w-2xl reveal-up">
               <p className="mb-6 flex items-center gap-3 font-mono text-[10px] font-medium uppercase tracking-[0.24em] text-[#d4ad70]"><span className="h-px w-9 bg-[#d4ad70]" /> THE DUPE GOAT · Chicago fragrance house</p>
-               <h1 className="font-serif text-5xl leading-[0.94] tracking-[-0.045em] sm:text-7xl lg:text-[82px]">Designer-inspired.<br /><span className="text-[#d4ad70]">Everyday</span><br />priced.</h1>
+                <h1 className="font-serif text-5xl leading-[0.94] tracking-[-0.045em] sm:text-7xl lg:text-[82px]">Because you can&apos;t<br /><span className="text-[#d4ad70]">wear the bottle.</span></h1>
                <p className="mt-7 max-w-lg text-base leading-7 text-[#f3ead8]/75 sm:text-lg">Find familiar scent inspirations in 25 affordable, single-scent TDG dupes. Independent fragrances in your choice of decant size—not authentic designer perfume.</p>
                <p className="mt-4 font-mono text-xs tracking-wide text-[#d4ad70]">5 / 10 / 15 / 20 / 30 mL decants · better value in larger sizes</p>
               <div className="mt-9 flex flex-wrap gap-3">

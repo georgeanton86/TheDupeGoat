@@ -16,7 +16,8 @@ export default function Footer() {
       <div className="pointer-events-none absolute inset-y-0 right-0 hidden w-[43%] bg-[url('/chicago/chicago-noir-skyline.jpg')] bg-cover bg-center opacity-[0.12] md:block" />
       <div className="relative mx-auto grid max-w-7xl gap-12 px-5 py-16 sm:px-8 md:grid-cols-[1.4fr_1fr_1fr]">
         <div>
-          <p className="font-serif text-2xl tracking-wide">THE DUPE GOAT</p>
+           <p className="font-serif text-2xl tracking-wide">THE DUPE GOAT</p>
+           <p className="mt-2 font-serif text-lg text-[#f3ead8]">Because you can&apos;t wear the bottle.</p>
            <p className="mt-1 font-mono text-[9px] tracking-[0.25em] text-[#d4ad70]">INDEPENDENT FRAGRANCE HOUSE · CHICAGO</p>
            <p className="mt-5 max-w-sm text-sm leading-6 text-[#f3ead8]/65">Single-scent dupes, layered Dreamer hybrids, and the house’s original Gaming fragrances—each with a distinct point of view.</p>
           <p className="mt-5 inline-flex items-center gap-2 text-sm text-[#d8b76a]">Chicago, Illinois <ArrowUpRight className="h-4 w-4" /></p>
